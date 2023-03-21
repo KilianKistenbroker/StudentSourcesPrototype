@@ -57,6 +57,13 @@ const Signup = () => {
     }
 
     useEffect(() => {
+        userRef.current.focus();
+    }, [])
+
+    useEffect(() => {
+        // reset focus
+        document.activeElement.blur()
+
         window.addEventListener('resize', detectSize)
 
         console.log("height: "+windowDimension.winHeight);
@@ -94,8 +101,8 @@ const Signup = () => {
 
             // checking inputs here
             for (let i = 0; i < response.data.length; i++) {
-                if (response.data[i].user == user || response.data[i].email == user) {
-                    if (response.data[i].password == password) {
+                if (response.data[i].user === user || response.data[i].email === user) {
+                    if (response.data[i].password === password) {
                         setSuccess(true)
                         return
                     }
@@ -316,7 +323,7 @@ const Signup = () => {
                                 <span className={validName ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Required field.
+                                Please enter an email or username.
                             </div>
                         </p>
 
@@ -330,7 +337,7 @@ const Signup = () => {
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
 
-                                Required field.
+                                Please enter a password.
                             </div>
                         </p>
 

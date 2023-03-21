@@ -48,6 +48,10 @@ const Signup = () => {
     const [success, setSuccess] = useState(false)
 
     useEffect(() => {
+        userRef.current.focus();
+    }, [])
+
+    useEffect(() => {
         const res = user_regex_l.test(user)
         console.log(res)
         console.log(user)
@@ -103,6 +107,9 @@ const Signup = () => {
         }
     
         useEffect(() => {
+            // reset focus
+            document.activeElement.blur()
+
             window.addEventListener('resize', detectSize)
     
             console.log("height: "+windowDimension.winHeight);
@@ -599,7 +606,7 @@ const Signup = () => {
                                 <span className={validFirstName ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Required field.
+                                Please enter your first name.
                             </div>
                         </p>
 
@@ -612,7 +619,7 @@ const Signup = () => {
                                 <span className={validLastName ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Required field.
+                                Please enter your last name.
                             </div>
                         </p>
 
@@ -638,7 +645,7 @@ const Signup = () => {
                                 <span className={user_regex_l.test(user) ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Must contain 4 to 24 characters. 
+                                Username must contain 4 to 24 characters. 
                             </div>
                         </p>
 
@@ -653,7 +660,7 @@ const Signup = () => {
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
 
-                                Must contain 8 to 24 characters.
+                                Password must contain 8 to 24 characters.
                             </div>
                             <div className="sentence_spacing">
                                 
@@ -664,7 +671,7 @@ const Signup = () => {
                                 <span className={password_regex_sn.test(password) ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Must contain at least 1 number.
+                                Password must contain at least 1 number.
                             </div>
                             <div className="">
                                 
@@ -675,7 +682,7 @@ const Signup = () => {
                                 <span className={password_regex_sl.test(password) ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Must contain at least 1 letter.
+                                Password must contain at least 1 letter.
                             </div>
                         </p>
 
@@ -688,7 +695,7 @@ const Signup = () => {
                                 <span className={checkbox ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Required field.
+                                Agreement with our terms of service required.
                             </div>
                         </p>
                     </div>
