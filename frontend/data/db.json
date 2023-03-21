@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "firstName": "kilian",
+      "lastName": "kistenbroker",
+      "email": "kilian@gmail.com",
+      "user": "TheRizzler",
+      "password": "x5xXL8T5PVdKFMQ",
+      "id": 1
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "JohnDoe@gmail.com",
+      "user": "TheJohnster",
+      "password": "johnny123",
+      "id": 2
+    }
+  ]
+}

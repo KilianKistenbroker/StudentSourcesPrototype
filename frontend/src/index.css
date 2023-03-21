@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+ /* **************** Sign up page *************** */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    color: #202020;
+}
+
+/* body {
+    min-height: 100vh;
+    background-color: black;
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+} */
+
+h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 24px;
+    /* font-weight: bolder; */
+    color: #202020;
+}
+
+h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    color: whitesmoke;
+}
+
+.App {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    /* margin-top: 100px; */
+    /* align-items: center; */
+    min-height: 100vh; 
+  /* padding: 1rem 0.5rem; */
+}
+
+.signup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(auto, auto);
+    margin-top: 115px;
+    gap: 10px;
+}
+
+.messages {
+    width: auto;
+    max-width: 450px;
+    /* min-height: 400px; */
+    display: inline-block;
+    text-align: left;
+    justify-self:right;
+}
+
+.content {
+    width: 450px;
+    /* height: 500px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 15px;
+    background-color: white;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    padding-bottom: 15px;
+}
+
+a, a:visited {
+    color: #202020;
+}
+
+input[type="text"],
+input[type="password"],
+button,
+textarea {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 2px;
+    border-style: solid;
+    height: 50px;
+    /* border: 1.25px solid lightgray; */
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor:default;
+}
+
+
+label {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    height: 20px;
+    font-size: 14px;
+    color: gray;
+}
+
+button {
+  margin-top: 15px;
+  font-size: 18px;
+  height: 50px;
+  /* font-weight: lighter; */
+}
+
+button {
+  padding: 10px;
+  margin-top: 37px;
+}
+.check {
+    margin-top: 37px;
+}
+.checkbox {
+    height: 20px;
+    width: 20px;
+    margin-right: 20px;
+    translate: 0px 3px;
+}
+
+.checkbox:hover {
+    cursor: pointer;
+}
+
+.instructions {
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-size: 14px;
+    border-radius: 2px;
+    background: #202020;
+    color: whitesmoke;
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 30px;
+    position: relative;
+    min-height: 50px;
+}
+
+.firstname_instructions {
+    margin-top: 85px;
+}
+.lastname_instructions {
+    margin-top: 175px;
+}
+.email_instructions {
+    margin-top: 265px;
+}
+.user_instructions {
+    margin-top: 355px;
+}
+.password_instructions {
+    margin-top: 445px;
+}
+.checkbox_instructions {
+    margin-top: 520px;
+}
+
+.firstname_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 50%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+}
+.lastname_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 50%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+}
+
+.email_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 50%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+}
+
+.user_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 50%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+}
+
+.password_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 25%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+} 
+
+.checkbox_instructions:after {
+    border-top: 2px solid #202020;
+    border-right: 2px solid #202020;
+    top: 50%;
+    left: 100%;
+    margin-left: -13px;
+    margin-top: -10px;
+
+    /* reused code */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* border-radius: 1px; */
+    content: '';
+    transform: rotate(45deg);
+    background: #202020;
+} 
+
+.instructions > svg {
+    margin-right: 5px;
+}
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.hide {
+    display: none;
+}
+
+.showPassword  {
+    position: absolute;
+    margin-left: 5px;
+    border: none;
+    color: lightgrey;
+    background-color: transparent;
+    width: 50px;
+    height: 25px;
+    translate: 0px -4px;
+}
+
+.display-hide {
+    position: absolute;
+    margin-left: 5px;
+    border: none;
+    color: lightgrey;
+    background-color: transparent;
+    width: 50px;
+    height: 25px;
+    translate: 0px -4px;
+    border-radius: 2px;
+}
+
+.display-show {
+    position: absolute;
+    margin-left: 5px;
+    border: none;
+    color: lightgrey;
+    background-color: transparent;
+    text-decoration: line-through;
+    width: 50px;
+    height: 25px;
+    translate: 0px -4px;
+    border-radius: 2px;
+}
+
+.display-hide:hover, .display-show:hover {
+    background-color: whitesmoke;
+    color: gray;
+    cursor: pointer;
+}
+
+.show_valid {
+    position: relative;
+    color: limegreen;
+    margin-right: 20px;
+    margin-top: 43px;
+    float: right;
+}
+
+.valid {
+    color: limegreen;
+    margin-right: 20px;
+}
+
+.invalid {
+    color: red;
+    /* kinda hacky but it works for now */
+    margin-right: 25.25px;
+}
+
+.errmsg {
+    background-color: #202020;
+    color: whitesmoke;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    font-size: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.line {
+    display: inline-block;
+    font-size: 16px;
+    color: #202020;
+    text-align: right;
+}
+
+.sentence_spacing {
+    margin-bottom: 10px;
+}
+
+
+/* ******************** Navbar ******************** */
+
+.navbar {
+    background: white;
+    padding: 10px;
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(auto, auto);
+    border-bottom: 1px solid lightgray;
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+    width: 100%; 
+}
+
+#logo-link {
+    font-family: 'Nunito', sans-serif;
+    font-size: 24px;
+    font-weight: bolder;
+    color: #202020;
+    text-align: left;
+    text-decoration: none;
+    padding-top: 12px;
+    overflow: hidden;
+    height: 60px;
+}
+
+#login {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #202020;
+    width: auto;
+    display: inline-block;
+    text-align: right;
+    text-decoration: none;
+    padding-top: 30px;
+    padding-right: 30px;
+}
+
+.logo {
+    translate: -60px -80px;
+    width: 350px;
+}
+
+#login:hover {
+    color: gray;
+}
+
+/* *************************** Footer  ************************** */
+
+.footer {
+    background: #202020;
+    color: whitesmoke;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    /* padding-left: 100px;
+    padding-right: 100px; */
+    margin-top: auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(auto, auto);
+    height: 337.5px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.footer-content {
+    /* margin-left: 100px; */
+    margin: auto;
+    margin-top: 50px;
+    text-align: left;
+    font-size: 14px;
+}
+
+
+/* *************************** Sources  ************************** */
+
+.sources {
+    margin-top: 200px;
+}
+
+.placeholder {
+    margin-top: 200px;
+}
