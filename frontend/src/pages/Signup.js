@@ -89,6 +89,31 @@ const Signup = () => {
         setErrMsg('')
     }, [user, password, firstName, lastName, email])
 
+        // ***************** REUSED CODE *****************
+        const [windowDimension, setWindowDimension] = useState({
+            winWidth: window.innerWidth,
+            winHeight: window.innerHeight
+        })
+    
+        const detectSize =()=> {
+            setWindowDimension({
+                winWidth: window.innerWidth,
+                winHeight: window.innerHeight
+            })
+        }
+    
+        useEffect(() => {
+            window.addEventListener('resize', detectSize)
+    
+            console.log("height: "+windowDimension.winHeight);
+            console.log("width: "+windowDimension.winWidth);
+    
+            return () => {
+                window.removeEventListener('resize', detectSize)
+            }
+        }, [windowDimension])
+        // ****************** REUSED CODE ***************** 
+
     const handleHiddenPassword = () => {
         setShowingPassword(!showingPassword)
     }
@@ -149,7 +174,7 @@ const Signup = () => {
                     {/* redirect to login here */}
                     
                 </section>
-            ) : (
+            ) : windowDimension.winWidth > 650 ? (
                 <div className="signup">
                     
                     <div className="messages"> 
@@ -405,6 +430,266 @@ const Signup = () => {
                         className={errMsg? "errmsg" : "offscreen"} 
                         aria-live="assertive">
                             {errMsg}
+                        </p>
+                    </div>
+                    
+                </div>
+            ) : (
+                <div className="signup-mobile">
+
+                    <div className="content-mobile">
+
+                        <h1>Create an account</h1>
+
+                        <form onSubmit={handleSubmit}>
+                                
+                            {/* SET FIRST NAME */}
+                            <label htmlFor="firstname">
+                                First Name
+                                <span className={validFirstName ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+                            </label>
+
+                            <input type="text"
+                            id="firstname"
+                            ref={userRef}
+                            autoComplete="off"
+                            value={firstName.trim(' ')}
+                            onChange={(e) => setFirstName(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validFirstName ? "false" : "true"}
+                            aria-describedby="firstnamenote"
+                            onFocus={() => setFirstNameFocus(true)}
+                            onBlur={() => setFirstNameFocus(false)} />
+
+                            
+                            {/* SET LAST NAME */}
+                            <label htmlFor="lastname">
+                                Last Name
+                                <span className={validLastName ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+                            </label>
+
+                            <input type="text"
+                            id="lastname"
+                            ref={userRef}
+                            autoComplete="off"
+                            value={lastName.trim(' ')}
+                            onChange={(e) => setLastName(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validLastName ? "false" : "true"}
+                            aria-describedby="lastnamenote"
+                            onFocus={() => setLastNameFocus(true)}
+                            onBlur={() => setLastNameFocus(false)} />
+                            
+                               
+                            {/* SET EMAIL */}
+
+                            <label htmlFor="email">
+                                Email
+                                
+                                {/* USING HOTFIX */}
+                                <span className={validEmail ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+                            </label>
+
+                            <input type="text"
+                            id="email"
+                            ref={userRef}
+                            autoComplete="off"
+                            value={email.trim(' ')}
+                            onChange={(e) => setEmail(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validEmail ? "false" : "true"}
+                            aria-describedby="emailnote"
+                            onFocus={() => setEmailFocus(true)}
+                            onBlur={() => setEmailFocus(false)} />
+
+                            {/* SET USERNAME */}
+
+                            <label htmlFor="username">
+                                Username
+                                <span className={validName ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                            </label>
+
+                            <input type="text"
+                            id="username"
+                            ref={userRef}
+                            autoComplete="off"
+                            value={user.trim(' ')}
+                            onChange={(e) => setUser(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validName ? "false" : "true"}
+                            aria-describedby="uidnote"
+                            onFocus={() => setUserFocus(true)}
+                            onBlur={() => setUserFocus(false)} />
+
+                            {/* SET PASSWORD */}
+                            
+
+                            <label htmlFor="password">
+                                Password : 
+                                
+                                <span className={validPassword ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <input className={showingPassword ? "display-show" : "display-hide"} value={"  Show  "} type="button" onClick={handleHiddenPassword}/>
+                            </label>
+                            
+                            <input 
+                            type={showingPassword ? "text" : "password"}
+                            id="password"
+                            autoComplete="new-password"
+                            value={password.trim(' ')}
+                            onChange={(e) => setPassword(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validPassword ? "false" : "true"}
+                            aria-describedby="pwdnote"
+                            onFocus={() => setPasswordFocus(true)}
+                            onBlur={() => setPasswordFocus(false)} />
+
+                            {/* SUBMIT BUTTON */}
+
+                            <label className="check" htmlFor="">
+                                <span >
+                                    <input 
+                                        id="checkboxnote"
+                                        className="checkbox" 
+                                        type="checkbox" 
+                                        onChange={(e) => setCheckbox(e.target.checked)}
+                                        onFocus={() => setCheckboxFocus(true)}
+                                        onBlur={() => setCheckboxFocus(false)}/>
+                                     I agree to the <a href="">StudentSources Terms</a> and <a href="">Privacy Policy</a>
+                                </span>
+                            </label>
+
+                            <button 
+                            disabled={!validName || 
+                                !validPassword || 
+                                !validFirstName || 
+                                !validLastName || 
+                                !validEmail ? true : false}>
+                                Continue
+                            </button>
+                        </form>
+
+                        <p 
+                        ref={errRef} 
+                        className={errMsg? "errmsg" : "offscreen"} 
+                        aria-live="assertive">
+                            {errMsg}
+                        </p>
+                    </div>
+                    
+                    <div className="messages-mobile"> 
+
+                        <p id="firstnamenote" className={firstNameFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={validFirstName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validFirstName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="lastnamenote" className={lastNameFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={validLastName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validLastName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="emailnote" className={emailFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={validEmail ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validEmail ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Please use valid email formatting.
+                            </div>
+                        </p>
+
+                        <p id="uidnote" className={userFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={user_regex_l.test(user) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={user_regex_l.test(user) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain 4 to 24 characters. 
+                            </div>
+                        </p>
+
+                        <p id="pwdnote" className={passwordFocus ? "instructions" : "offscreen"}>
+                            <div className="sentence_spacing">
+                                
+                                <span className={password_regex_l.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_l.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+
+                                Must contain 8 to 24 characters.
+                            </div>
+                            <div className="sentence_spacing">
+                                
+                                <span className={password_regex_sn.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_sn.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain at least 1 number.
+                            </div>
+                            <div className="">
+                                
+                                <span className={password_regex_sl.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_sl.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain at least 1 letter.
+                            </div>
+                        </p>
+
+                        <p id="checkboxnote" className={checkboxFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={checkbox ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={checkbox ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
                         </p>
                     </div>
                     

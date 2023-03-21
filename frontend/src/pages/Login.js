@@ -42,6 +42,32 @@ const Signup = () => {
         setErrMsg('')
     }, [user, password])
 
+
+    // ***************** REUSED CODE *****************
+    const [windowDimension, setWindowDimension] = useState({
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
+    })
+
+    const detectSize =()=> {
+        setWindowDimension({
+            winWidth: window.innerWidth,
+            winHeight: window.innerHeight
+        })
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', detectSize)
+
+        console.log("height: "+windowDimension.winHeight);
+        console.log("width: "+windowDimension.winWidth);
+
+        return () => {
+            window.removeEventListener('resize', detectSize)
+        }
+    }, [windowDimension])
+    // ****************** REUSED CODE ***************** 
+
     const handleHiddenPassword = () => {
         setShowingPassword(!showingPassword)
     }
@@ -101,7 +127,7 @@ const Signup = () => {
                     {/* redirect to home page here here */}
                     
                 </section>
-            ) : (
+            ) : windowDimension.winWidth > 650 ? (
                 <div className="signup">
                     
                     <div className="messages"> 
@@ -204,6 +230,113 @@ const Signup = () => {
                             {errMsg}
                         </p>
                     </div>
+                    
+                </div>
+            ) : (
+                <div className="signup-mobile">
+
+                    <div className="content-mobile">
+
+                        <h1>Login</h1>
+
+                        <form onSubmit={handleSubmit}>
+
+                            {/* SET USERNAME */}
+
+                            <label htmlFor="username">
+                                Email | Username
+                                <span className={validName ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                            </label>
+
+                            <input type="text"
+                            id="username"
+                            ref={userRef}
+                            autoComplete="off"
+                            value={user.trim(' ')}
+                            onChange={(e) => setUser(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validName ? "false" : "true"}
+                            aria-describedby="uidnote"
+                            onFocus={() => setUserFocus(true)}
+                            onBlur={() => setUserFocus(false)} />
+
+                            {/* SET PASSWORD */}
+
+                            <label htmlFor="password">
+                                Password : 
+
+                                
+                                <span className={validPassword ? "show_valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <input className={showingPassword ? "display-show" : "display-hide"} value={"  Show  "} type="button" onClick={handleHiddenPassword}/>
+                            </label>
+                            
+                            <input 
+                            type={showingPassword ? "text" : "password"}
+                            id="password"
+                            autoComplete="new-password"
+                            value={password.trim(' ')}
+                            onChange={(e) => setPassword(e.target.value.trim(' '))}
+                            required
+                            aria-invalid={validPassword ? "false" : "true"}
+                            aria-describedby="pwdnote"
+                            onFocus={() => setPasswordFocus(true)}
+                            onBlur={() => setPasswordFocus(false)} />
+
+                            {/* SUBMIT BUTTON */}
+
+                            <button 
+                            disabled={!validName || 
+                                !validPassword ? true : false}>
+                                Continue
+                            </button>
+                        </form>
+
+                        <p 
+                        ref={errRef} 
+                        className={errMsg? "errmsg" : "offscreen"} 
+                        aria-live="assertive">
+                            {errMsg}
+                        </p>
+                    </div>
+                    
+                    <div className="messages-mobile"> 
+
+                        <p id="uidnote" className={userFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={validName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="pwdnote" className={passwordFocus ? "instructions" : "offscreen"}>
+                            <div>
+                                <span className={validPassword ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validPassword ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+
+                                Required field.
+                            </div>
+                        </p>
+
+                    </div>
+
+                    
                     
                 </div>
             )}
