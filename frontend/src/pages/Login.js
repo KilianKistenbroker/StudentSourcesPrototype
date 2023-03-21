@@ -134,38 +134,33 @@ const Signup = () => {
                     {/* redirect to home page here here */}
                     
                 </section>
-            ) : windowDimension.winWidth > 650 ? (
+            ) : windowDimension.winWidth > 1050 ? (
                 <div className="signup">
-                    
-                    <div className="messages"> 
 
-                        <p id="uidnote" className={userFocus ? "instructions firstname_instructions" : "offscreen"}>
-                            <div>
-                                <span className={validName ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
+                    <div className="ad">
 
-                                <span className={validName ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Required field.
-                            </div>
-                        </p>
+                        <h3>Study with Student Sources </h3><br />
 
-                        <p id="pwdnote" className={passwordFocus ? "instructions lastname_instructions" : "offscreen"}>
-                            <div>
-                                <span className={validPassword ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
+                        <div className="body">
 
-                                <span className={validPassword ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Organinze</p> 
+                                your files and notes. <br /> <br />
+                            </div> 
 
-                                Required field.
-                            </div>
-                        </p>
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Collaborate,</p>
+                                download, and share files. <br /><br />
+                            </div> 
 
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Streamline</p>
+                                your workflow with advanced A.I. <br /><br />
+                            </div> 
+                        </div>
                     </div>
 
                     <div className="content">
@@ -238,9 +233,66 @@ const Signup = () => {
                         </p>
                     </div>
                     
+                    <div className="messages"> 
+
+                        <p id="uidnote" className={userFocus ? "instructions firstname_instructions" : "offscreen"}>
+                            <div>
+                                <span className={validName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="pwdnote" className={passwordFocus ? "instructions lastname_instructions" : "offscreen"}>
+                            <div>
+                                <span className={validPassword ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validPassword ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+
+                                Required field.
+                            </div>
+                        </p>
+
+                    </div>
+                    
                 </div>
             ) : (
                 <div className="signup-mobile">
+
+                    <div className="ad">
+
+                        <h3>Study with Student Sources </h3><br />
+
+                        <div className="body">
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Organinze</p> 
+                                your files and notes. <br /> <br />
+                            </div> 
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Collaborate,</p>
+                                download, and share files. <br /><br />
+                            </div> 
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Streamline</p>
+                                your workflow with advanced A.I. <br /><br />
+                            </div> 
+                        </div>
+                    </div>
 
                     <div className="content-mobile">
 

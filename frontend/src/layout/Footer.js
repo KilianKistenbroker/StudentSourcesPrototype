@@ -5,7 +5,7 @@ const Footer = () => {
 
         <div className="footer">
             
-            <div className="footer-grid">
+            <div className="footer-grid footer-desktop">
                 <div className="footer-content">
                     <h2>Features</h2>  <br />
                     <div className="sentence_spacing">

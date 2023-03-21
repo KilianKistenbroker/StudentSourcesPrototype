@@ -15,8 +15,8 @@ function App() {
 
         <Routes>
           <Route path="/" element = {<Sources/>}/>
-          <Route exact path="/sign up" element = {<Signup/>}/>
-          <Route exact path="/login" element = {<Login/>}/>
+          <Route exact path="/Sign up" element = {<Signup/>}/>
+          <Route exact path="/Login" element = {<Login/>}/>
         </Routes>
 
         <Footer />

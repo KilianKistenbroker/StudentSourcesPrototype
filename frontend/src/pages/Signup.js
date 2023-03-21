@@ -181,113 +181,39 @@ const Signup = () => {
                     {/* redirect to login here */}
                     
                 </section>
-            ) : windowDimension.winWidth > 650 ? (
+            ) : windowDimension.winWidth > 1050 ? (
                 <div className="signup">
-                    
-                    <div className="messages"> 
 
-                        <p id="firstnamenote" className={firstNameFocus ? "instructions firstname_instructions" : "offscreen"}>
-                            <div>
-                                <span className={validFirstName ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
 
-                                <span className={validFirstName ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Required field.
-                            </div>
-                        </p>
+                    <div className="ad">
 
-                        <p id="lastnamenote" className={lastNameFocus ? "instructions lastname_instructions" : "offscreen"}>
-                            <div>
-                                <span className={validLastName ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
+                        <h3>Study with Student Sources </h3><br />
 
-                                <span className={validLastName ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Required field.
-                            </div>
-                        </p>
+                        <div className="body">
 
-                        <p id="emailnote" className={emailFocus ? "instructions email_instructions" : "offscreen"}>
-                            <div>
-                                <span className={validEmail ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Organinze</p> 
+                                your files and notes. <br /> <br />
+                            </div> 
 
-                                <span className={validEmail ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Please use valid email formatting.
-                            </div>
-                        </p>
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Collaborate,</p>
+                                download, and share files. <br /><br />
+                            </div> 
 
-                        <p id="uidnote" className={userFocus ? "instructions user_instructions" : "offscreen"}>
-                            <div>
-                                <span className={user_regex_l.test(user) ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
-
-                                <span className={user_regex_l.test(user) ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Must contain 4 to 24 characters. 
-                            </div>
-                        </p>
-
-                        <p id="pwdnote" className={passwordFocus ? "instructions password_instructions" : "offscreen"}>
-                            <div className="sentence_spacing">
-                                
-                                <span className={password_regex_l.test(password) ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
-
-                                <span className={password_regex_l.test(password) ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-
-                                Must contain 8 to 24 characters.
-                            </div>
-                            <div className="sentence_spacing">
-                                
-                                <span className={password_regex_sn.test(password) ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
-
-                                <span className={password_regex_sn.test(password) ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Must contain at least 1 number.
-                            </div>
-                            <div className="">
-                                
-                                <span className={password_regex_sl.test(password) ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
-
-                                <span className={password_regex_sl.test(password) ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Must contain at least 1 letter.
-                            </div>
-                        </p>
-
-                        <p id="checkboxnote" className={checkboxFocus ? "instructions checkbox_instructions" : "offscreen"}>
-                            <div>
-                                <span className={checkbox ? "valid" : "hide"}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </span>
-
-                                <span className={checkbox ? "hide" : "invalid"}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </span>
-                                Required field.
-                            </div>
-                        </p>
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Streamline</p>
+                                your workflow with advanced A.I. <br /><br />
+                            </div> 
+                        </div>
                     </div>
+
+                        
+                        
+                    
 
                     <div className="content">
 
@@ -440,9 +366,142 @@ const Signup = () => {
                         </p>
                     </div>
                     
+                    <div className="messages"> 
+
+                        <p id="firstnamenote" className={firstNameFocus ? "instructions firstname_instructions desktop" : "offscreen"}>
+                            <div>
+                                <span className={validFirstName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validFirstName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="lastnamenote" className={lastNameFocus ? "instructions lastname_instructions desktop" : "offscreen"}>
+                            <div>
+                                <span className={validLastName ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validLastName ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+
+                        <p id="emailnote" className={emailFocus ? "instructions email_instructions desktop" : "offscreen"}>
+                            <div>
+                                <span className={validEmail ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={validEmail ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Please use valid email formatting.
+                            </div>
+                        </p>
+
+                        <p id="uidnote" className={userFocus ? "instructions user_instructions desktop" : "offscreen"}>
+                            <div>
+                                <span className={user_regex_l.test(user) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={user_regex_l.test(user) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain 4 to 24 characters. 
+                            </div>
+                        </p>
+
+                        <p id="pwdnote" className={passwordFocus ? "instructions password_instructions desktop" : "offscreen"}>
+                            <div className="sentence_spacing">
+                                
+                                <span className={password_regex_l.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_l.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+
+                                Must contain 8 to 24 characters.
+                            </div>
+                            <div className="sentence_spacing">
+                                
+                                <span className={password_regex_sn.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_sn.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain at least 1 number.
+                            </div>
+                            <div className="">
+                                
+                                <span className={password_regex_sl.test(password) ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={password_regex_sl.test(password) ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Must contain at least 1 letter.
+                            </div>
+                        </p>
+
+                        <p id="checkboxnote" className={checkboxFocus ? "instructions checkbox_instructions desktop" : "offscreen"}>
+                            <div>
+                                <span className={checkbox ? "valid" : "hide"}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
+
+                                <span className={checkbox ? "hide" : "invalid"}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </span>
+                                Required field.
+                            </div>
+                        </p>
+                    </div>
+                    
                 </div>
             ) : (
                 <div className="signup-mobile">
+
+                    <div className="ad">
+
+                        <h3>Study with Student Sources </h3><br />
+                                
+                        <div className="body">
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Organinze</p> 
+                                your files and notes. <br /> <br />
+                            </div> 
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Collaborate,</p>
+                                download, and share files. <br /><br />
+                            </div> 
+
+                            <div className="icon">image</div>
+                            <div className="item">
+                                <p className="header">Streamline</p>
+                                your workflow with advanced A.I. <br /><br />
+                            </div> 
+
+                            
+                        </div>
+                    </div>
 
                     <div className="content-mobile">
 
@@ -695,7 +754,7 @@ const Signup = () => {
                                 <span className={checkbox ? "hide" : "invalid"}>
                                     <FontAwesomeIcon icon={faTimes} />
                                 </span>
-                                Agreement with our terms of service required.
+                                Agreement with our terms of service is required.
                             </div>
                         </p>
                     </div>
