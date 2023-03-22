@@ -130,8 +130,8 @@ h3 {
 
 .messages {
     width: 350px;
-    max-width: 450px;
-    display: inline-block;
+    /* max-width: 450px; */
+    /* display: inline-block; */
     text-align: left;
     justify-self:left;
     /* padding: 15px; */
@@ -432,12 +432,16 @@ button {
 .valid {
     color: limegreen;
     margin-right: 20px;
+    width: 10px;
+    display: inline-block;
 }
 
 .invalid {
     color: red;
     /* kinda hacky but it works for now */
     margin-right: 20px;
+    width: 10px;
+    display: inline-block;
 }
 
 .errmsg {
