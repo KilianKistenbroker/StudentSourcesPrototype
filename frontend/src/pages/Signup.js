@@ -681,7 +681,7 @@ const Signup = ({data}) => {
                                         onChange={(e) => setCheckbox(e.target.checked)}
                                         onFocus={() => setCheckboxFocus(true)}
                                         onBlur={() => setCheckboxFocus(false)}/>
-                                     I agree to the <a href="">StudentSources Terms</a> and <a href="">Privacy Policy</a>
+                                     I agree to and acknowledge the <Link target="_blank" id="" to={"terms"}> Terms and Conditions</Link>
                                 </span>
                             </label>
 
