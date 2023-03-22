@@ -161,6 +161,7 @@ a, a:visited {
 
 a:hover {
     color: rgba(51,102,204, .8);
+    transition: .1s;
 }
 
 input[type="text"],
@@ -177,6 +178,7 @@ textarea {
 
 button:hover {
     cursor: pointer;
+    transition: .1s;
 }
 
 button:disabled {
@@ -215,6 +217,7 @@ button {
 
 .checkbox:hover {
     cursor: pointer;
+    transition: .1s;
 }
 
 .instructions {
@@ -415,6 +418,7 @@ button {
     background-color: whitesmoke;
     color: gray;
     cursor: pointer;
+    transition: .1s;
 }
 
 .show_valid {
@@ -496,31 +500,71 @@ button {
     color: #202020;
     text-align: left;
     text-decoration: none;
-    padding-top: 12px;
+    padding-top: 5px;
     overflow: hidden;
-    height: 60px;
+    height: 50px;
 }
 
 #login {
     font-family: 'Nunito', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bolder;
-    color: #202020;
-    min-width: 100px;
+    color: whitesmoke;
+    width: 75px;
+    height: 40px;
     display: inline-block;
-    text-align: right;
+    text-align: center;
     text-decoration: none;
-    padding-top: 30px;
-    margin-right: 50px;
+    margin-right: 10px;
+    padding: 10px;
+    background: rgb(32, 32, 32);
+    border-radius: 25px;
+    transition: .1s;
+}
+
+#signup {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+    color: whitesmoke;
+    width: 95px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 10px;
+    background: rgb(32, 32, 32);
+    border-radius: 25px;
+    transition: .1s;
+}
+
+#user-nav-icon {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+    color: whitesmoke;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 10px;
+    background: rgb(32, 32, 32);
+    border-radius: 25px;
+    transition: .1s;
 }
 
 .logo {
-    translate: -60px -80px;
+    translate: -80px -80px;
     width: 350px;
 }
 
-#login:hover {
-    color: gray;
+#login:hover, #signup:hover, #user-nav-icon:hover {
+    background: rgba(32, 32, 32, .9);
+    /* color: gray; */
+    /* transition: .1s; */
 }
 
 /* *************************** Footer  ************************** */

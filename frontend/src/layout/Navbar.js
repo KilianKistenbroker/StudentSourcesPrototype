@@ -57,7 +57,7 @@ export default function Navbar({data}) {
             <div></div>
 
             {/* this depends on current route */}
-            <Link id='login' to = {"/" + data.currentPoint} onClick={swapName} className="top-right-nav">{
+            <Link id={topRightNav === 'Login' ? 'login' : 'signup'} to = {"/" + data.currentPoint} onClick={swapName} className="top-right-nav">{
               topRightNav
             }</Link>
         
