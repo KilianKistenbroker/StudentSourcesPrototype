@@ -221,7 +221,7 @@ button {
     background: #202020;
     color: whitesmoke;
     padding: 18.5px;
-    padding-left: 30px;
+    padding-left: 20px;
     padding-right: 20px;
     position: relative;
     min-height: 50px;
@@ -429,7 +429,7 @@ button {
 .invalid {
     color: red;
     /* kinda hacky but it works for now */
-    margin-right: 25.25px;
+    margin-right: 20px;
 }
 
 .errmsg {

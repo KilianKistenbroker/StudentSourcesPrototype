@@ -266,7 +266,7 @@ const Login = ({data}) => {
                     
                     <div className="messages"> 
 
-                        <p id="uidnote" className={userFocus ? "instructions firstname_instructions" : "offscreen"}>
+                        <p id="uidnote" className={userFocus ? "instructions firstname_instructions desktop" : "offscreen"}>
                             <div>
                                 <span className={validName ? "valid" : "hide"}>
                                     <FontAwesomeIcon icon={faCheck} />
@@ -279,7 +279,7 @@ const Login = ({data}) => {
                             </div>
                         </p>
 
-                        <p id="pwdnote" className={passwordFocus ? "instructions lastname_instructions" : "offscreen"}>
+                        <p id="pwdnote" className={passwordFocus ? "instructions lastname_instructions desktop" : "offscreen"}>
                             <div>
                                 <span className={validPassword ? "valid" : "hide"}>
                                     <FontAwesomeIcon icon={faCheck} />
@@ -428,7 +428,7 @@ const Login = ({data}) => {
                             </div>
                         </p>
 
-                        <p id="pwdnote" className={passwordFocus ? "instructions" : "offscreen"}>
+                        <p id="pwdnote" className={passwordFocus ? "instructions " : "offscreen"}>
                             <div>
                                 <span className={validPassword ? "valid" : "hide"}>
                                     <FontAwesomeIcon icon={faCheck} />
