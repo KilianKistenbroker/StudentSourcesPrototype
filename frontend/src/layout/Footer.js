@@ -1,11 +1,42 @@
-import logo from '../logos/For-Dark-Background.png'
+
+import { useState, useEffect } from "react";
 
 const Footer = () => {
+
+
+    // ***************** REUSED CODE *****************
+    const [windowDimension, setWindowDimension] = useState({
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
+    })
+
+    const detectSize =()=> {
+        setWindowDimension({
+            winWidth: window.innerWidth,
+            winHeight: window.innerHeight
+        })
+    }
+
+    useEffect(() => {
+        // reset focus
+        document.activeElement.blur()
+
+        window.addEventListener('resize', detectSize)
+
+        console.log("height: "+windowDimension.winHeight);
+        console.log("width: "+windowDimension.winWidth);
+
+        return () => {
+            window.removeEventListener('resize', detectSize)
+        }
+    }, [windowDimension])
+    // ****************** REUSED CODE ***************** 
+
     return ( 
 
         <div className="footer">
             
-            <div className="footer-grid footer-desktop">
+            <div className={windowDimension.winWidth > 1050 ? "footer-grid footer-desktop" : "footer-grid footer-mobile"}>
                 <div className="footer-content">
                     <h2>Features</h2>  <br />
                     <div className="sentence_spacing">

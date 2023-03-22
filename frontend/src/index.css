@@ -60,7 +60,7 @@ h3 {
 .icon {
     justify-self: right;
     width: 60px;
-    height: 60px;
+    margin-right: 10px;
 }
 
 .App {
@@ -83,6 +83,13 @@ h3 {
     margin-top: 95px;
     margin-bottom: 15px;
     gap: 10px;
+}
+
+.tiny {
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: lighter;
+    float: right;
 }
 
 .signup {
@@ -549,4 +556,38 @@ button {
 
 .placeholder {
     margin-top: 200px;
+}
+
+
+/* *************************** Legal  ************************** */
+
+.legal {
+    max-width: 1000px;
+    text-align: left;
+    margin: auto;
+    padding: 30px;
+    margin-top: 150px;
+    line-height: 25px;
+}
+
+.legal-h1 {
+    color: #202020;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.legal-h2 {
+    color: #202020;
+    font-weight: bolder;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.legal-body {
+    color: dimgray;
+    font-size: 15px;
+}
+
+.legal-indent {
+    padding-left: 20px;
 }

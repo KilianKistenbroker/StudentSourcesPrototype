@@ -4,19 +4,30 @@ import Navbar from "./layout/Navbar";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Footer from "./layout/Footer";
 import Sources from "./pages/Sources";
+import Legal from "./pages/Terms";
 
 function App() {
+
+  let data = {
+    user: '',
+    currentPoint: '',
+    isLogged: false
+  }
+
   return (
     <div className="App">
 
 
       <Router>
-        <Navbar/>
+        <Navbar data = {data}/>
 
         <Routes>
-          <Route path="/" element = {<Sources/>}/>
-          <Route exact path="/Sign up" element = {<Signup/>}/>
-          <Route exact path="/Login" element = {<Login/>}/>
+
+          <Route exact path="/" element = {<Signup data = {data}/>}/>
+          <Route exact path="/login" element = {<Login data = {data}/>}/>
+          <Route path="/sources" element = {<Sources/>}/>
+          <Route path="/terms" element = {<Legal/>}/>
+
         </Routes>
 
         <Footer />
