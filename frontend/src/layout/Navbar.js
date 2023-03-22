@@ -11,7 +11,7 @@ export default function Navbar({data}) {
   useEffect(() => {
     console.log("changed to: " + data.currentPoint)
 
-    if (data.currentPoint === 'Login')
+    if (data.currentPoint === 'login')
     {
       setTopRightNave("Sign up")
     }
@@ -31,14 +31,14 @@ export default function Navbar({data}) {
   const swapName =(e)=> {
     e.preventDefault()
 
-    if (data.currentPoint === 'Login')
+    if (data.currentPoint === 'login')
     {
       data.currentPoint = ''
       // setTopRightNave("Login")
     }
     else 
     {
-      data.currentPoint = "Login"
+      data.currentPoint = "login"
       // setTopRightNave("Sign up")
     }
     console.log(data.currentPoint)

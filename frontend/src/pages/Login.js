@@ -80,10 +80,10 @@ const Login = ({data}) => {
 
     const customLink =(e)=> {
         e.preventDefault()
-        if (data.currentPoint === 'Login')
+        if (data.currentPoint === 'login')
             data.currentPoint = ''
         else
-            data.currentPoint = "Login"
+            data.currentPoint = "login"
         console.log(data.currentPoint)
         navigate("/" + data.currentPoint)
     }
@@ -194,7 +194,7 @@ const Login = ({data}) => {
                             <h1>
                                 Login
                                 <span className="tiny">
-                                    or <Link id="" to={"/sign up"} onClick={customLink}>sign up</Link>
+                                    <Link id="" to={"/sign up"} onClick={customLink}>or create an account</Link>
                                 </span>
                             </h1>
 
@@ -343,7 +343,7 @@ const Login = ({data}) => {
                             <h1>
                                 Login
                                 <span className="tiny">
-                                    or <Link id="" to={"/sign up"} onClick={customLink}>sign up</Link>
+                                    <Link id="" to={"/"} onClick={customLink}>or create an account</Link>
                                 </span>
                             </h1>
 

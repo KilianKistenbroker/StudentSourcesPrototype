@@ -23,8 +23,8 @@ function App() {
 
         <Routes>
 
-          <Route exact path="/" element = {<Signup data = {data}/>}/>
-          <Route exact path="/login" element = {<Login data = {data}/>}/>
+          <Route path="/" element = {<Signup data = {data}/>}/>
+          <Route path="/login" element = {<Login data = {data}/>}/>
           <Route path="/sources" element = {<Sources/>}/>
           <Route path="/terms" element = {<Legal/>}/>
 

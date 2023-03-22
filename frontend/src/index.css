@@ -87,8 +87,7 @@ h3 {
 
 .tiny {
     padding-top: 10px;
-    font-size: 16px;
-    font-weight: lighter;
+    font-size: 14px;
     float: right;
 }
 
@@ -156,7 +155,12 @@ form {
 }
 
 a, a:visited {
-    color: #202020;
+    color: rgb(51,102,204);
+    font-weight:bolder;
+}
+
+a:hover {
+    color: rgba(51,102,204, .8);
 }
 
 input[type="text"],
@@ -458,6 +462,14 @@ button {
     margin-bottom: 10px;
 }
 
+/* a:link {
+    color: #0000EE;
+  } */
+  
+  /* visited link */
+  /* a:visited {
+    color: #551A8B;
+  } */
 
 /* ******************** Navbar ******************** */
 
