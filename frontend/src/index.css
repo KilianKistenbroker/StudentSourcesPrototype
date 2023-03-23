@@ -514,14 +514,14 @@ button {
     font-size: 16px;
     font-weight: bolder;
     color: whitesmoke;
-    width: 75px;
+    width: 95px;
     height: 40px;
     display: inline-block;
     text-align: center;
     text-decoration: none;
     margin-right: 10px;
     padding: 10px;
-    background: rgb(32, 32, 32);
+    background: rgba(32, 32, 32, .9);
     border-radius: 25px;
     transition: .1s;
 }
@@ -538,12 +538,12 @@ button {
     text-decoration: none;
     margin-right: 10px;
     padding: 10px;
-    background: rgb(32, 32, 32);
+    background: rgba(32, 32, 32, .9);
     border-radius: 25px;
     transition: .1s;
 }
 
-#user-nav-icon {
+#user-nav {
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
     font-weight: bolder;
@@ -555,18 +555,27 @@ button {
     text-decoration: none;
     margin-right: 20px;
     padding: 10px;
-    background: rgb(32, 32, 32);
+    background: rgba(32, 32, 32, .9);
     border-radius: 25px;
     transition: .1s;
 }
+
+#user-nav-icon {
+    /* margin: auto; */
+    height: 20px;
+    width: 20px;
+    /* transform: translate(-6px, -6px); */
+    color: whitesmoke;
+}
+
 
 .logo {
     translate: -80px -80px;
     width: 350px;
 }
 
-#login:hover, #signup:hover, #user-nav-icon:hover {
-    background: rgba(32, 32, 32, .9);
+#login:hover, #signup:hover, #user-nav:hover {
+    background: rgba(32, 32, 32, .85);
     /* color: gray; */
     /* transition: .1s; */
 }

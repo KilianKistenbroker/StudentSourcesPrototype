@@ -34,34 +34,63 @@ export default function Navbar({data}) {
     if (data.currentPoint === 'login')
     {
       data.currentPoint = ''
-      // setTopRightNave("Login")
     }
     else 
     {
       data.currentPoint = "login"
-      // setTopRightNave("Sign up")
     }
     console.log(data.currentPoint)
 
     navigate("/" + data.currentPoint)
   }
 
+  console.log("from nav")
+  console.log(data)
+
+  if (data.isLoggedIn) {
+    
+  }
+
   return (
-    <div className="navbar">
-        
-            <Link id="logo-link" to={"/"} onClick={goToSignUp}>
+    <> {data.isLoggedIn ? (
+        <div className="navbar">
+              
+              <Link id="logo-link" to={"/sources"}>
+                  <img src={logo} className='logo' alt="" />
+              </Link>
+              
+              <div></div>
+
+              <Link 
+              id='user-nav'
+              to = '/sources' className="top-right-nav">
+                {<svg xmlns="http://www.w3.org/2000/svg" id='user-nav-icon' fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                  </svg>}
+              </Link> 
+          
+          
+      </div>
+    ) : (
+      <div className="navbar">
+            
+             <Link id="logo-link" to={"/"} onClick={goToSignUp}>
                 <img src={logo} className='logo' alt="" />
             </Link>
             
-            {/* intentially empty */}
             <div></div>
 
-            {/* this depends on current route */}
-            <Link id={topRightNav === 'Login' ? 'login' : 'signup'} to = {"/" + data.currentPoint} onClick={swapName} className="top-right-nav">{
-              topRightNav
-            }</Link>
+            <Link 
+            id={topRightNav === 'Login' ? 'login' : 'signup'} 
+            to = {"/" + data.currentPoint} onClick={swapName} className="top-right-nav">
+              
+              {topRightNav }
+            
+            </Link> 
         
         
     </div>
+    )} </>
   )
 }
