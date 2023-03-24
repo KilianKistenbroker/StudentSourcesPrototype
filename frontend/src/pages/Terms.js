@@ -1,6 +1,9 @@
+import Footer from "../layout/Footer";
+
 const Terms = () => {
     return (
-        <div className="legal">
+        <div className="App">
+            <div className="legal">
             <div className="legal-h1">TERMS AND CONDITIONS</div> <br /><br />
             <p className="legal-body">
                 Posted: March 21, 2023
@@ -111,6 +114,9 @@ const Terms = () => {
                 ©2002-2023 LawDepot.com®
             </p><br />
         </div>
+            <Footer/>
+        </div>
+        
      );
 }
  

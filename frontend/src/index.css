@@ -624,12 +624,16 @@ button {
     width: 30px;
     transform: translate(-5.5px, -5.5px);
     color: rgb(128,128,128);
+    transition: .1s;
 }
-
 
 .logo {
     translate: -80px -80px;
     width: 350px;
+}
+
+#user-nav-icon:hover {
+    color: rgba(128,128,128, .8);
 }
 
 #login:hover, #signup:hover, #user-nav:hover {

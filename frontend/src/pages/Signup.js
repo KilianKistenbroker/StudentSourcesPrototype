@@ -143,6 +143,9 @@ const Signup = ({data}) => {
 
         setErrMsg('')
 
+        // convert email to lowercase here
+        let convertEmail = email.toLowerCase()
+
         if (!checkbox)
         {
             setCheckboxFocus(true)
@@ -158,7 +161,7 @@ const Signup = ({data}) => {
 
         try {
             const response = await axios.post(user_endpoint,
-                JSON.stringify({firstName, lastName, email, user, password}),
+                JSON.stringify({firstName, lastName, email: convertEmail, user, password}),
                 {
                     headers: {"Content-Type": 'application/json'},
                     withCredentials: true
@@ -167,7 +170,23 @@ const Signup = ({data}) => {
                 console.log(response.data)
                 console.log(JSON.stringify(response))
 
-                // clear input fields here
+                // clear input fields here and redirect to home page
+                setFirstName('')
+                setLastName('')
+                setEmail('')
+                setUser('')
+                setPassword('')
+
+                data.user = user
+                data.isLoggedIn = true
+
+                localStorage.setItem('data', JSON.stringify(data))
+
+                console.log("from login.js")
+                console.log(data)
+
+                navigate('/sources')
+                return
 
         } catch (err) {
             if(!err?.response) {

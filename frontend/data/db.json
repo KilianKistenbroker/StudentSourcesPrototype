@@ -13,12 +13,51 @@
       "lastName": "Doe",
       "email": "JohnDoe@gmail.com",
       "user": "TheJohnster",
-      "password": "johnny123",
+      "password": "x5xXL8T5PVdKFMQ",
       "id": 2
+    },
+    {
+      "firstName": "steve",
+      "lastName": "jobs",
+      "email": "stevejobs@gmail.com",
+      "user": "stevey",
+      "password": "x5xXL8T5PVdKFMQ",
+      "id": 3
+    },
+    {
+      "firstName": "foo",
+      "lastName": "bar",
+      "email": "foobar@gmail.com",
+      "user": "fooy",
+      "password": "x5xXL8T5PVdKFMQ",
+      "id": 4
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "JohnDoe@gmail.com",
+      "user": "TheJohnster",
+      "password": "x5xXL8T5PVdKFMQ",
+      "id": 5
     }
   ],
-  
-  "sessions" : [
-
-  ]
+  "friends": [
+    {
+      "user_id" : 1,
+      "friend_id" : 2
+    },
+    {
+      "user_id" : 1,
+      "friend_id" : 3
+    },
+    {
+      "user_id" : 1,
+      "friend_id" : 4
+    },
+    {
+      "user_id" : 1,
+      "friend_id" : 5
+    }
+  ],
+  "sessions": []
 }

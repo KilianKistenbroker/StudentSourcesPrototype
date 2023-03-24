@@ -13,7 +13,8 @@ function App() {
   const [data, setData] = useState({
     user: '',
     currentPoint: '',
-    isLoggedIn: false
+    isLoggedIn: false,
+    id : -1
   });
 
   useEffect(() => {

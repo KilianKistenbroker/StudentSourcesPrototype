@@ -107,34 +107,39 @@ const Login = ({data}) => {
         }
 
         try {
-            const response = await axios.get(user_endpoint)
+            // try get username (CASE SENSITIVE)
+            let response = await axios.get(user_endpoint + "/?user=" + user)
+            if (response.data.length === 0)
+            {
+                // try get email if username returns 0 (NOT CASE SENSITIVE)
+                let email = user.toLowerCase()
+                response = await axios.get(user_endpoint + "/?email=" + email)
+            }
 
-            // checking inputs here
-            for (let i = 0; i < response.data.length; i++) {
-                if (response.data[i].user === user || response.data[i].email === user) {
-                    if (response.data[i].password === password) {
-                        // setSuccess(true)
+            if (response.data.length > 0)
+            {
+                if (password === response.data[0].password)
+                {
+                    data.user = user
+                    data.isLoggedIn = true
+                    data.id = response.data[0].id
+                    localStorage.setItem('data', JSON.stringify(data))
 
-                        data.user = user
-                        data.isLoggedIn = true
+                    // clear input fields here
+                    setUser('')
+                    setPassword('')
 
-                        localStorage.setItem('data', JSON.stringify(data))
-
-                        console.log("from login.js")
-                        console.log(data)
-
-                        navigate('/sources')
-                        return
-                    }
+                    navigate('/sources')
+                    return
+                }
+                else 
+                {
                     setErrMsg('Invalid password.')
                     return
                 }
             }
-
-                setErrMsg('Invalid username.')
+                setErrMsg('Invalid email or username.')
                 return
-
-                // clear input fields here
 
         } catch (err) {
             if(!err?.response) {
