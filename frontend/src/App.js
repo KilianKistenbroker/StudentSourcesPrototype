@@ -2,12 +2,13 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Navbar from "./layout/Navbar";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import Footer from "./layout/Footer";
 import Sources from "./pages/Sources";
 import Legal from "./pages/Terms";
 import { useEffect, useState } from "react";
 
 function App() {
+
+  const [loading, setLoading] = useState(null)
 
   const [data, setData] = useState({
     user: '',
@@ -15,9 +16,9 @@ function App() {
     isLoggedIn: false
   });
 
-  const [loading, setLoading] = useState(null)
-
   useEffect(() => {
+    // check session status here ???
+    
     console.log("app.js refreshed")
     if (localStorage.getItem('data')) 
       setData(JSON.parse(localStorage.getItem('data')))
