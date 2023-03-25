@@ -83,33 +83,50 @@ const Sources = ({data}) => {
     }
 
     //   get users with given username, first, or last name
-    const handleUserSearch =()=> {
+    const handleUserSearch =async(search)=> {
+        // testing dynamic rendering. this will not be used for search
+
+        const res = await axios.get(`/users/?user=${search}`)
+        setLoadUsers(res.data)
+
+        /* 
+        * NOTE: 
+        * this solution is a very strict search. The backend will
+        * will probably have to manipulate the search string to return 
+        * a margin of close results.
+        */
     }
 
     //   search through and get all of logged in users friends and pending requests
-    const handleSearchFriend =()=> {
-    
+    const handleFilterSearch =(search, item)=> {
+        // this can probably be done on the frontend since friends are immediately loaded here
+
+        const str1 = item.user.toLowerCase() + item.firstName.toLowerCase() + item.lastName.toLowerCase()
+        const str2 = search.toLowerCase()
+        if (search.length == 0)
+            return true
+
+        if (str1.includes(str2))
+            return true
+        return false
     }
 
-    const handleGetFriends =()=> {
-
-    }
-
-    const handleGetPending =()=> {
-
-    }
-
-    //   get all of users saved items
-    const handleGetItems =()=> {
-
-    }
-
-    const handleSearchItems =()=> {
+    //   gets all of users pending friend requests
+    const getPending =()=> {
 
     }
 
-    //   send a friend request 
-    const handlePostRequest =()=> {
+    //   gets all of users saved items
+    const getSaved =()=> {
+
+    }
+
+    const handleSavedSearch =()=> {
+
+    }
+
+    //   sends a friend request 
+    const handleFriendRequest =()=> {
 
     }
 
@@ -124,13 +141,22 @@ const Sources = ({data}) => {
 
                     <div style={{width: '800px'}}>
                         <div id="search_form" >
-                            <button id="search_button">
-                                <svg id="search_icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
+                            <button id='search_button' disabled={selected === 'saved' || selected === 'friends' ? true : false} onClick={() => handleUserSearch(search)}>
+                                {selected === 'saved' || selected === 'friends' ? 
+                                    <svg id="filter_icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                                    </svg>  
+                                : 
+                                    <svg id="search_icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg> }
+                                
+                                       
+
+                                  
                             </button>
 
-                            <input type="text" name="searchbar" placeholder='Search' id="search_bar" value={search} onChange={(e) => setSearch(e.target.value)}/>
+                            <input type="text" name="searchbar" placeholder={selected === 'saved' || selected === 'friends' ? 'Filter' : 'Search'} id="search_bar" value={search} onChange={(e) => setSearch(e.target.value)}/>
                         </div>
 
                         <div className="selection">
@@ -189,7 +215,41 @@ const Sources = ({data}) => {
 
                  <div className="sources-results">
                     {selected === 'friends' && friends === "all" &&
-                        loadFriends.map((loadData) => (
+                        loadFriends.filter(function(loadData) {
+                            return handleFilterSearch(search, loadData)
+                        })
+                        .map((loadData) => (
+            
+                            <div className="box">
+
+                                <div className="user-grid">
+                                    <div className="box-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                        </svg>
+                                    </div>
+
+                                    <div className="box-username"> @{loadData.user} <br /> {loadData.firstName} {loadData.lastName} </div>
+                                </div>
+                                
+                                <div className="box-star">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </div>
+
+
+                                <div className="box-friend">
+                                    Add friend
+                                </div>
+
+                            </div>
+                        ))
+                    }
+
+                    {selected === 'users' && loadUsers.length > 0 &&
+                        loadUsers.map((loadData) => (
                             <div className="box">
 
                                 <div className="user-grid">

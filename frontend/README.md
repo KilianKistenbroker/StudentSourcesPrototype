@@ -1,5 +1,7 @@
 # Starting dummy database
-run 'npx json-server --watch data/db.json --port 8000' from ./frontend folder
+open up a second terminal
+navigate to ./frontend folder
+run cmd line: "npx json-server --watch data/db.json --port 8000"
 
 # Getting Started with Create React App
 

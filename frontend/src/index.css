@@ -770,18 +770,34 @@ button {
   transition: .1s;
 }
 
-#search_button:hover 
-{
-  background: #ececec;
+#enabled {
 }
+
+#search_button:disabled:hover {
+cursor: default;
+}
+
+#search_button:enabled:hover {
+    cursor: pointer;
+    background: #ececec;
+}
+
 
 #search_icon 
 {
   color:dimgray;
   fill: currentColor;
   width: 15px;
-  transition: .1s;
 }
+
+#filter_icon
+{
+    padding-top: 10px;
+  color:dimgray;
+  fill: currentColor;
+  width: 20px;
+}
+
 #search_bar 
 {
 all: unset;
