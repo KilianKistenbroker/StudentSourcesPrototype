@@ -161,7 +161,12 @@ const Signup = ({data}) => {
 
         try {
             const response = await axios.post(user_endpoint,
-                JSON.stringify({firstName, lastName, email: convertEmail, user, password}),
+                JSON.stringify({
+                    firstName, 
+                    lastName, 
+                    email: convertEmail, 
+                    user, 
+                    password}),
                 {
                     headers: {"Content-Type": 'application/json'},
                     withCredentials: true
@@ -209,7 +214,7 @@ const Signup = ({data}) => {
         <>
             {windowDimension.winWidth > 1050 ? (
 
-                <div className="App">
+                <div className="page">
                     <div className="signup">
                         <div className="ad">
 
@@ -524,7 +529,7 @@ const Signup = ({data}) => {
 
                 
             ) : (
-                <div className="App">
+                <div className="page">
                     <div className="signup-mobile">
                         <div className="ad">
 

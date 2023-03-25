@@ -155,7 +155,7 @@ const Login = ({data}) => {
         <>
             {windowDimension.winWidth > 1050 ? (
 
-                <div className="App">
+                <div className="page">
                     <div className="signup">
 
                         <div className="ad">
@@ -310,7 +310,7 @@ const Login = ({data}) => {
                 
             ) : (
 
-                <div className="App">
+                <div className="page">
                     <div className="signup-mobile">
 
                         <div className="ad">

@@ -2,7 +2,7 @@ import Footer from "../layout/Footer";
 
 const Terms = () => {
     return (
-        <div className="App">
+        <div className="page">
             <div className="legal">
             <div className="legal-h1">TERMS AND CONDITIONS</div> <br /><br />
             <p className="legal-body">

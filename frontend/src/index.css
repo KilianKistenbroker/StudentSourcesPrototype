@@ -55,9 +55,12 @@ h3 {
 
 .App {
     background-color: white;
-    display: flex;
-    flex-direction: column;
+}
+
+.page {
     min-height: 100vh; 
+    flex-direction: column;
+    display: flex;
 }
 
 .signup-mobile {
@@ -450,20 +453,75 @@ button {
 
 /* ******************** Navbar ******************** */
 
+.navbar-mobile {
+    display: flex;
+}
+.navbar-desktop {
+    display: grid;
+}
+
+.navbar-2by1 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.navbar-3by1 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .navbar {
     background: white;
     padding: 10px;
     padding-left: 0;
     padding-right: 0;
-    display: flex;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(2, auto); */
     grid-auto-rows: minmax(auto, auto);
     border-bottom: 1px solid lightgray;
     position: fixed;
-    justify-content: space-between;
     align-items: center;
     z-index: 2;
-    width: 100%; 
+    width: 100%;
+}
+
+.nav-nav-mobile {
+    justify-content: left;
+    transition: .1s;
+}
+.nav-nav-desktop {
+    justify-content: center;
+}
+
+.nav-nav {
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+    /* min-width: 300px; */
+    /* justify-content: center; */
+    font: 20px sans-serif;
+    color: lightgrey;
+}
+
+.divider {
+    padding-top: 10px;
+}
+
+.root {
+    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.selected-root:hover {
+    cursor: pointer;
+}
+
+.selected-root {
+    background-color: #ececec;
 }
 
 .sub-navbar {
@@ -556,6 +614,7 @@ button {
     text-decoration: none;
     padding-top: 5px;
     overflow: hidden;
+    width: 200px;
     height: 50px;
 }
 
@@ -578,6 +637,7 @@ button {
     font-size: 14px;
     border-radius: 25px;
     transition: .1s;
+    justify-self: right;
 }
 
 #signup {
@@ -598,7 +658,9 @@ button {
     font-size: 14px;
     border-radius: 25px;
     transition: .1s;
+    justify-self: right;
 }
+
 
 #user-nav {
     font-family: 'Nunito', sans-serif;
@@ -619,6 +681,7 @@ button {
     font-size: 14px;
     border-radius: 25px;
     transition: .1s;
+    justify-self: right;
 }
 
 #user-nav-icon {
@@ -718,14 +781,6 @@ button {
 /* these grid containers will probably be merged into one reusable 
     css prop for login, signup, terms, sources, and student  */
 
-/* .short {
-    grid-template-columns: repeat(1, 1fr);
-}
-
-.full {
-    grid-template-columns: repeat(3, 1fr);
-} */
-
 .sources {
     display: grid;
     justify-content:center;
@@ -772,9 +827,6 @@ button {
   transition: .1s;
 }
 
-#enabled {
-}
-
 #search_button:disabled:hover {
 cursor: default;
 }
@@ -783,7 +835,6 @@ cursor: default;
     cursor: pointer;
     background: #ececec;
 }
-
 
 #search_icon 
 {
@@ -840,27 +891,33 @@ padding: 6px 10px;
 }
 
 .user-grid {
-    display: flex;
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: repeat(2, auto);
     max-width: 200px;
+    overflow: hidden;
 }
 
 .box-icon {
     /* margin: 0; */
     width: 40px;
-    height: 40px;
+    padding-top: 5px;
+    /* height: 40px; */
     background: lightgrey;
     border-radius: 5px;
     color: dimgray;
 }
 
 .box-username {
+    padding-top: 5px;
     font-size: 15px;
     line-height: 20px;
     text-align: left;
-    justify-self: center;
     margin-left: 10px;
-    width: 150px;
+
+    max-width: 150px;
+    width: 125px;
+    min-width: 100px;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -882,13 +939,20 @@ padding: 6px 10px;
 }
 
 .box-friend {
+    padding-top: 5px;
+    width: 125px;
+}
+
+.box-friend-content {
+    /* flex-wrap: nowrap; */
+    width: 110px;
+    height: 40px;
     margin: auto;
     font-size: 14px;
-    width: 100px;
     border: 1px solid lightgray;
     border-top: none;
     border-bottom: none;
-    padding: 8px;
+    padding: 10px;
     text-align: center;
     border-radius: 100px;
     background: whitesmoke;
@@ -896,7 +960,7 @@ padding: 6px 10px;
     font-weight: bolder
 }
 
-.box-friend:hover {
+.box-friend-content:hover {
     cursor: pointer;
     color: rgba(128,128,128, .8);
     border: 1px solid rgba(211,211,211, .8);
