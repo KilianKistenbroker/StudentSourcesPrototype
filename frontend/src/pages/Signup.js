@@ -56,15 +56,11 @@ const Signup = ({data}) => {
 
     useEffect(() => {
         const res = user_regex_l.test(user)
-        console.log(res)
-        console.log(user)
         setValidName(res)
     }, [user])
 
     useEffect(() => {
         const res = email_regex.test(email)
-        console.log(res)
-        console.log(email)
         setValidEmail(res)
     }, [email])
 
@@ -86,9 +82,6 @@ const Signup = ({data}) => {
         const res = password_regex_l.test(password) && 
             password_regex_sl.test(password) && 
             password_regex_sn.test(password)
-
-        console.log(res)
-        console.log(password)
         setValidPassword(res)
     }, [password])
 
@@ -115,9 +108,6 @@ const Signup = ({data}) => {
 
             window.addEventListener('resize', detectSize)
     
-            console.log("height: "+windowDimension.winHeight);
-            console.log("width: "+windowDimension.winWidth);
-    
             return () => {
                 window.removeEventListener('resize', detectSize)
             }
@@ -130,7 +120,6 @@ const Signup = ({data}) => {
             data.currentPoint = ''
         else
             data.currentPoint = "login"
-        console.log(data.currentPoint)
         navigate("/" + data.currentPoint)
     }
 
@@ -154,7 +143,6 @@ const Signup = ({data}) => {
 
         // double check here in case they overwrote my html
         if (!validFirstName || !validLastName || !validEmail || !validName || !validPassword) {
-            console.log("invalid")
             setErrMsg("Invalid entry.")
             return
         }
@@ -172,9 +160,6 @@ const Signup = ({data}) => {
                     withCredentials: true
                 })
 
-                console.log(response.data)
-                console.log(JSON.stringify(response))
-
                 // clear input fields here and redirect to home page
                 setFirstName('')
                 setLastName('')
@@ -186,9 +171,6 @@ const Signup = ({data}) => {
                 data.isLoggedIn = true
 
                 localStorage.setItem('data', JSON.stringify(data))
-
-                console.log("from login.js")
-                console.log(data)
 
                 navigate('/sources')
                 return

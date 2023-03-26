@@ -34,7 +34,6 @@ useEffect(() => {
 // ****************** REUSED CODE ***************** 
 
   useEffect(() => {
-    console.log("changed to: " + data.currentPoint)
 
     if (data.currentPoint === 'login')
     {
@@ -74,13 +73,9 @@ useEffect(() => {
     {
       data.currentPoint = "login"
     }
-    console.log(data.currentPoint)
 
     navigate("/" + data.currentPoint)
   }
-
-  console.log("from nav")
-  console.log(data)
 
   if (data.isLoggedIn) {
     
@@ -101,7 +96,7 @@ useEffect(() => {
               
               <div className={windowDimension.winWidth > 500 ? "nav-nav nav-nav-desktop" : "nav-nav nav-nav-mobile"}>
 
-                <div style={{color: "lightgrey"}} className='root'>
+                <div style={{color: "lightgrey"}} className='root disabled'>
                     Student
                 </div>
 

@@ -81,7 +81,6 @@ const Login = ({data}) => {
             data.currentPoint = ''
         else
             data.currentPoint = "login"
-        console.log(data.currentPoint)
         navigate("/" + data.currentPoint)
     }
 

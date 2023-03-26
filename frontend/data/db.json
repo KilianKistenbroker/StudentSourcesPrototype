@@ -36,27 +36,63 @@
       "firstName": "John",
       "lastName": "Doe",
       "email": "JohnDoe@gmail.com",
-      "user": "TheJohnster",
+      "user": "TheJohnster2",
       "password": "x5xXL8T5PVdKFMQ",
       "id": 5
     }
   ],
   "friends": [
     {
-      "user_id" : 1,
-      "friend_id" : 2
+      "user_id": 1,
+      "friend_id": 2,
+      "id": 1
     },
     {
-      "user_id" : 1,
-      "friend_id" : 3
+      "user_id": 2,
+      "friend_id": 1,
+      "id": 2
     },
     {
-      "user_id" : 1,
-      "friend_id" : 4
+      "user_id": 1,
+      "friend_id": 3,
+      "id": 3
     },
     {
-      "user_id" : 1,
-      "friend_id" : 5
+      "user_id": 3,
+      "friend_id": 1,
+      "id": 4
+    },
+    {
+      "user_id": 1,
+      "friend_id": 4,
+      "id": 5
+    },
+    {
+      "user_id": 4,
+      "friend_id": 1,
+      "id": 6
+    }
+  ],
+  "requests": [
+    {
+      "sender_id": 3,
+      "reciever_id": 2,
+      "id": 1
+    },
+    {
+      "sender_id": 3,
+      "reciever_id": 4,
+      "id": 2
+    },
+    {
+      "sender_id": 3,
+      "reciever_id": 5,
+      "id": 3
+    },
+    {
+      "sender_id": 1,
+      "reciever_id": 5,
+      "id": 4
     }
   ],
   "sessions": []

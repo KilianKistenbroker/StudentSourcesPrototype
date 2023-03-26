@@ -900,6 +900,7 @@ padding: 6px 10px;
 .box-icon {
     /* margin: 0; */
     width: 40px;
+    height: 50px;
     padding-top: 5px;
     /* height: 40px; */
     background: lightgrey;
@@ -910,7 +911,7 @@ padding: 6px 10px;
 .box-username {
     padding-top: 5px;
     font-size: 15px;
-    line-height: 20px;
+    /* line-height: 20px; */
     text-align: left;
     margin-left: 10px;
 
@@ -939,28 +940,60 @@ padding: 6px 10px;
 }
 
 .box-friend {
-    padding-top: 5px;
-    width: 125px;
+    /* padding-top: 5px; */
+    width: 120px;
+    display: flex;
+    justify-content: right;
+}
+
+.center {
+    /* margin-bottom: 50%; */
+    /* transform: translate(0,50%); */
 }
 
 .box-friend-content {
     /* flex-wrap: nowrap; */
-    width: 110px;
-    height: 40px;
-    margin: auto;
+    width: 120px;
+    height: 50px;
+    /* margin: auto; */
     font-size: 14px;
     border: 1px solid lightgray;
     border-top: none;
     border-bottom: none;
-    padding: 10px;
     text-align: center;
-    border-radius: 100px;
+    border-radius: 5px;
     background: whitesmoke;
     color: dimgray;
-    font-weight: bolder
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    /* padding: 10px; */
 }
 
-.box-friend-content:hover {
+.box-friend-content-2 {
+    border-radius: 5px;
+}
+
+
+.enabled {
+}
+
+.disabled {
+}
+
+.sent {
+    width: 80px;
+    transition: .1s;
+}
+
+.disabled:hover {
+    cursor: default;
+}
+
+.enabled:hover {
     cursor: pointer;
     color: rgba(128,128,128, .8);
     border: 1px solid rgba(211,211,211, .8);

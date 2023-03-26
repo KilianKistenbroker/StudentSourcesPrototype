@@ -20,11 +20,8 @@ function App() {
   useEffect(() => {
     // check session status here ???
     
-    console.log("app.js refreshed")
     if (localStorage.getItem('data')) 
       setData(JSON.parse(localStorage.getItem('data')))
-      
-    console.log(data)
 
     setLoading(true)
   }, [])
@@ -36,9 +33,6 @@ function App() {
       <div className="App">Loading...</div>
     )
   }
-
-  console.log("this data is being sent from app.js")
-  console.log(data)
 
   return (
     <div className="App">
