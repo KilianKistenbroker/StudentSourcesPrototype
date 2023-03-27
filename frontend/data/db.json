@@ -43,56 +43,67 @@
   ],
   "friends": [
     {
-      "user_id": 1,
-      "friend_id": 2,
+      "user_id": 2,
+      "friend_id": 1,
       "id": 1
     },
     {
-      "user_id": 2,
-      "friend_id": 1,
-      "id": 2
-    },
-    {
       "user_id": 1,
-      "friend_id": 3,
-      "id": 3
+      "friend_id": 2,
+      "id": 2
     },
     {
       "user_id": 3,
       "friend_id": 1,
-      "id": 4
+      "id": 3
     },
     {
       "user_id": 1,
-      "friend_id": 4,
-      "id": 5
+      "friend_id": 3,
+      "id": 4
     },
     {
       "user_id": 4,
       "friend_id": 1,
+      "id": 5
+    },
+    {
+      "user_id": 1,
+      "friend_id": 4,
       "id": 6
     }
   ],
   "requests": [
     {
-      "sender_id": 3,
-      "reciever_id": 2,
-      "id": 1
-    },
-    {
-      "sender_id": 3,
-      "reciever_id": 4,
-      "id": 2
-    },
-    {
-      "sender_id": 3,
-      "reciever_id": 5,
-      "id": 3
-    },
-    {
       "sender_id": 1,
       "reciever_id": 5,
       "id": 4
+    }
+  ],
+  "saved": [
+    {
+      "user_id": 1,
+      "item_id": 2,
+      "isUser": true,
+      "id": 1
+    },
+    {
+      "user_id": 1,
+      "item_id": 3,
+      "isUser": true,
+      "id": 4
+    },
+    {
+      "user_id": 1,
+      "item_id": 5,
+      "isUser": true,
+      "id": 6
+    },
+    {
+      "user_id": 1,
+      "item_id": 4,
+      "isUser": true,
+      "id": 7
     }
   ],
   "sessions": []

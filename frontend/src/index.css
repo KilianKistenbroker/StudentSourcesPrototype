@@ -943,7 +943,7 @@ padding: 6px 10px;
     /* padding-top: 5px; */
     width: 120px;
     display: flex;
-    justify-content: right;
+    justify-content: center;
 }
 
 .center {
