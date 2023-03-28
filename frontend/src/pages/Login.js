@@ -95,7 +95,6 @@ const Login = ({ data }) => {
     }
 
     try {
-      // try get username (CASE SENSITIVE)
       let response = await axios.get(user_endpoint + "/?user=" + user);
       if (response.data.length === 0) {
         // try get email if username returns 0 (NOT CASE SENSITIVE)
@@ -108,6 +107,7 @@ const Login = ({ data }) => {
           data.user = user;
           data.isLoggedIn = true;
           data.id = response.data[0].id;
+          data.password = password;
 
           localStorage.setItem("data", JSON.stringify(data));
 

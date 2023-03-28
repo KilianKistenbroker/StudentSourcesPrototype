@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useNavigate,
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import FriendsAll from "../components/FriendsAll";
 import FriendsPending from "../components/FriendsPending";
@@ -67,22 +62,6 @@ const Sources = ({ data }) => {
    * is a list of objects containing with attributes 'username',
    * 'firstName', and 'lastName' in order to render them.
    */
-
-  const getFriendsList = async () => {
-    setLoading(true);
-
-    const res = await axios.get(`/friends/?user_id=${data.id}`);
-    let friendsList = []; // this will contain an array of ids
-
-    for (let i = 0; i < res.data.length; i++) {
-      let tempObject = await axios.get(`/users/?id=${res.data[i].friend_id}`);
-      friendsList.push(tempObject.data[0].id);
-    }
-
-    setFriendsList(friendsList);
-
-    setLoading(false);
-  };
 
   const getFriends = async (e) => {
     setLoading(true);
@@ -453,8 +432,12 @@ and also call request to update lists */
       //   remove friend
 
       // make 6 requests to backend database lol.
-      const res1 = await axios.get(`/friends/?user_id=${sender_id}`);
-      const res2 = await axios.get(`/friends/?friend_id=${sender_id}`);
+      const res1 = await axios.get(
+        `/friends/?user_id=${sender_id}&friend_id=${reciever_id}`
+      );
+      const res2 = await axios.get(
+        `/friends/?user_id=${reciever_id}&friend_id=${sender_id}`
+      );
 
       const del1 = await axios.delete(`/friends/${res1.data[0].id}`);
       const del2 = await axios.delete(`/friends/${res2.data[0].id}`);

@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sources from "./pages/Sources";
 import Legal from "./pages/Terms";
 import { useEffect, useState } from "react";
+import axios from "./api/axios";
 
 function App() {
   const [loading, setLoading] = useState(null);
 
   const [data, setData] = useState({
     user: "",
+    password: "",
     currentPoint: "",
     isLoggedIn: false,
     id: -1,
@@ -19,14 +21,30 @@ function App() {
   useEffect(() => {
     // check session status here ???
 
-    if (localStorage.getItem("data"))
+    if (localStorage.getItem("data")) {
       setData(JSON.parse(localStorage.getItem("data")));
-
-    setLoading(true);
+      handleAuthenticate();
+    } else {
+      setLoading(true);
+    }
   }, []);
 
+  const handleAuthenticate = async () => {
+    // authenticate neccessary async functions as added protection.
+    const tempData = JSON.parse(localStorage.getItem("data"));
+    const res = await axios.get(
+      `/users/?user=${tempData.user}&password=${tempData.password}&id=${tempData.id}`
+    );
+    if (res.data.length === 0) {
+      localStorage.clear();
+      window.location.reload();
+    }
+
+    setLoading(true);
+  };
+
   if (loading === null) {
-    return <div className="App">Loading...</div>;
+    return <div className="App">{/* invisible loading screen */}</div>;
   }
 
   return (

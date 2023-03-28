@@ -173,6 +173,7 @@ const Signup = ({ data }) => {
       data.user = user;
       data.isLoggedIn = true;
       data.id = response.data.id;
+      data.password = password;
 
       localStorage.setItem("data", JSON.stringify(data));
 

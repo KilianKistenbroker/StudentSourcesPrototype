@@ -51,9 +51,7 @@ export default function Navbar({ data }) {
     e.preventDefault();
     data.currentPoint = "login";
     data.isLoggedIn = false;
-    // flush local storage
     localStorage.clear();
-
     navigate("/login");
   };
 
