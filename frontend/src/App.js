@@ -22,16 +22,16 @@ function App() {
     // check session status here ???
 
     if (localStorage.getItem("data")) {
-      setData(JSON.parse(localStorage.getItem("data")));
       handleAuthenticate();
     } else {
       setLoading(true);
     }
   }, []);
 
+  // authenticates that localstorage is still valid
   const handleAuthenticate = async () => {
-    // authenticate neccessary async functions as added protection.
-    const tempData = JSON.parse(localStorage.getItem("data"));
+    let tempData = {};
+    setData((tempData = JSON.parse(localStorage.getItem("data"))));
     const res = await axios.get(
       `/users/?user=${tempData.user}&password=${tempData.password}&id=${tempData.id}`
     );
@@ -39,7 +39,6 @@ function App() {
       localStorage.clear();
       window.location.reload();
     }
-
     setLoading(true);
   };
 
