@@ -13,7 +13,7 @@ const password_regex_sn = /[0-9]/;
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
-const user_endpoint = "/users";
+const user_endpoint = "/user";
 
 const Signup = ({ data }) => {
   const userRef = useRef();
@@ -146,20 +146,13 @@ const Signup = ({ data }) => {
     }
 
     try {
-      const response = await axios.post(
-        user_endpoint,
-        JSON.stringify({
-          firstName,
-          lastName,
-          email: convertEmail,
-          user,
-          password,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(user_endpoint, {
+        email: convertEmail,
+        firstName,
+        lastName,
+        password,
+        user,
+      });
 
       // clear input fields here and redirect to home page
       setFirstName("");

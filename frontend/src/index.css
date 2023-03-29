@@ -627,7 +627,7 @@ button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 20px;
     padding: 10px;
     border: 1px solid rgb(211,211,211);
     border-bottom: none;
@@ -648,7 +648,7 @@ button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 20px;
     padding: 10px;
     border: 1px solid rgb(211,211,211);
     background: whitesmoke;

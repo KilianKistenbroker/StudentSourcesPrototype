@@ -95,35 +95,56 @@ const Login = ({ data }) => {
     }
 
     try {
-      let response = await axios.get(user_endpoint + "/?user=" + user);
-      if (response.data.length === 0) {
-        // try get email if username returns 0 (NOT CASE SENSITIVE)
-        let email = user.toLowerCase();
-        response = await axios.get(user_endpoint + "/?email=" + email);
+      const res = await axios.get("/login" + "/" + user);
+
+      if (res != null) {
+        data.user = user;
+        data.isLoggedIn = true;
+        data.id = res;
+        data.password = password;
+
+        localStorage.setItem("data", JSON.stringify(data));
+
+        // clear input fields here
+        setUser("");
+        setPassword("");
+
+        navigate("/sources");
+        return;
+      } else {
+        setErrMsg("Could not find user");
+        return;
       }
 
-      if (response.data.length > 0) {
-        if (password === response.data[0].password) {
-          data.user = user;
-          data.isLoggedIn = true;
-          data.id = response.data[0].id;
-          data.password = password;
+      // let response = await axios.get(user_endpoint + "/?user=" + user);
+      // if (response.data.length === 0) {
+      //   // try get email if username returns 0 (NOT CASE SENSITIVE)
+      //   let email = user.toLowerCase();
+      //   response = await axios.get(user_endpoint + "/?email=" + email);
+      // }
 
-          localStorage.setItem("data", JSON.stringify(data));
+      // if (response.data.length > 0) {
+      //   if (password === response.data[0].password) {
+      //     data.user = user;
+      //     data.isLoggedIn = true;
+      //     data.id = response.data[0].id;
+      //     data.password = password;
 
-          // clear input fields here
-          setUser("");
-          setPassword("");
+      //     localStorage.setItem("data", JSON.stringify(data));
 
-          navigate("/sources");
-          return;
-        } else {
-          setErrMsg("Invalid password.");
-          return;
-        }
-      }
-      setErrMsg("Invalid email or username.");
-      return;
+      //     // clear input fields here
+      //     setUser("");
+      //     setPassword("");
+
+      //     navigate("/sources");
+      //     return;
+      //   } else {
+      //     setErrMsg("Invalid password.");
+      //     return;
+      //   }
+      // }
+      // setErrMsg("Invalid email or username.");
+      // return;
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No server response.");

@@ -21,9 +21,9 @@ const SavedAll = ({
     return friendsList.includes(id);
   };
 
-  if (loading) {
-    return <div></div>;
-  }
+  // if (loading) {
+  //   return <div></div>;
+  // }
 
   return loadSaved
     .filter(function (loadData) {

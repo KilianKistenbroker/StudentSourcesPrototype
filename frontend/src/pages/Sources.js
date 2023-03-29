@@ -66,7 +66,9 @@ const Sources = ({ data }) => {
   const getFriends = async (e) => {
     setLoading(true);
 
-    const res = await axios.get(`/friends/?user_id=${data.id}`);
+    const res = await axios.get(`/findFriends/${data.id}`);
+
+    // const res = await axios.get(`/friends/?user_id=${data.id}`);
 
     // ----------- this part it probably done in backend (will delete later) ------------
 
