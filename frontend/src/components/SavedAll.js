@@ -7,15 +7,11 @@ const SavedAll = ({
   filter,
   loading,
   handleFriendRequest,
-  tempSentKey,
   sentList = { sentList },
   friendsList,
   savedUserList,
   insertSaved,
-  tempSaveKey,
-  saved,
   removeSaved,
-  //   tempRemovedIndex,
 }) => {
   const checkFriendStatus = (id) => {
     return friendsList.includes(id);
@@ -29,7 +25,7 @@ const SavedAll = ({
     .filter(function (loadData) {
       return handleFilter(filter, loadData);
     })
-    .map((loadData, index) => (
+    .map((loadData) => (
       <div className="box">
         <div className="user-grid">
           <div className="box-icon">
@@ -51,7 +47,7 @@ const SavedAll = ({
         {savedUserList.includes(loadData.id) ? (
           <div
             className="box-star"
-            onClick={() => removeSaved(true, loadData.id, index)}
+            onClick={() => removeSaved(true, loadData.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +63,7 @@ const SavedAll = ({
         ) : (
           <div
             className="box-star"
-            onClick={() => insertSaved(true, loadData.id, index)}
+            onClick={() => insertSaved(true, loadData.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +76,7 @@ const SavedAll = ({
           </div>
         )}
 
-        <div className="box-friend" key={index}>
+        <div className="box-friend">
           {/* check if this user is a friend or pending */}
 
           {checkFriendStatus(loadData.id) ? (

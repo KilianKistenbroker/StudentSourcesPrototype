@@ -14,14 +14,8 @@ const Sources = ({ data }) => {
   const [selected, setSelected] = useState("users");
   const [friends, setFriends] = useState("all");
 
-  //   // these are loaded immediately on login / refresh
+  // these are loaded immediately on login or refresh
   const [loadFriends, setLoadFriends] = useState([]);
-  const [friendsList, setFriendsList] = useState([]); // all users in friends list by id
-
-  const [sentList, setSentList] = useState([]); // all users in friends list by id
-  const [savedUserList, setSavedUserList] = useState([]); // all saved users by id
-  const [pendingList, setPendingList] = useState([]); // all saved pending friend reqs by user id
-
   const [loadPending, setLoadPending] = useState([]);
   const [loadSaved, setLoadSaved] = useState([]);
 
@@ -29,19 +23,16 @@ const Sources = ({ data }) => {
   const [loadUsers, setLoadUsers] = useState([]);
   const [loadFolders, setLoadFolders] = useState([]);
 
+  // these are arrays of u-id's for quick referencing
+  const [friendsList, setFriendsList] = useState([]);
+  const [sentList, setSentList] = useState([]);
+  const [savedUserList, setSavedUserList] = useState([]);
+  const [pendingList, setPendingList] = useState([]);
+
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
 
-  // temp display bools for showing feedback w/o forcing re-render
-  const [tempSentKey, setSentTempKey] = useState(-1);
-  const [tempSaveKey, setSaveTempKey] = useState(-1);
-  //   const [tempRemovedIndex, setTemp]
-  const [saved, setSaved] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [removed, setRemoved] = useState(false);
-  const [accepted, setAccepted] = useState(false);
-
-  // -------- call inexpensive init getters here on re-render ----------
+  // -------- call essential getters here on re-render ----------
   useEffect(() => {
     if (!data.isLoggedIn) {
       data.currentPoint = "login";
@@ -49,7 +40,6 @@ const Sources = ({ data }) => {
       return;
     }
 
-    // getFriendsList();
     getFriends();
     getPending();
     getSaved();
@@ -57,45 +47,15 @@ const Sources = ({ data }) => {
     setLoading(false);
   }, []);
 
-  /*
-   * NOTE: generally speaking, the only things i need from backend
-   * is a list of objects containing with attributes 'username',
-   * 'firstName', and 'lastName' in order to render them.
-   */
-
   const getFriends = async (e) => {
     setLoading(true);
-
     const res = await axios.get(`/findFriends/${data.id}`);
 
-    // const res = await axios.get(`/friends/?user_id=${data.id}`);
-
-    // ----------- this part it probably done in backend (will delete later) ------------
-
-    let gatheringFriends = []; // this will contain friend objects
-    let friendsList = []; // this will contain an array of ids
-
     for (let i = 0; i < res.data.length; i++) {
-      let tempObject = await axios.get(`/users/?id=${res.data[i].friend_id}`);
-      let friendObject = {
-        user: "",
-        firstName: "",
-        lastName: "",
-        id: -1,
-      };
-
-      friendObject.user = tempObject.data[0].user;
-      friendObject.firstName = tempObject.data[0].firstName;
-      friendObject.lastName = tempObject.data[0].lastName;
-      friendObject.id = tempObject.data[0].id;
-      friendsList.push(tempObject.data[0].id);
-      gatheringFriends.push(friendObject);
+      friendsList.push(res.data[i].id);
     }
-    // ----------- end of backend part ------------
-
-    setLoadFriends(gatheringFriends);
+    setLoadFriends(res.data);
     setFriendsList(friendsList);
-
     setLoading(false);
   };
 
@@ -104,30 +64,23 @@ and also call request to update lists */
 
   const handleSetFriends = (selected) => {
     setLoading(true);
-
     getFriends();
     setSelected("friends");
     setFriends(selected);
-
     setLoading(false);
   };
 
   const handleSetSelected = (select) => {
     setLoading(true);
-
     if (selected === "saved") getSaved();
     else if (selected === "friends") getFriends();
-
     setSelected(select);
-
     setLoading(false);
   };
 
   //  get users with given username, first, or last name
   const handleUserSearch = async (e) => {
-    // testing dynamic rendering. this will not be used for search
     e.preventDefault();
-
     getFriends();
 
     let str2 = search.toLowerCase();
@@ -138,22 +91,15 @@ and also call request to update lists */
       setLoadUsers(res.data);
       console.log(res.data);
     } else {
-      /*
-       * NOTE:
-       * this solution is a very strict search. The backend will
-       * probably have to manipulate the search string to return
-       * a margin of close results.
-       */
-
-      const res = await axios.get(`/users/?user=${search}`);
-      setLoadUsers(res.data);
-      console.log(res.data);
+      const res = await axios.get(`/search/${search}`);
+      if (res.data.length === 0) setLoadUsers([]);
+      else setLoadUsers(res.data);
     }
   };
 
-  //   search through and get all of logged in users friends and pending requests
   const handleFilterSearch = (filter, item) => {
-    // this can probably be done on the frontend since friends are immediately loaded here
+    /* this can probably be done on the frontend 
+    since friends are immediately loaded here */
 
     const str1 =
       item.user.toLowerCase() +
@@ -162,166 +108,76 @@ and also call request to update lists */
     let str2 = filter.toLowerCase();
     str2 = str2.replace(/ +/g, "");
 
-    if (filter.length == 0) return true;
+    if (filter.length === 0) return true;
 
     if (str1.includes(str2)) return true;
     return false;
   };
 
-  //   gets all of users pending friend requests
   const getPending = async () => {
-    // get sent requests here
-
-    const senderRes = await axios.get(`/requests/?sender_id=${data.id}`);
-    const recieverRes = await axios.get(`/requests/?reciever_id=${data.id}`);
+    // get sent/pending requests here
+    const senderRes = await axios.get(`/getSent/${data.id}`);
+    const recieverRes = await axios.get(`/getPending/${data.id}`);
 
     let tempSenderList = [];
-    let tempPending = [];
     let tempPendingList = [];
 
     for (let i = 0; i < senderRes.data.length; i++) {
-      tempSenderList.push(senderRes.data[i].reciever_id);
+      tempSenderList.push(senderRes.data[i].fk_receiver_id);
     }
 
     for (let i = 0; i < recieverRes.data.length; i++) {
-      let tempObject = await axios.get(
-        `/users/?id=${recieverRes.data[i].sender_id}`
-      );
-      let userObj = {
-        user: "",
-        firstName: "",
-        lastName: "",
-        id: -1,
-      };
-
-      userObj.user = tempObject.data[0].user;
-      userObj.firstName = tempObject.data[0].firstName;
-      userObj.lastName = tempObject.data[0].lastName;
-      userObj.id = tempObject.data[0].id;
-      tempPendingList.push(tempObject.data[0].id);
-      tempPending.push(userObj);
+      tempPendingList.push(recieverRes.data[0].id);
     }
 
     setSentList(tempSenderList);
-
-    setLoadPending(tempPending);
-
+    setLoadPending(recieverRes.data);
     setPendingList(tempPendingList);
-
-    let pendingList = [];
-    for (let i = 0; i < loadPending.length; i++) {
-      pendingList.push(loadPending[i].id);
-    }
-
-    // setPendingList(pendingList);
-
-    console.log(loadPending);
-
-    console.log("sent list: " + sentList);
   };
-
-  const getSavedList = async () => {};
 
   //   gets all of users saved items
   const getSaved = async () => {
     setLoading(true);
 
-    const res = await axios.get(`/saved/?user_id=${data.id}`);
-
-    console.log("res");
-    console.log(res);
-
-    // ----------- this part it probably done in backend (will delete later) ------------
-
-    let gatheringSaved = []; // this will contain friend objects
+    const res = await axios.get(`/mySavedUsers/${data.id}`);
     let tempSaveUserList = [];
 
     for (let i = 0; i < res.data.length; i++) {
-      if (res.data[i].isUser) {
-        let tempObject = await axios.get(`/users/?id=${res.data[i].item_id}`);
-        let saveObject = {
-          user: "",
-          firstName: "",
-          lastName: "",
-          id: -1,
-        };
-
-        saveObject.user = tempObject.data[0].user;
-        saveObject.firstName = tempObject.data[0].firstName;
-        saveObject.lastName = tempObject.data[0].lastName;
-        saveObject.id = tempObject.data[0].id;
-        tempSaveUserList.push(tempObject.data[0].id);
-
-        gatheringSaved.push(saveObject);
-      } else {
-        // get folders here
-      }
+      tempSaveUserList.push(res.data[i].id);
     }
-    // ----------- end of backend part ------------
 
-    setLoadSaved(gatheringSaved);
+    setLoadSaved(res.data);
     setSavedUserList(tempSaveUserList);
-
     setLoading(false);
   };
 
-  async function removeSaved(isUser, item_id, index) {
+  async function removeSaved(isUser, item_id) {
     // setRemoveInProg(true);
 
-    const getRes = await axios.get(
-      `/saved/?item_id=${item_id}&isUser=${isUser}&user_id=${data.id}`
-    );
-
-    console.log("get res");
-    console.log(getRes);
-
-    if (getRes.data.length > 0) {
-      const delRes = await axios.delete(`/saved/${getRes.data[0].id}`);
-    }
-
-    console.log("index remove: " + index);
-
-    setSaveTempKey(index);
-    setSaved(false);
-    // setRemoveInProg(false);
+    const getRes = await axios.delete(`/deleteSavedUser/${data.id}/${item_id}`);
 
     if (isUser) {
       let tempList1 = [];
       for (let i = 0; i < savedUserList.length; i++) {
-        if (savedUserList[i] != item_id) tempList1.push(savedUserList[i]);
+        if (savedUserList[i] !== item_id) tempList1.push(savedUserList[i]);
       }
       setSavedUserList(tempList1);
     } else {
       // adding to folder list here
     }
 
-    console.log("removed save: " + savedUserList);
-
     // refresh saved list
     if (selected !== "saved") getSaved();
   }
 
-  async function insertSaved(isUser, item_id, index) {
-    console.log("index insert: " + index);
+  async function insertSaved(isUser, item_id) {
     // insert user into this user's saved items list.
     const user_id = data.id;
-    const response = await axios.post(
-      "/saved",
-      JSON.stringify({
-        user_id,
-        item_id,
-        isUser,
-      }),
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
-
-    setSaved(true);
-    setSaveTempKey(index);
-
-    console.log("instered save i think");
+    const response = await axios.post("/savedUsers", {
+      fk_user_id: user_id,
+      fk_item_id: item_id,
+      isUser,
+    });
 
     if (isUser) {
       let tempList = savedUserList;
@@ -339,110 +195,62 @@ and also call request to update lists */
 
   //   sends a friend request
   async function handleFriendRequest(status, reciever) {
-    // status : "send" "accept" "deny" "remove"
-    setSent(true);
-    setSentTempKey(reciever - 1);
-
-    console.log(sent);
+    // status may be : "send" "accept" "deny" "remove"
 
     const sender_id = data.id;
     const reciever_id = reciever;
 
     if (status === "send") {
-      // check if req already exists from other end
-      // accept friend req if it does exist
-      // otherwise, post new friend req here
-      //   this should be done in backend
-
-      const response = await axios.post(
-        "/requests",
-        JSON.stringify({
-          sender_id,
-          reciever_id,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post("/request", {
+        fk_sender_id: sender_id,
+        fk_receiver_id: reciever_id,
+      });
 
       console.log(response);
       if (response) {
-        // add user to sentList
+        // add user to sentList for quicker/easier referencing
         let tempList = sentList;
         tempList.push(reciever_id);
         setSentList(tempList);
 
-        // ??? this works ???
-        getFriends(); // this will trigger sent message somehow???
-        // ???????????????????????
+        getFriends();
       } else {
         console.log("could not send");
       }
     } else if (status === "accept") {
-      // handled in backend
-
       //   remove the pending req
-      const res0 = await axios.get(`/requests/?reciever_id=${sender_id}`);
-      if (res0.data.length === 0) return console.log("bad get req");
-      const resdel = await axios.delete(`/requests/${res0.data[0].id}`);
-      if (resdel.data.length === 0) return console.log("bad delete req");
+      const resdel = await axios.delete(
+        `/deleteRequest/${reciever_id}/${sender_id}`
+      );
 
       // insert into /friends
-      const res1 = await axios.post(
-        "/friends",
-        JSON.stringify({
-          user_id: sender_id,
-          friend_id: reciever_id,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const res1 = await axios.post("/friend", {
+        fk_user_id: sender_id,
+        fk_friend_id: reciever_id,
+      });
 
       //   swap here and insert
 
-      const res2 = await axios.post(
-        "/friends",
-        JSON.stringify({
-          user_id: reciever_id,
-          friend_id: sender_id,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const res2 = await axios.post("/friend", {
+        fk_user_id: reciever_id,
+        fk_friend_id: sender_id,
+      });
 
       // refresh pending and friends
       getFriends();
       getPending();
     } else if (status === "deny") {
-      // handled in backend
-
       //   remove the pending req
-      const res0 = await axios.get(`/requests/?reciever_id=${sender_id}`);
-      if (res0.data.length === 0) return console.log("bad get req");
-      const resdel = await axios.delete(`/requests/${res0.data[0].id}`);
-      if (resdel.data.length === 0) return console.log("bad delete req");
+      const resdel = await axios.delete(
+        `/deleteRequest/${reciever_id}/${sender_id}`
+      );
 
       //   refresh pending list
       getPending();
     } else if (status === "remove") {
-      // handled in backend
-      //   remove friend
-
-      // make 6 requests to backend database lol.
-      const res1 = await axios.get(
-        `/friends/?user_id=${sender_id}&friend_id=${reciever_id}`
+      const del1 = await axios.delete(
+        `/deleteFriends/${sender_id}/${reciever_id}`
       );
-      const res2 = await axios.get(
-        `/friends/?user_id=${reciever_id}&friend_id=${sender_id}`
-      );
-
-      const del1 = await axios.delete(`/friends/${res1.data[0].id}`);
-      const del2 = await axios.delete(`/friends/${res2.data[0].id}`);
 
       // refresh friends and friends list
       getFriends();
@@ -595,15 +403,10 @@ and also call request to update lists */
               data={data}
               loadUsers={loadUsers}
               handleFriendRequest={handleFriendRequest}
-              //   sent={sent}
-              tempSentKey={tempSentKey}
               sentList={sentList}
               friendsList={friendsList}
               savedUserList={savedUserList}
               insertSaved={insertSaved}
-              //   saved={saved}
-              tempSaveKey={tempSaveKey}
-              saved={saved}
               removeSaved={removeSaved}
               pendingList={pendingList}
             />
@@ -643,13 +446,10 @@ and also call request to update lists */
               filter={filter}
               loading={loading}
               handleFriendRequest={handleFriendRequest}
-              tempSentKey={tempSentKey}
               sentList={sentList}
               friendsList={friendsList}
               savedUserList={savedUserList}
               insertSaved={insertSaved}
-              tempSaveKey={tempSaveKey}
-              saved={saved}
               removeSaved={removeSaved}
             />
           )}

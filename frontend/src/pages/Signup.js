@@ -154,31 +154,35 @@ const Signup = ({ data }) => {
         user,
       });
 
-      // clear input fields here and redirect to home page
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setUser("");
-      setPassword("");
+      if (response.data === -1) {
+        // username is taken
+        setErrMsg("Username is already taken.");
+      } else if (response.data === -2) {
+        // email is already taken
+        setErrMsg("Email is already in use.");
+      } else if (response.data > 0) {
+        // clear input fields here and redirect to home page
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setUser("");
+        setPassword("");
 
-      console.log(response);
+        console.log(response);
 
-      data.user = user;
-      data.isLoggedIn = true;
-      data.id = response.data.id;
-      data.password = password;
+        data.user = user;
+        data.isLoggedIn = true;
+        data.id = response.data;
+        data.password = password;
 
-      localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("data", JSON.stringify(data));
 
-      navigate("/sources");
-      return;
+        navigate("/sources");
+        return;
+      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No server response.");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username already taken.");
-      } else {
-        setErrMsg("Registration failed.");
       }
       errRef.current.focus();
     }

@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Main-Class: com.example.springbackendv2.SpringBackendV2Application
+Class-Path: logback-core-1.2.11.jar slf4j-api-1.7.36.jar jakarta.transac
+ tion-api-1.3.3.jar spring-data-commons-2.7.10.jar spring-data-jpa-2.7.1
+ 0.jar jackson-databind-2.13.5.jar spring-expression-5.3.26.jar spring-j
+ dbc-5.3.26.jar jakarta.annotation-api-1.3.5.jar mysql-connector-j-8.0.3
+ 2.jar tomcat-embed-websocket-9.0.73.jar jackson-datatype-jsr310-2.13.5.
+ jar HikariCP-4.0.3.jar spring-web-5.3.26.jar aspectjweaver-1.9.7.jar sp
+ ring-orm-5.3.26.jar jakarta.xml.bind-api-2.3.3.jar jackson-module-param
+ eter-names-2.13.5.jar jul-to-slf4j-1.7.36.jar snakeyaml-1.30.jar byte-b
+ uddy-1.12.23.jar istack-commons-runtime-3.0.12.jar logback-classic-1.2.
+ 11.jar spring-core-5.3.26.jar hibernate-core-5.6.15.Final.jar jandex-2.
+ 4.2.Final.jar jackson-core-2.13.5.jar spring-beans-5.3.26.jar spring-as
+ pects-5.3.26.jar spring-boot-starter-web-2.7.10.jar jaxb-runtime-2.3.8.
+ jar spring-boot-autoconfigure-2.7.10.jar jakarta.activation-api-1.2.2.j
+ ar spring-boot-starter-data-jpa-2.7.10.jar classmate-1.5.1.jar hibernat
+ e-commons-annotations-5.1.2.Final.jar spring-boot-starter-logging-2.7.1
+ 0.jar antlr-2.7.7.jar txw2-2.3.8.jar jackson-annotations-2.13.5.jar log
+ 4j-api-2.17.2.jar spring-webmvc-5.3.26.jar jakarta.persistence-api-2.2.
+ 3.jar spring-boot-2.7.10.jar spring-boot-starter-tomcat-2.7.10.jar spri
+ ng-context-5.3.26.jar log4j-to-slf4j-2.17.2.jar jackson-datatype-jdk8-2
+ .13.5.jar tomcat-embed-el-9.0.73.jar spring-boot-starter-aop-2.7.10.jar
+  spring-tx-5.3.26.jar spring-boot-starter-2.7.10.jar spring-aop-5.3.26.
+ jar tomcat-embed-core-9.0.73.jar jboss-logging-3.4.3.Final.jar spring-b
+ oot-starter-jdbc-2.7.10.jar jakarta.activation-1.2.2.jar spring-boot-st
+ arter-json-2.7.10.jar spring-jcl-5.3.26.jar
+

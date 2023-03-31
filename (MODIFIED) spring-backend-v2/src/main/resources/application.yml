@@ -1,0 +1,19 @@
+#cloud:
+#  aws:
+#    credentials:
+#      access-key:
+#      secret-key:
+#    region:
+#      static: us-west-1
+#    stack:
+#      auto: false
+#
+#application:
+#  bucket:
+#    name: remote-storage-demo
+#
+#server:
+#  tomcat:
+#    max-swallow-size: -1
+#    max-http-form-post-size: -1
+#

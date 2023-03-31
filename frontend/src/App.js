@@ -33,9 +33,9 @@ function App() {
     let tempData = {};
     setData((tempData = JSON.parse(localStorage.getItem("data"))));
     const res = await axios.get(
-      `/users/?user=${tempData.user}&password=${tempData.password}&id=${tempData.id}`
+      `/authenticate/${tempData.user}/${tempData.password}/${tempData.id}`
     );
-    if (res.data.length === 0) {
+    if (res.data === false) {
       localStorage.clear();
       window.location.reload();
     }
@@ -57,8 +57,6 @@ function App() {
           <Route path="/sources" element={<Sources data={data} />} />
           <Route path="/terms" element={<Legal />} />
         </Routes>
-
-        {/* {data.isLoggedIn ? <div></div> : <Footer/>} */}
       </Router>
     </div>
   );

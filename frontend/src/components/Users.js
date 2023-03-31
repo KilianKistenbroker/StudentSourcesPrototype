@@ -2,14 +2,10 @@ const Users = ({
   data,
   loadUsers,
   handleFriendRequest,
-  //   sent,
-  tempSentKey,
   sentList,
   friendsList,
   savedUserList,
   insertSaved,
-  tempSaveKey,
-  saved,
   removeSaved,
   pendingList,
 }) => {
@@ -17,8 +13,8 @@ const Users = ({
     return friendsList.includes(id);
   };
 
-  return loadUsers.map((loadData, index) => (
-    <div className="box" key={index}>
+  return loadUsers.map((loadData) => (
+    <div className="box">
       <div className="user-grid">
         <div className="box-icon">
           <svg
@@ -39,7 +35,7 @@ const Users = ({
       {data.id !== loadData.id && savedUserList.includes(loadData.id) ? (
         <div
           className="box-star"
-          onClick={() => removeSaved(true, loadData.id, index)}
+          onClick={() => removeSaved(true, loadData.id)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +51,7 @@ const Users = ({
       ) : data.id !== loadData.id ? (
         <div
           className="box-star"
-          onClick={() => insertSaved(true, loadData.id, index)}
+          onClick={() => insertSaved(true, loadData.id)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

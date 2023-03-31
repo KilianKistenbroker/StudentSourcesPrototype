@@ -95,12 +95,16 @@ const Login = ({ data }) => {
     }
 
     try {
-      const res = await axios.get("/login" + "/" + user);
+      const res = await axios.get(`/login/${user}/${password}`);
 
-      if (res != null) {
+      if (res.data === -1) {
+        setErrMsg("Invalid email or username.");
+      } else if (res.data === -2) {
+        setErrMsg("Invalid password.");
+      } else if (res.data > 0) {
         data.user = user;
         data.isLoggedIn = true;
-        data.id = res;
+        data.id = res.data;
         data.password = password;
 
         localStorage.setItem("data", JSON.stringify(data));
@@ -111,40 +115,7 @@ const Login = ({ data }) => {
 
         navigate("/sources");
         return;
-      } else {
-        setErrMsg("Could not find user");
-        return;
       }
-
-      // let response = await axios.get(user_endpoint + "/?user=" + user);
-      // if (response.data.length === 0) {
-      //   // try get email if username returns 0 (NOT CASE SENSITIVE)
-      //   let email = user.toLowerCase();
-      //   response = await axios.get(user_endpoint + "/?email=" + email);
-      // }
-
-      // if (response.data.length > 0) {
-      //   if (password === response.data[0].password) {
-      //     data.user = user;
-      //     data.isLoggedIn = true;
-      //     data.id = response.data[0].id;
-      //     data.password = password;
-
-      //     localStorage.setItem("data", JSON.stringify(data));
-
-      //     // clear input fields here
-      //     setUser("");
-      //     setPassword("");
-
-      //     navigate("/sources");
-      //     return;
-      //   } else {
-      //     setErrMsg("Invalid password.");
-      //     return;
-      //   }
-      // }
-      // setErrMsg("Invalid email or username.");
-      // return;
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No server response.");
