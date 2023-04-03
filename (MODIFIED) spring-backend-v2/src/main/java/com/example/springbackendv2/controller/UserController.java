@@ -89,11 +89,10 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/authenticate/{user}/{password}/{user_id}")
-    public Boolean authenticateUser(@PathVariable("user") String user,
-                                    @PathVariable("password") String password,
+    @GetMapping(value = "/authenticate/{password}/{user_id}")
+    public Boolean authenticateUser(@PathVariable("password") String password,
                                     @PathVariable("user_id") Long user_id) {
-        User res = userRepository.authenticateUser(user, password, user_id);
+        User res = userRepository.authenticateUser(password, user_id);
         return res != null;
     }
 

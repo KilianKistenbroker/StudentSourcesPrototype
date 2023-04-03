@@ -204,6 +204,7 @@ const Login = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="username"
                   ref={userRef}
@@ -249,7 +250,10 @@ const Login = ({ data }) => {
 
                 {/* SUBMIT BUTTON */}
 
-                <button disabled={!validName || !validPassword ? true : false}>
+                <button
+                  style={{ marginTop: "37px" }}
+                  disabled={!validName || !validPassword ? true : false}
+                >
                   Continue
                 </button>
               </form>
@@ -381,6 +385,7 @@ const Login = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="username"
                   ref={userRef}
@@ -412,6 +417,7 @@ const Login = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type={showingPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
@@ -426,7 +432,10 @@ const Login = ({ data }) => {
 
                 {/* SUBMIT BUTTON */}
 
-                <button disabled={!validName || !validPassword ? true : false}>
+                <button
+                  style={{ marginTop: "37px" }}
+                  disabled={!validName || !validPassword ? true : false}
+                >
                   Continue
                 </button>
               </form>

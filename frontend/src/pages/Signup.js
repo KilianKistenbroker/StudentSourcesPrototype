@@ -267,6 +267,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="firstname"
                   ref={userRef}
@@ -289,6 +290,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="lastname"
                   ref={userRef}
@@ -313,6 +315,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="email"
                   ref={userRef}
@@ -336,6 +339,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="username"
                   ref={userRef}
@@ -367,6 +371,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type={showingPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
@@ -400,6 +405,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <button
+                  style={{ marginTop: "37px" }}
                   disabled={
                     !validName ||
                     !validPassword ||
@@ -661,6 +667,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="firstname"
                   ref={userRef}
@@ -683,6 +690,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="lastname"
                   ref={userRef}
@@ -707,6 +715,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="email"
                   ref={userRef}
@@ -730,6 +739,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type="text"
                   id="username"
                   ref={userRef}
@@ -761,6 +771,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <input
+                  style={{ height: "50px" }}
                   type={showingPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
@@ -794,6 +805,7 @@ const Signup = ({ data }) => {
                 </label>
 
                 <button
+                  style={{ marginTop: "37px" }}
                   disabled={
                     !validName ||
                     !validPassword ||

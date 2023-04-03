@@ -67,6 +67,15 @@ export default function Navbar({ data }) {
     navigate("/" + data.currentPoint);
   };
 
+  const handleNav = (destination) => {
+    console.log("current pathname: ");
+    console.log(window.location.pathname);
+
+    if (window.location.pathname === "/" + destination) {
+      window.location.reload();
+    }
+  };
+
   if (data.isLoggedIn) {
   }
 
@@ -100,18 +109,39 @@ export default function Navbar({ data }) {
                 : "nav-nav nav-nav-mobile"
             }
           >
-            <div style={{ color: "lightgrey" }} className="root disabled">
+            <Link
+              to="/student"
+              onClick={() => handleNav("student")}
+              style={
+                window.location.pathname === "/student"
+                  ? { color: "dimgrey" }
+                  : { color: "lightgrey" }
+              }
+              className={
+                window.location.pathname === "/student"
+                  ? "root selected-root"
+                  : "root"
+              }
+            >
               Student
-            </div>
+            </Link>
 
             <div className="divider"> | </div>
 
             {/* if current point is student then this will bring user back to root of sources page*/}
             <Link
               to="/sources"
-              onClick={() => window.location.reload()}
-              style={{ color: "dimgrey" }}
-              className="root selected-root"
+              onClick={() => handleNav("sources")}
+              style={
+                window.location.pathname === "/sources"
+                  ? { color: "dimgrey" }
+                  : { color: "lightgrey" }
+              }
+              className={
+                window.location.pathname === "/sources"
+                  ? "root selected-root"
+                  : "root"
+              }
             >
               Sources
             </Link>

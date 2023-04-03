@@ -6,6 +6,7 @@ import Sources from "./pages/Sources";
 import Legal from "./pages/Terms";
 import { useEffect, useState } from "react";
 import axios from "./api/axios";
+import Student from "./pages/Student";
 
 function App() {
   const [loading, setLoading] = useState(null);
@@ -33,7 +34,7 @@ function App() {
     let tempData = {};
     setData((tempData = JSON.parse(localStorage.getItem("data"))));
     const res = await axios.get(
-      `/authenticate/${tempData.user}/${tempData.password}/${tempData.id}`
+      `/authenticate/${tempData.password}/${tempData.id}`
     );
     if (res.data === false) {
       localStorage.clear();
@@ -55,6 +56,7 @@ function App() {
           <Route path="/" element={<Signup data={data} />} />
           <Route path="/login" element={<Login data={data} />} />
           <Route path="/sources" element={<Sources data={data} />} />
+          <Route path="/student" element={<Student data={data} />} />
           <Route path="/terms" element={<Legal />} />
         </Routes>
       </Router>
