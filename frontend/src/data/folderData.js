@@ -1,6 +1,6 @@
 const explorer = {
   id: "1",
-  name: "root",
+  name: "Home",
   isFolder: true,
   items: [
     /* all the users content will be 

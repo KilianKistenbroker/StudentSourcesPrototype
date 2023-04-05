@@ -1005,25 +1005,212 @@ padding: 6px 10px;
     border-top: none;
 }
 
-/* Student grid foundation */
 
-.foundation {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    margin-top: 65px;
+
+
+
+/* -------------------  Student page -------------------- */
+
+
+/* Student grid and container foundation */
+
+.grid-foundation {
+    /* display: grid;
+    grid-template-columns: repeat(2, 1fr); */
+    margin-top: 70px;
 }
 
-/* Student page */
+.left-panel-grid {
+    width: 400px;
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
 
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+}
+
+.main-panel-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    /* width: 100%; */
+
+    /* this depends on if the panels are showing or not */
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+.right-panel-grid {
+    width: 400px;
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
+    right: 0;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+}
+
+
+/* ----- inner leftside grid content ----- */
+
+.left-panel-title {
+    height: 67.5px;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.left-panel-tree {
+    height: 530px;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    overflow: scroll;
+
+    /* auto scrolls right when overflow occurs */
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.left-panel-chatbot {
+    height: 530px;
+    padding: 10px;
+}
+
+.left-panel-textbox {
+    height: 80px;
+    padding: 10px;
+    width: 400px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    background-color: white;
+
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-left: none;
+}
+
+/* ----- inner rightside grid content ----- */
+
+.right-panel-title {
+    height: 67.5px;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.right-panel-info {
+
+    height: 200px;
+    padding: 10px;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.right-panel-notes {
+
+    height: 430px;
+    padding: 10px;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.right-panel-coments {
+    height: 430px;
+    padding: 10px;
+}
+
+.right-panel-textbox {
+    height: 80px;
+    padding: 10px;
+    width: 400px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    background-color: white;
+
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-right: none;
+}
+
+/* ------ inner main grid content  */
+
+.tiny-footer {
+    height: 80px;
+    padding: 10px;
+    padding-right: 20px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    text-align: right;
+
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+
+    /* depends on if side panels are collapsed or not */
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+.main-pain-searchbar {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.main-panel-content {
+    margin: auto;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 100px;
+    text-align: left;
+}
+
+
+/* ------- directory tree -------- */
 .folder {
     margin-top: 0px;
     background-color: whitesmoke;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: 2px; */
-    padding-left: 10px;
-    width: 300px;
+    padding-left: 55px;
+    width: 100%;
+    min-width: 400px;
     cursor: pointer;
     border-radius: 2px;
     transition: .1s;
@@ -1045,7 +1232,7 @@ padding: 6px 10px;
   .file {
     font-size: 16px;
     margin-top: 5px;
-    padding-left: 5px;
+    padding-left: 55px;
     display: flex;
     flex-direction: column;
     transition: .1s;
@@ -1072,6 +1259,7 @@ padding: 6px 10px;
   
   .inputContainer > span {
     /* margin-top: 5px; */
+    padding-left: 50px;
   }
   
   .inputContainer__input {
@@ -1084,6 +1272,8 @@ padding: 6px 10px;
     cursor: text;
     height: 30px;
     font-size: 14px;
+    width: 100%;
+    margin-right: 5px;
   }
 
   .tree-icon {

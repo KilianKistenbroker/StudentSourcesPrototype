@@ -33,18 +33,28 @@ function App() {
   const handleAuthenticate = async () => {
     let tempData = {};
     setData((tempData = JSON.parse(localStorage.getItem("data"))));
-    const res = await axios.get(
-      `/authenticate/${tempData.password}/${tempData.id}`
-    );
-    if (res.data === false) {
-      localStorage.clear();
-      window.location.reload();
+    try {
+      const res = await axios.get(
+        `/authenticate/${tempData.password}/${tempData.id}`
+      );
+      if (res.data === false) {
+        localStorage.clear();
+        window.location.reload();
+      }
+      setLoading(true);
+    } catch (err) {
+      if (!err?.response) {
+        setLoading(false);
+        return;
+      }
     }
-    setLoading(true);
   };
 
+  // make this pretty later
   if (loading === null) {
-    return <div className="App">{/* invisible loading screen */}</div>;
+    return <div className="App">loading...</div>;
+  } else if (loading === false) {
+    return <div className="App">no server response...</div>;
   }
 
   return (
