@@ -7,7 +7,7 @@ import Footer from "../layout/Footer";
 
 const user_endpoint = "/users";
 
-const Login = ({ data }) => {
+const Login = ({ data, windowDimension }) => {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -38,35 +38,6 @@ const Login = ({ data }) => {
   useEffect(() => {
     setErrMsg("");
   }, [user, password]);
-
-  // ***************** REUSED CODE *****************
-  const [windowDimension, setWindowDimension] = useState({
-    winWidth: window.innerWidth,
-    winHeight: window.innerHeight,
-  });
-
-  const detectSize = () => {
-    setWindowDimension({
-      winWidth: window.innerWidth,
-      winHeight: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    // reset focus
-    document.activeElement.blur();
-
-    window.addEventListener("resize", detectSize);
-
-    return () => {
-      window.removeEventListener("resize", detectSize);
-    };
-  }, [windowDimension]);
-  // ****************** REUSED CODE *****************
 
   const customLink = (e) => {
     e.preventDefault();

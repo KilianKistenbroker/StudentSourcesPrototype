@@ -50,6 +50,27 @@ function App() {
     }
   };
 
+  // listen for screen resizing here
+  const [windowDimension, setWindowDimension] = useState({
+    winWidth: window.innerWidth,
+    winHeight: window.innerHeight,
+  });
+
+  const detectSize = () => {
+    setWindowDimension({
+      winWidth: window.innerWidth,
+      winHeight: window.innerHeight,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", detectSize);
+
+    return () => {
+      window.removeEventListener("resize", detectSize);
+    };
+  }, [windowDimension]);
+
   // make this pretty later
   if (loading === null) {
     return <div className="App">loading...</div>;
@@ -60,13 +81,25 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar data={data} />
+        <Navbar data={data} windowDimension={windowDimension} />
 
         <Routes>
-          <Route path="/" element={<Signup data={data} />} />
-          <Route path="/login" element={<Login data={data} />} />
-          <Route path="/sources" element={<Sources data={data} />} />
-          <Route path="/student" element={<Student data={data} />} />
+          <Route
+            path="/"
+            element={<Signup data={data} windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/login"
+            element={<Login data={data} windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/sources"
+            element={<Sources data={data} windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/student"
+            element={<Student data={data} windowDimension={windowDimension} />}
+          />
           <Route path="/terms" element={<Legal />} />
         </Routes>
       </Router>

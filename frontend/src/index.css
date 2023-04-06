@@ -1024,12 +1024,11 @@ padding: 6px 10px;
     width: 400px;
     height: 100vh;
     position: fixed;
-    overflow-y: auto;
-
+    overflow-y: auto;  
     border: 1px solid lightgrey;
     border-top: none;
     border-bottom: none;
-    border-left: none;
+    border-left: none;      
 }
 
 .main-panel-grid {
@@ -1056,6 +1055,21 @@ padding: 6px 10px;
     border-right: none;
 }
 
+.header-tab {
+    font-size: 18px;
+    /* font-weight: bolder; */
+    height: 35px;
+    align-items: center;
+    background-color: whitesmoke;
+    padding: 5px;
+    padding-left: 20px;
+
+    border: 1px solid lightgrey;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
 
 /* ----- inner leftside grid content ----- */
 
@@ -1072,7 +1086,7 @@ padding: 6px 10px;
 }
 
 .left-panel-tree {
-    height: 530px;
+    height: 495px;
 
     border: 1px solid lightgrey;
     border-top: none;
@@ -1086,7 +1100,7 @@ padding: 6px 10px;
 }
 
 .left-panel-chatbot {
-    height: 530px;
+    height: 495px;
     padding: 10px;
 }
 
@@ -1121,7 +1135,7 @@ padding: 6px 10px;
 
 .right-panel-info {
 
-    height: 200px;
+    height: 160px;
     padding: 10px;
 
     border: 1px solid lightgrey;
@@ -1132,7 +1146,7 @@ padding: 6px 10px;
 
 .right-panel-notes {
 
-    height: 430px;
+    height: 400px;
     padding: 10px;
 
     border: 1px solid lightgrey;
@@ -1142,7 +1156,7 @@ padding: 6px 10px;
 }
 
 .right-panel-coments {
-    height: 430px;
+    height: 400px;
     padding: 10px;
 }
 
@@ -1204,7 +1218,7 @@ padding: 6px 10px;
 /* ------- directory tree -------- */
 .folder {
     margin-top: 0px;
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
     display: flex;
     justify-content: space-between;
     align-items: center;

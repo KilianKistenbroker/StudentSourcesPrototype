@@ -4,7 +4,7 @@ import folderData from "../data/folderData";
 import useTreeTraversal from "../hooks/useTreeTraversal";
 import StudentSearch from "../components/StudentSearch";
 
-const Student = () => {
+const Student = (data, windowDimension) => {
   const [explorerData, setExplorerData] = useState(folderData);
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (folderId, item, isFolder) => {
@@ -17,21 +17,26 @@ const Student = () => {
       <div className="grid-foundation">
         <div className="left-panel-grid">
           <div className="left-panel-title">Explorer</div>
+          <div className="header-tab">Files</div>
           <div className="left-panel-tree">
             <DirectoryTree
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
             />
           </div>
-          <div className="left-panel-chatbot">ask chatbot</div>
+          <div className="header-tab">Ask Chatbot</div>
+          <div className="left-panel-chatbot">{/* ask chatbot */}</div>
           <div className="left-panel-textbox">textbox</div>
         </div>
 
         <div className="right-panel-grid">
           <div className="right-panel-title">Home</div>
-          <div className="right-panel-info">info</div>
-          <div className="right-panel-notes">notes</div>
-          <div className="right-panel-coments">comments</div>
+          <div className="header-tab">Info</div>
+          <div className="right-panel-info">{/* info */}</div>
+          <div className="header-tab">Notes</div>
+          <div className="right-panel-notes">{/* notes */}</div>
+          <div className="header-tab">Comments</div>
+          <div className="right-panel-coments">{/* comments */}</div>
           <div className="right-panel-textbox">textbox</div>
         </div>
 

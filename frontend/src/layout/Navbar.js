@@ -3,34 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/Light-Version.png";
 
-export default function Navbar({ data }) {
+export default function Navbar({ data, windowDimension }) {
   const [topRightNav, setTopRightNave] = useState("Login");
   const navigate = useNavigate();
-
-  // ***************** REUSED CODE *****************
-  const [windowDimension, setWindowDimension] = useState({
-    winWidth: window.innerWidth,
-    winHeight: window.innerHeight,
-  });
-
-  const detectSize = () => {
-    setWindowDimension({
-      winWidth: window.innerWidth,
-      winHeight: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    // reset focus
-    document.activeElement.blur();
-
-    window.addEventListener("resize", detectSize);
-
-    return () => {
-      window.removeEventListener("resize", detectSize);
-    };
-  }, [windowDimension]);
-  // ****************** REUSED CODE *****************
 
   useEffect(() => {
     if (data.currentPoint === "login") {

@@ -6,7 +6,7 @@ import FriendsPending from "../components/FriendsPending";
 import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
 
-const Sources = ({ data }) => {
+const Sources = ({ data, windowDimension }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 

@@ -15,7 +15,7 @@ const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
 const user_endpoint = "/user";
 
-const Signup = ({ data }) => {
+const Signup = ({ data, windowDimension }) => {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -83,31 +83,6 @@ const Signup = ({ data }) => {
   useEffect(() => {
     setErrMsg("");
   }, [user, password, firstName, lastName, email]);
-
-  // ***************** REUSED CODE *****************
-  const [windowDimension, setWindowDimension] = useState({
-    winWidth: window.innerWidth,
-    winHeight: window.innerHeight,
-  });
-
-  const detectSize = () => {
-    setWindowDimension({
-      winWidth: window.innerWidth,
-      winHeight: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    // reset focus
-    document.activeElement.blur();
-
-    window.addEventListener("resize", detectSize);
-
-    return () => {
-      window.removeEventListener("resize", detectSize);
-    };
-  }, [windowDimension]);
-  // ****************** REUSED CODE *****************
 
   const customLink = (e) => {
     e.preventDefault();
