@@ -17,12 +17,16 @@ const Student = (data, windowDimension) => {
       <div className="grid-foundation">
         <div className="left-panel-grid">
           <div className="left-panel-title">Explorer</div>
-          <div className="header-tab">Files</div>
+          <div className="header-tab" style={{ marginTop: "67.5px" }}>
+            Files
+          </div>
           <div className="left-panel-tree">
             <DirectoryTree
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
             />
+            {/* spacing */}
+            <div style={{ height: "20px", width: "20px" }}> </div>
           </div>
           <div className="header-tab">Ask Chatbot</div>
           <div className="left-panel-chatbot">{/* ask chatbot */}</div>
@@ -31,7 +35,9 @@ const Student = (data, windowDimension) => {
 
         <div className="right-panel-grid">
           <div className="right-panel-title">Home</div>
-          <div className="header-tab">Info</div>
+          <div className="header-tab" style={{ marginTop: "67.5px" }}>
+            Info
+          </div>
           <div className="right-panel-info">{/* info */}</div>
           <div className="header-tab">Notes</div>
           <div className="right-panel-notes">{/* notes */}</div>

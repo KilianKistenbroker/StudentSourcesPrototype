@@ -1074,33 +1074,40 @@ padding: 6px 10px;
 /* ----- inner leftside grid content ----- */
 
 .left-panel-title {
+    position: fixed;
+    width: 400px;
     height: 67.5px;
     padding: 10px;
     padding-top: 20px;
     text-align: center;
+    background: white;
 
     border: 1px solid lightgrey;
     border-top: none;
-    border-right: none;
+    /* border-right: none; */
     border-left: none;
 }
 
 .left-panel-tree {
-    height: 495px;
+    /* height: 495px; */
+    height: 35%;
 
     border: 1px solid lightgrey;
     border-top: none;
     border-right: none;
     border-left: none;
     overflow: scroll;
+    flex-wrap: wrap;
 
     /* auto scrolls right when overflow occurs */
     display: flex;
     flex-direction: row-reverse;
+
 }
 
 .left-panel-chatbot {
-    height: 495px;
+    /* height: 495px; */
+    height: 35%;
     padding: 10px;
 }
 
@@ -1122,6 +1129,9 @@ padding: 6px 10px;
 /* ----- inner rightside grid content ----- */
 
 .right-panel-title {
+    position: fixed;
+    width: 400px;
+    background-color: white;
     height: 67.5px;
     padding: 10px;
     padding-top: 20px;
@@ -1135,7 +1145,8 @@ padding: 6px 10px;
 
 .right-panel-info {
 
-    height: 160px;
+    /* height: 160px; */
+    height: 15%;
     padding: 10px;
 
     border: 1px solid lightgrey;
@@ -1146,18 +1157,22 @@ padding: 6px 10px;
 
 .right-panel-notes {
 
-    height: 400px;
+    /* height: 400px; */
+    height: 25.25%;
     padding: 10px;
 
     border: 1px solid lightgrey;
     border-top: none;
     border-right: none;
     border-left: none;
+
 }
 
 .right-panel-coments {
-    height: 400px;
+    /* height: 400px; */
+    height: 25.25%;
     padding: 10px;
+
 }
 
 .right-panel-textbox {
@@ -1287,7 +1302,7 @@ padding: 6px 10px;
     height: 30px;
     font-size: 14px;
     width: 100%;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   .tree-icon {
