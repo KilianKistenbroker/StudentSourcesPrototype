@@ -73,9 +73,9 @@ function App() {
 
   // make this pretty later
   if (loading === null) {
-    return <div className="App">loading...</div>;
+    return <div className="App">Loading...</div>;
   } else if (loading === false) {
-    return <div className="App">no server response...</div>;
+    return <div className="App">No server response...</div>;
   }
 
   return (

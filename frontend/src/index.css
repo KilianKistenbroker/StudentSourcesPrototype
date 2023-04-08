@@ -482,7 +482,7 @@ button {
     border-bottom: 1px solid lightgray;
     position: fixed;
     align-items: center;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
 }
 
@@ -879,7 +879,9 @@ padding: 6px 10px;
     justify-self: center;
     justify-content: space-between;
     padding: 10px;
-    margin: 5px;
+    /* margin: 5px; */
+    margin-top: 5px;
+    margin-bottom: 5px;
     border: 1px solid lightgray;
 
     /* this order will fill the width where 200px < x < 500px */
@@ -891,7 +893,15 @@ padding: 6px 10px;
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-auto-rows: minmax(auto, auto);
+    transition: .1s;
+    
+}
 
+/* replace with dragging effect */
+.box:hover {
+    /* border: 1px dashed #ccc;
+    background-color: whitesmoke; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-grid {
@@ -1029,16 +1039,15 @@ padding: 6px 10px;
     border-top: none;
     border-bottom: none;
     border-left: none;      
+    direction:rtl;
+    z-index: 2;
 }
 
 .main-panel-grid {
-    display: flex;
-    flex-direction: column;
     padding: 10px;
-    /* width: 100%; */
-
     /* this depends on if the panels are showing or not */
     margin-left: 400px;
+    /* ??? adding 10 centers it somehow */
     margin-right: 400px;
 }
 
@@ -1053,6 +1062,7 @@ padding: 6px 10px;
     border-top: none;
     border-bottom: none;
     border-right: none;
+    z-index: 2;
 }
 
 .header-tab {
@@ -1078,19 +1088,26 @@ padding: 6px 10px;
     width: 400px;
     height: 67.5px;
     padding: 10px;
-    padding-top: 20px;
+    padding-top: 22px;
     text-align: center;
     background: white;
+    color: dimgray;
+
+    font-weight: bolder;
+    font-size: 18px;
 
     border: 1px solid lightgrey;
     border-top: none;
-    /* border-right: none; */
+    border-right: none;
     border-left: none;
+    z-index: 1;
 }
 
 .left-panel-tree {
-    /* height: 495px; */
-    height: 35%;
+    direction:ltr;
+    min-height: 350px;
+    height: 38.75%;
+    
 
     border: 1px solid lightgrey;
     border-top: none;
@@ -1102,13 +1119,15 @@ padding: 6px 10px;
     /* auto scrolls right when overflow occurs */
     display: flex;
     flex-direction: row-reverse;
-
 }
 
 .left-panel-chatbot {
-    /* height: 495px; */
-    height: 35%;
+    direction:ltr;
+    min-height: 350px;
+    height: 38.5%;
     padding: 10px;
+    margin-bottom: 150px;
+    overflow:scroll;
 }
 
 .left-panel-textbox {
@@ -1129,24 +1148,33 @@ padding: 6px 10px;
 /* ----- inner rightside grid content ----- */
 
 .right-panel-title {
+    font-weight: bolder;
+    font-size: 18px;
+    color: dimgray;
+
     position: fixed;
     width: 400px;
     background-color: white;
     height: 67.5px;
     padding: 10px;
-    padding-top: 20px;
+    padding-top: 22px;
     text-align: center;
 
     border: 1px solid lightgrey;
     border-top: none;
     border-right: none;
     border-left: none;
+    z-index: 1;
 }
 
 .right-panel-info {
+    /* flipping layout direction so that
+    inner scroll appears on inside of page. */
+    direction: rtl;
+    text-align: left;
 
-    /* height: 160px; */
-    height: 15%;
+    min-height: 150px;
+    height: 14.5%;
     padding: 10px;
 
     border: 1px solid lightgrey;
@@ -1156,9 +1184,12 @@ padding: 6px 10px;
 }
 
 .right-panel-notes {
+    direction: rtl;
+    text-align: left;
 
-    /* height: 400px; */
-    height: 25.25%;
+
+    min-height: 255px;
+    height: 30%;
     padding: 10px;
 
     border: 1px solid lightgrey;
@@ -1169,10 +1200,15 @@ padding: 6px 10px;
 }
 
 .right-panel-coments {
-    /* height: 400px; */
-    height: 25.25%;
-    padding: 10px;
+    direction: rtl;
+    text-align: left;
 
+    min-height: 255px;
+    height: 30%;
+    padding: 10px;
+    margin-bottom: 150px;
+    overflow: scroll;
+    
 }
 
 .right-panel-textbox {
@@ -1213,20 +1249,29 @@ padding: 6px 10px;
     margin-right: 400px;
 }
 
-.main-pain-searchbar {
+.main-searchbar-container {
+    position: fixed;
+    /* margin: auto; */
     width: 100%;
     max-width: 800px;
+    display: flex;
+    justify-content: center;
+}
+
+.main-pain-searchbar {
+    /* position: fixed; */
+    width: 100%;
+    /* max-width: 800px; */
     background: white;
-    margin: auto;
+    /* margin: auto; */
     margin-top: 10px;
 }
 
 .main-panel-content {
     margin: auto;
     width: 100%;
-    max-width: 800px;
-    margin-top: 100px;
-    text-align: left;
+    max-width: 600px;
+    margin-top: 200px;
 }
 
 
@@ -1310,4 +1355,28 @@ padding: 6px 10px;
     width: 16px;
     color: grey;
     transform: translate(0, -2px);
+  }
+
+  .header-icons {
+    width:20px;
+    height:20px;
+    color: grey;
+    margin-top: 3px;
+  }
+
+  .select-folder {
+    background-color: whitesmoke;
+  }
+
+  .dropzone {
+    margin-top: 10px;
+    width: 100%;
+    height: 70vh;
+    transition: .1s;
+  }
+
+  /* replace with on drop func call */
+  .dragging {
+    border: 1px dashed #ccc;
+    background-color: whitesmoke;
   }

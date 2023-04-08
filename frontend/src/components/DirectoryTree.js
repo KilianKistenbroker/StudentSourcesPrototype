@@ -1,11 +1,31 @@
 import { useState } from "react";
+import { useEffect } from "react";
 
-const DirectoryTree = ({ handleInsertNode, explorer }) => {
+const DirectoryTree = ({
+  handleInsertNode,
+  explorer,
+  setCurrentDirectory,
+  currentDirectory,
+  // loading,
+}) => {
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
     isFolder: null,
   });
+
+  // init page to display home contents in dir tree
+  useEffect(() => {
+    if (explorer.name === "Home") setExpand(true);
+  }, []);
+
+  const handleSetExpand = (e) => {
+    // set curr dir
+    setCurrentDirectory(explorer);
+
+    // set expand
+    setExpand(!expand);
+  };
 
   const handleNewFolder = (e, isFolder) => {
     e.stopPropagation();
@@ -28,7 +48,14 @@ const DirectoryTree = ({ handleInsertNode, explorer }) => {
   if (explorer.isFolder) {
     return (
       <div style={{ marginTop: 5 }}>
-        <div className="folder" onClick={() => setExpand(!expand)}>
+        <div
+          className={
+            explorer.name === currentDirectory.name
+              ? "folder select-folder"
+              : "folder"
+          }
+          onClick={() => handleSetExpand(explorer)}
+        >
           <span>📁 {explorer.name}</span>
 
           <div>
@@ -54,19 +81,6 @@ const DirectoryTree = ({ handleInsertNode, explorer }) => {
                 <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
               </svg>
             </button>
-            {/* <button style={{ marginLeft: "10px" }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="tree-icon"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"
-                />
-              </svg>
-            </button> */}
           </div>
         </div>
 
@@ -90,6 +104,8 @@ const DirectoryTree = ({ handleInsertNode, explorer }) => {
                 handleInsertNode={handleInsertNode}
                 explorer={exp}
                 key={exp.id}
+                setCurrentDirectory={setCurrentDirectory}
+                currentDirectory={currentDirectory}
               />
             );
           })}
