@@ -18,6 +18,7 @@ const CurrentDirectory = ({ currentDirectory }) => {
           overflow: "hidden",
           textOverflow: "ellipsis",
           color: "dimgray",
+          userSelect: "none",
         }}
       >
         {loadData.type === "folder" ? (

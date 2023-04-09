@@ -1006,20 +1006,24 @@ padding: 6px 10px;
 
 .medium-panel-width {
     width: 300px;
+    transition: .1s;
 }
 
 .max-panel-width {
     width: 400px;
+    transition: .1s;
 }
 
 .medium-margin {
     margin-left: 300px;
     margin-right: 300px;
+    transition: .1s;
 }
 
 .max-margin {
     margin-left: 400px;
     margin-right: 400px;
+    transition: .1s;
 }
 
 .left-panel-grid {
@@ -1258,9 +1262,11 @@ padding: 6px 10px;
 /* ------- directory tree -------- */
 .medium-folder {
     min-width: 300px;
+    transition: .1s;
 }
 .max-folder {
     min-width: 400px;
+    transition: .1s;
 }
 
 .folder {
@@ -1273,6 +1279,7 @@ padding: 6px 10px;
     cursor: pointer;
     border-radius: 2px;
     font: 14px system-ui;
+    user-select: none;
   }
   
   .folder > span {
@@ -1298,6 +1305,7 @@ padding: 6px 10px;
     transition: .1s;
     font: 14px system-ui;
     cursor: pointer;
+    user-select: none;
   }
   
   .folder > div > button {

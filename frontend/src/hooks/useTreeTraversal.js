@@ -1,10 +1,10 @@
 const useTreeTraversal = () => {
-  function insertNode(tree, folderId, item, isFolder) {
-    if (tree.id === folderId && tree.isFolder) {
+  function insertNode(tree, folderId, item, type) {
+    if (tree.id === folderId && tree.type === "folder") {
       tree.items.unshift({
         id: new Date().getTime(),
         name: item,
-        isFolder,
+        type,
         items: [],
       });
 
@@ -13,7 +13,7 @@ const useTreeTraversal = () => {
 
     let latestNode = [];
     latestNode = tree.items.map((obj) => {
-      return insertNode(obj, folderId, item, isFolder);
+      return insertNode(obj, folderId, item, type);
     });
 
     return { ...tree, items: latestNode };

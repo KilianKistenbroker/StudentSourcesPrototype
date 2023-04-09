@@ -66,6 +66,7 @@ const Student = ({ windowDimension }) => {
             style={{ marginTop: "67.5px", direction: "ltr" }}
           >
             Files
+            {/* more options button */}
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -91,6 +92,7 @@ const Student = ({ windowDimension }) => {
           </div>
           <div className="header-tab" style={{ direction: "ltr" }}>
             Ask Chatbot
+            {/* more options button */}
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -132,9 +134,25 @@ const Student = ({ windowDimension }) => {
             }
           >
             {currentDirectory.name.toUpperCase()}
+
+            {/* collapse right panel button */}
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z"
+                />
+              </svg>
+            </span>
           </div>
           <div className="header-tab" style={{ marginTop: "67.5px" }}>
             Info
+            {/* more options button */}
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -151,6 +169,7 @@ const Student = ({ windowDimension }) => {
           </div>
           <div className="header-tab">
             Notes
+            {/* more options button */}
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,6 +186,7 @@ const Student = ({ windowDimension }) => {
           </div>
           <div className="header-tab">
             Comments
+            {/* more options button */}
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +232,6 @@ const Student = ({ windowDimension }) => {
 
             {/* display header */}
             <div className="box" style={{ overflow: "hidden" }}>
-              {/* file type and file name */}
               <div
                 className=""
                 style={{
@@ -236,7 +255,6 @@ const Student = ({ windowDimension }) => {
                   overflow: "hidden",
                   color: "dimgray",
                   fontWeight: "bolder",
-                  // paddingLeft: "20px",
                 }}
               >
                 Pinned
@@ -289,7 +307,7 @@ const Student = ({ windowDimension }) => {
             ) : (
               ""
             )}
-            {/* trash */}
+            {/* trashbin */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               // className="header-icons"
