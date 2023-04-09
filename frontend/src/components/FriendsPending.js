@@ -2,16 +2,11 @@ const FriendsPending = ({
   loadPending,
   handleFilter,
   filter,
-  loading,
   handleFriendRequest,
   savedUserList,
   removeSaved,
   insertSaved,
 }) => {
-  // if (loading) {
-  //   return <div></div>;
-  // }
-
   return loadPending
     .filter(function (loadData) {
       return handleFilter(filter, loadData);

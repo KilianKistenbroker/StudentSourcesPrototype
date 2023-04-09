@@ -9,6 +9,7 @@ const DirectoryTree = ({
   windowDimension,
 }) => {
   const [expand, setExpand] = useState(false);
+  const [specialExpand, setSpecialExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
     type: "",
@@ -22,7 +23,8 @@ const DirectoryTree = ({
   const handleSetExpand = (e) => {
     // set curr dir
     if (currentDirectory.name !== explorer.name) {
-      setExpand(true);
+      if (specialExpand) setExpand(!expand);
+      else setExpand(true);
     } else {
       // set expand
       setExpand(!expand);
@@ -66,7 +68,49 @@ const DirectoryTree = ({
           }
           onClick={() => handleSetExpand(explorer)}
         >
-          <span>📁 {explorer.name}</span>
+          <span>
+            {" "}
+            {expand ? (
+              <p
+                onMouseEnter={() => setSpecialExpand(true)}
+                onMouseLeave={() => setSpecialExpand(false)}
+                className="folder-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="tree-icon"
+                  style={{ paddingTop: "5px", width: "18px", height: "18px" }}
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                  />
+                </svg>
+              </p>
+            ) : (
+              <p
+                onMouseEnter={() => setSpecialExpand(true)}
+                onMouseLeave={() => setSpecialExpand(false)}
+                className="folder-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="tree-icon"
+                  style={{ paddingTop: "5px", width: "18px", height: "18px" }}
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                  />
+                </svg>
+              </p>
+            )}{" "}
+            📁 {explorer.name}
+          </span>
 
           <div>
             <button onClick={(e) => handleNewFolder(e, "folder")}>

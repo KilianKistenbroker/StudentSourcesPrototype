@@ -9,9 +9,11 @@ import DropZone from "../components/DropZone";
 import Sources from "./Sources";
 
 const Student = ({ windowDimension }) => {
+  // ----------- move to app.js later ------------ //
+
   const [explorerData, setExplorerData] = useState(folderData);
-  const [currentDirectory, setCurrentDirectory] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [currentDirectory, setCurrentDirectory] = useState(folderData);
+  const [showingRightPanel, setShowingRightPanel] = useState(true);
 
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (folderId, item, isFolder) => {
@@ -19,38 +21,56 @@ const Student = ({ windowDimension }) => {
     setExplorerData(finalTree);
   };
 
-  useEffect(() => {
-    // init current directory
-
-    if (!currentDirectory.items) handleSetCurrentDirectory(explorerData);
-    console.log("this was fired");
-
-    setLoading(false);
-  }, []);
+  // ---------------------------------------------- //
 
   async function handleSetCurrentDirectory(event) {
     setCurrentDirectory(event);
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="page">
       <StudentSearch
         currentDirectory={currentDirectory}
         windowDimension={windowDimension}
+        showingRightPanel={showingRightPanel}
       />
+
+      <span
+        style={{
+          right: "0",
+          position: "fixed",
+          zIndex: "1",
+          marginRight: "10px",
+          marginTop: "90px",
+        }}
+        onClick={() => setShowingRightPanel(true)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="header-icons"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0zM4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5z"
+          />
+        </svg>
+      </span>
 
       <div className="grid-foundation">
         <div
           className={
             windowDimension.winWidth > 1200
               ? "left-panel-grid max-panel-width"
-              : "left-panel-grid medium-panel-width"
+              : windowDimension.winWidth > 800
+              ? "left-panel-grid medium-panel-width"
+              : "left-panel-grid  min-left-panel"
           }
-          style={windowDimension.winWidth < 800 ? { display: "none" } : {}}
         >
           <div
             className={
@@ -121,9 +141,11 @@ const Student = ({ windowDimension }) => {
 
         <div
           className={
-            windowDimension.winWidth > 1200
+            windowDimension.winWidth > 1200 && showingRightPanel
               ? "right-panel-grid max-panel-width"
-              : "right-panel-grid medium-panel-width"
+              : showingRightPanel
+              ? "right-panel-grid medium-panel-width"
+              : "right-panel-grid min-right-panel"
           }
         >
           <div
@@ -136,7 +158,10 @@ const Student = ({ windowDimension }) => {
             {currentDirectory.name.toUpperCase()}
 
             {/* collapse right panel button */}
-            <span style={{ float: "right" }}>
+            <span
+              style={{ float: "right" }}
+              onClick={() => setShowingRightPanel(false)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons"
@@ -219,7 +244,13 @@ const Student = ({ windowDimension }) => {
               ? "main-panel-grid max-margin"
               : "main-panel-grid medium-margin"
           }
-          style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
+          style={
+            windowDimension.winWidth < 800
+              ? { margin: "0px" }
+              : !showingRightPanel
+              ? { marginRight: "0px" }
+              : {}
+          }
         >
           <div
             className={
@@ -274,11 +305,7 @@ const Student = ({ windowDimension }) => {
               </div>
             </div>
 
-            {loading ? (
-              <div>loading...</div>
-            ) : (
-              <CurrentDirectory currentDirectory={currentDirectory} />
-            )}
+            <CurrentDirectory currentDirectory={currentDirectory} />
           </div>
 
           <DropZone />
@@ -289,7 +316,11 @@ const Student = ({ windowDimension }) => {
                 ? "tiny-footer max-margin"
                 : "tiny-footer medium-margin"
             }
-            style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
+            style={
+              windowDimension.winWidth < 800 || !showingRightPanel
+                ? { margin: "0px" }
+                : {}
+            }
           >
             {windowDimension.winWidth < 800 ? (
               <span

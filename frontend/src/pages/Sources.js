@@ -8,7 +8,6 @@ import Users from "../components/Users";
 
 const Sources = ({ data, windowDimension }) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
 
   // store these in local browser to remember after refresh
   const [selected, setSelected] = useState("users");
@@ -43,12 +42,9 @@ const Sources = ({ data, windowDimension }) => {
     getFriends();
     getPending();
     getSaved();
-
-    setLoading(false);
   }, []);
 
   const getFriends = async (e) => {
-    setLoading(true);
     const res = await axios.get(`/findFriends/${data.id}`);
 
     let temp = [];
@@ -57,26 +53,21 @@ const Sources = ({ data, windowDimension }) => {
     }
     setLoadFriends(res.data);
     setFriendsList(temp);
-    setLoading(false);
   };
 
   /* these functions will set selected to friends, 
 and also call request to update lists */
 
   const handleSetFriends = (selected) => {
-    setLoading(true);
     getFriends();
     setSelected("friends");
     setFriends(selected);
-    setLoading(false);
   };
 
   const handleSetSelected = (select) => {
-    setLoading(true);
     if (selected === "saved") getSaved();
     else if (selected === "friends") getFriends();
     setSelected(select);
-    setLoading(false);
   };
 
   //  get users with given username, first, or last name
@@ -138,8 +129,6 @@ and also call request to update lists */
 
   //   gets all of users saved items
   const getSaved = async () => {
-    setLoading(true);
-
     const res = await axios.get(`/mySavedUsers/${data.id}`);
     let tempSaveUserList = [];
 
@@ -149,7 +138,6 @@ and also call request to update lists */
 
     setLoadSaved(res.data);
     setSavedUserList(tempSaveUserList);
-    setLoading(false);
   };
 
   async function removeSaved(isUser, item_id) {
@@ -458,7 +446,6 @@ and also call request to update lists */
               loadFriends={loadFriends}
               handleFilter={handleFilterSearch}
               filter={filter}
-              loading={loading}
               savedUserList={savedUserList}
               insertSaved={insertSaved}
               removeSaved={removeSaved}
@@ -471,7 +458,6 @@ and also call request to update lists */
               loadPending={loadPending}
               handleFilter={handleFilterSearch}
               filter={filter}
-              loading={loading}
               handleFriendRequest={handleFriendRequest}
               savedUserList={savedUserList}
               insertSaved={insertSaved}
@@ -485,7 +471,6 @@ and also call request to update lists */
               loadSaved={loadSaved}
               handleFilter={handleFilterSearch}
               filter={filter}
-              loading={loading}
               handleFriendRequest={handleFriendRequest}
               sentList={sentList}
               friendsList={friendsList}

@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const StudentSearch = ({ currentDirectory, windowDimension }) => {
+const StudentSearch = ({
+  currentDirectory,
+  windowDimension,
+  showingRightPanel,
+}) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
@@ -14,7 +18,13 @@ const StudentSearch = ({ currentDirectory, windowDimension }) => {
             ? "main-pain-searchbar max-margin"
             : "main-pain-searchbar medium-margin"
         }
-        style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
+        style={
+          windowDimension.winWidth < 800
+            ? { marginLeft: "0px", marginRight: "30px" }
+            : !showingRightPanel
+            ? { marginRight: "30px" }
+            : {}
+        }
       >
         <form id="search_form">
           <button

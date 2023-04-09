@@ -17,10 +17,6 @@ const SavedAll = ({
     return friendsList.includes(id);
   };
 
-  // if (loading) {
-  //   return <div></div>;
-  // }
-
   return loadSaved
     .filter(function (loadData) {
       return handleFilter(filter, loadData);

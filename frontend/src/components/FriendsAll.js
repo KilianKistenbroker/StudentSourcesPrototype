@@ -2,7 +2,6 @@ const FriendsAll = ({
   loadFriends,
   handleFilter,
   filter,
-  loading,
   savedUserList,
   insertSaved,
   removeSaved,
