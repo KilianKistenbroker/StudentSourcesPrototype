@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-// import { readDroppedFiles } from "./fileReaderHelper";
+import readDroppedFiles from "../helpers/readDroppedFiles";
 // import { Document, Page, pdfjs } from "react-pdf";
 // import "pdfjs-dist/web/pdf_viewer.css";
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const DropZone = () => {
+const DropZone = ({ folderData }) => {
   const [folderJson, setFolderJson] = useState(null);
   const [pdfDataUrl, setPdfDataUrl] = useState(null);
   const [numPages, setNumPages] = useState(null);
@@ -20,11 +20,11 @@ const DropZone = () => {
 
     setDragOver(false);
 
-    // const json = await readDroppedFiles(e.dataTransfer.items);
-    // setFolderJson(json);
+    const json = await readDroppedFiles(e.dataTransfer.items);
+    setFolderJson(json);
 
     console.log("from fdz");
-    // console.log(json);
+    console.log(json);
   };
 
   const handleDragOver = (e) => {

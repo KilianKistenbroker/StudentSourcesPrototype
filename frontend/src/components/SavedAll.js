@@ -5,13 +5,13 @@ const SavedAll = ({
   loadSaved,
   handleFilter,
   filter,
-  loading,
   handleFriendRequest,
   sentList = { sentList },
   friendsList,
   savedUserList,
   insertSaved,
   removeSaved,
+  pendingList,
 }) => {
   const checkFriendStatus = (id) => {
     return friendsList.includes(id);
@@ -88,6 +88,8 @@ const SavedAll = ({
                 Remove <br /> friend
               </div>
             </div>
+          ) : pendingList.includes(loadData.id) ? (
+            <div className="box-friend-content disabled sent">Pending</div>
           ) : sentList.includes(loadData.id) ? (
             <div className="box-friend-content disabled sent">Sent</div>
           ) : data.id === loadData.id ? (

@@ -6,12 +6,12 @@ const DirectoryTree = ({
   explorer,
   setCurrentDirectory,
   currentDirectory,
-  // loading,
+  windowDimension,
 }) => {
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
-    isFolder: null,
+    type: "",
   });
 
   // init page to display home contents in dir tree
@@ -21,45 +21,55 @@ const DirectoryTree = ({
 
   const handleSetExpand = (e) => {
     // set curr dir
-    setCurrentDirectory(explorer);
+    if (currentDirectory.name !== explorer.name) {
+      setExpand(true);
+    } else {
+      // set expand
+      setExpand(!expand);
+    }
 
-    // set expand
-    setExpand(!expand);
+    setCurrentDirectory(explorer);
   };
 
-  const handleNewFolder = (e, isFolder) => {
+  const handleNewFolder = (e, type) => {
     e.stopPropagation();
     setExpand(true);
 
     setShowInput({
       visible: true,
-      isFolder,
+      type,
     });
   };
 
   const onAddFolder = (e) => {
     if (e.keyCode === 13 && e.target.value) {
       console.log("onAddFolder executed");
-      handleInsertNode(explorer.id, e.target.value, showInput.isFolder);
+      handleInsertNode(explorer.id, e.target.value, showInput.type);
       setShowInput({ ...showInput, visible: false });
     }
   };
 
-  if (explorer.isFolder) {
+  if (explorer.type === "folder") {
     return (
-      <div style={{ marginTop: 5 }}>
+      <div>
         <div
           className={
-            explorer.name === currentDirectory.name
-              ? "folder select-folder"
-              : "folder"
+            explorer.name === currentDirectory.name &&
+            windowDimension.winWidth > 1200
+              ? "folder select-folder max-folder"
+              : explorer.name !== currentDirectory.name &&
+                windowDimension.winWidth > 1200
+              ? "folder max-folder"
+              : explorer.name === currentDirectory.name
+              ? "folder select-folder medium-folder"
+              : "folder medium-folder"
           }
           onClick={() => handleSetExpand(explorer)}
         >
           <span>📁 {explorer.name}</span>
 
           <div>
-            <button onClick={(e) => handleNewFolder(e, true)}>
+            <button onClick={(e) => handleNewFolder(e, "folder")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="tree-icon"
@@ -70,7 +80,8 @@ const DirectoryTree = ({
                 <path d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z" />
               </svg>
             </button>
-            <button onClick={(e) => handleNewFolder(e, false)}>
+            {/* adjust this to where user can seslct filetype to create */}
+            <button onClick={(e) => handleNewFolder(e, "txt")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="tree-icon"
@@ -84,10 +95,10 @@ const DirectoryTree = ({
           </div>
         </div>
 
-        <div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
+        <div style={{ display: expand ? "block" : "none", paddingLeft: 15 }}>
           {showInput.visible && (
             <div className="inputContainer">
-              <span> {showInput.isFolder ? "📁" : "📄"} </span>
+              <span> {showInput.type === "folder" ? "📁" : "📄"} </span>
               <input
                 type="text"
                 onKeyDown={onAddFolder}
@@ -106,6 +117,7 @@ const DirectoryTree = ({
                 key={exp.id}
                 setCurrentDirectory={setCurrentDirectory}
                 currentDirectory={currentDirectory}
+                windowDimension={windowDimension}
               />
             );
           })}

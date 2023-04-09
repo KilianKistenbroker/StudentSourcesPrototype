@@ -1,6 +1,6 @@
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Navbar from "./layout/Navbar";
+import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sources from "./pages/Sources";
 import Legal from "./pages/Terms";
@@ -11,6 +11,8 @@ import Student from "./pages/Student";
 function App() {
   const [loading, setLoading] = useState(null);
 
+  // ------------ store user info from login/signup ---------- //
+
   const [data, setData] = useState({
     user: "",
     password: "",
@@ -20,7 +22,7 @@ function App() {
   });
 
   useEffect(() => {
-    // check session status here ???
+    // ------------- check session status here (TODO) ------------- //
 
     if (localStorage.getItem("data")) {
       handleAuthenticate();
@@ -29,7 +31,8 @@ function App() {
     }
   }, []);
 
-  // authenticates that localstorage is still valid
+  // ------------ authenticate localstorage ----------- //
+
   const handleAuthenticate = async () => {
     let tempData = {};
     setData((tempData = JSON.parse(localStorage.getItem("data"))));
@@ -50,19 +53,18 @@ function App() {
     }
   };
 
-  // listen for screen resizing here
+  // --------- listen for screen resizing here --------- //
+
   const [windowDimension, setWindowDimension] = useState({
     winWidth: window.innerWidth,
     winHeight: window.innerHeight,
   });
-
   const detectSize = () => {
     setWindowDimension({
       winWidth: window.innerWidth,
       winHeight: window.innerHeight,
     });
   };
-
   useEffect(() => {
     window.addEventListener("resize", detectSize);
 
@@ -71,12 +73,15 @@ function App() {
     };
   }, [windowDimension]);
 
-  // make this pretty later
+  // ------ check for server response ----------//
+
   if (loading === null) {
     return <div className="App">Loading...</div>;
   } else if (loading === false) {
     return <div className="App">No server response...</div>;
   }
+
+  // --------- manage routing here ----------- //
 
   return (
     <div className="App">

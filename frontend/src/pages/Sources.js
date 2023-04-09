@@ -51,11 +51,12 @@ const Sources = ({ data, windowDimension }) => {
     setLoading(true);
     const res = await axios.get(`/findFriends/${data.id}`);
 
+    let temp = [];
     for (let i = 0; i < res.data.length; i++) {
-      friendsList.push(res.data[i].id);
+      temp.push(res.data[i].id);
     }
     setLoadFriends(res.data);
-    setFriendsList(friendsList);
+    setFriendsList(temp);
     setLoading(false);
   };
 
@@ -252,7 +253,7 @@ and also call request to update lists */
         `/deleteFriends/${sender_id}/${reciever_id}`
       );
 
-      // refresh friends and friends list
+      // refresh friends
       getFriends();
     }
   }
@@ -301,7 +302,9 @@ and also call request to update lists */
                 <input
                   type="text"
                   name="searchbar"
-                  placeholder="Filter"
+                  placeholder={
+                    selected === "saved" ? "Filter Bookmarks" : "Filter Friends"
+                  }
                   id="search_bar"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
@@ -311,9 +314,7 @@ and also call request to update lists */
                   type="text"
                   name="searchbar"
                   placeholder={
-                    selected === "folders"
-                      ? "Folders is disabled"
-                      : 'Search "all" to get every user'
+                    selected === "folders" ? "Search Folders" : "Search Users"
                   }
                   id="search_bar"
                   value={search}
@@ -491,6 +492,7 @@ and also call request to update lists */
               savedUserList={savedUserList}
               insertSaved={insertSaved}
               removeSaved={removeSaved}
+              pendingList={pendingList}
             />
           )}
         </div>

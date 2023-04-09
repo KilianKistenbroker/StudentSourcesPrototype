@@ -479,7 +479,7 @@ button {
     padding-right: 0;
     /* grid-template-columns: repeat(2, auto); */
     grid-auto-rows: minmax(auto, auto);
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #ededed;
     position: fixed;
     align-items: center;
     z-index: 3;
@@ -532,8 +532,8 @@ button {
     background: white;
     margin-top: 70px;
     padding: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: minmax(auto, auto);
@@ -560,8 +560,7 @@ button {
     width: 100%; 
     height: 55px;
     text-align: center;
-    border-bottom: 1px solid lightgrey;
-    /* font-size: 15px; */
+    border-bottom: 1px solid #ededed;
     color: dimgray;
     border-radius: 2px;
     font: 15px system-ui;
@@ -575,7 +574,6 @@ button {
 
 .nested {
     font-weight: lighter;
-    /* color: gray; */
     border-bottom: none;
     height: 40px;
     font: 15px system-ui;
@@ -584,7 +582,6 @@ button {
 
 .nested-content {
     padding-top: 10px;
-    /* min-width: 60px; */
     border-radius: 100px;
     padding-left: 20px;
     padding-right: 20px;
@@ -593,7 +590,6 @@ button {
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    /* min-width: 60px; */
     border-radius: 100px;
     background: whitesmoke;
 }
@@ -803,7 +799,6 @@ button {
 /* change name to match this application */
 #search_form 
 {
-/* flex-grow: 1; */
   background-color: white;
   border-radius: 2px;
   border: 1px solid lightgray;
@@ -822,13 +817,9 @@ button {
   width: 40px;
   height: 50px;
   background-color: rgba(0,0,0,0);
-  border: 1px solid lightgray;
-  border-bottom: none;
-  border-left: none;
-  border-top: none;
-  border-right: none;
   border-radius: 2px;
   transition: .1s;
+
 }
 
 #search_button:disabled:hover {
@@ -879,28 +870,20 @@ padding: 6px 10px;
     justify-self: center;
     justify-content: space-between;
     padding: 10px;
-    /* margin: 5px; */
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 1px solid lightgray;
 
     /* this order will fill the width where 200px < x < 500px */
     max-width: 600px;
     width: 100%;
     min-width: 200px;
-
-    border-radius: 5px;
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-auto-rows: minmax(auto, auto);
     transition: .1s;
-    
 }
 
 /* replace with dragging effect */
 .box:hover {
-    /* border: 1px dashed #ccc;
-    background-color: whitesmoke; */
+    background-color: #f9f9f9; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -912,11 +895,9 @@ padding: 6px 10px;
 }
 
 .box-icon {
-    /* margin: 0; */
     width: 40px;
     height: 50px;
     padding-top: 5px;
-    /* height: 40px; */
     background: lightgrey;
     border-radius: 5px;
     color: dimgray;
@@ -925,7 +906,6 @@ padding: 6px 10px;
 .box-username {
     padding-top: 5px;
     font-size: 15px;
-    /* line-height: 20px; */
     text-align: left;
     margin-left: 10px;
 
@@ -944,7 +924,6 @@ padding: 6px 10px;
     height: 25px;
     color: gray;
     margin: auto;
-    /* background: whitesmoke; */
 }
 
 .box-star:hover {
@@ -954,7 +933,6 @@ padding: 6px 10px;
 }
 
 .box-friend {
-    /* padding-top: 5px; */
     width: 120px;
     display: flex;
     justify-content: center;
@@ -966,17 +944,15 @@ padding: 6px 10px;
 }
 
 .box-friend-content {
-    /* flex-wrap: nowrap; */
     width: 120px;
     height: 50px;
-    /* margin: auto; */
     font-size: 14px;
-    border: 1px solid lightgray;
+    border: 1px solid #ededed;
     border-top: none;
     border-bottom: none;
     text-align: center;
     border-radius: 5px;
-    background: whitesmoke;
+    background-color: #e0e0e0;
     color: dimgray;
     font-weight: bolder;
     display: flex;
@@ -984,7 +960,7 @@ padding: 6px 10px;
     justify-content: center;
     margin-left: 5px;
     margin-right: 5px;
-    /* padding: 10px; */
+    transition: .1s;
 }
 
 .box-friend-content-2 {
@@ -1000,7 +976,8 @@ padding: 6px 10px;
 
 .sent {
     width: 80px;
-    transition: .1s;
+    color: #adadad;
+    background-color: #ededed;
 }
 
 .disabled:hover {
@@ -1010,9 +987,6 @@ padding: 6px 10px;
 .enabled:hover {
     cursor: pointer;
     color: rgba(128,128,128, .8);
-    border: 1px solid rgba(211,211,211, .8);
-    border-bottom: none;
-    border-top: none;
 }
 
 
@@ -1030,54 +1004,73 @@ padding: 6px 10px;
     margin-top: 70px;
 }
 
-.left-panel-grid {
+.medium-panel-width {
+    width: 300px;
+}
+
+.max-panel-width {
     width: 400px;
+}
+
+.medium-margin {
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.max-margin {
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+.left-panel-grid {
     height: 100vh;
     position: fixed;
     overflow-y: auto;  
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-top: none;
     border-bottom: none;
     border-left: none;      
     direction:rtl;
     z-index: 2;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .main-panel-grid {
     padding: 10px;
     /* this depends on if the panels are showing or not */
-    margin-left: 400px;
+    /* margin-left: 400px; */
     /* ??? adding 10 centers it somehow */
-    margin-right: 400px;
+    /* margin-right: 400px; */
 }
 
 .right-panel-grid {
-    width: 400px;
+    /* width: 400px; */
     height: 100vh;
     position: fixed;
     overflow-y: auto;
     right: 0;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-top: none;
     border-bottom: none;
     border-right: none;
     z-index: 2;
+
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header-tab {
-    font-size: 18px;
-    /* font-weight: bolder; */
+    font: 16px system-ui;
+    /* font-size: 18px; */
+    font-weight: bolder;
     height: 35px;
     align-items: center;
-    background-color: whitesmoke;
-    padding: 5px;
+    padding: 6px;
     padding-left: 20px;
 
-    border: 1px solid lightgrey;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    color:dimgray;
 }
 
 
@@ -1085,21 +1078,17 @@ padding: 6px 10px;
 
 .left-panel-title {
     position: fixed;
-    width: 400px;
+    /* width: 400px; */
     height: 67.5px;
     padding: 10px;
+    padding-left: 20px;
     padding-top: 22px;
-    text-align: center;
-    background: white;
+    text-align: left;
+    background-color: #f9f9f9;
     color: dimgray;
 
+    font: 18px system-ui;
     font-weight: bolder;
-    font-size: 18px;
-
-    border: 1px solid lightgrey;
-    border-top: none;
-    border-right: none;
-    border-left: none;
     z-index: 1;
 }
 
@@ -1107,9 +1096,9 @@ padding: 6px 10px;
     direction:ltr;
     min-height: 350px;
     height: 38.75%;
-    
+    background-color: #fafafa;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -1133,14 +1122,14 @@ padding: 6px 10px;
 .left-panel-textbox {
     height: 80px;
     padding: 10px;
-    width: 400px;
+    /* width: 400px; */
     position: fixed;
     left: 0;
     bottom: 0;
     text-align: center;
-    background-color: white;
+    background-color: #f9f9f9;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-bottom: none;
     border-left: none;
 }
@@ -1148,22 +1137,18 @@ padding: 6px 10px;
 /* ----- inner rightside grid content ----- */
 
 .right-panel-title {
+    font: 18px system-ui;
     font-weight: bolder;
-    font-size: 18px;
     color: dimgray;
 
     position: fixed;
-    width: 400px;
-    background-color: white;
+    /* width: 400px; */
+    background-color: #f9f9f9;
     height: 67.5px;
     padding: 10px;
+    padding-left: 20px;
     padding-top: 22px;
-    text-align: center;
-
-    border: 1px solid lightgrey;
-    border-top: none;
-    border-right: none;
-    border-left: none;
+    text-align: left;
     z-index: 1;
 }
 
@@ -1177,7 +1162,7 @@ padding: 6px 10px;
     height: 14.5%;
     padding: 10px;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -1192,7 +1177,7 @@ padding: 6px 10px;
     height: 30%;
     padding: 10px;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -1214,14 +1199,14 @@ padding: 6px 10px;
 .right-panel-textbox {
     height: 80px;
     padding: 10px;
-    width: 400px;
+    /* width: 400px; */
     position: fixed;
     right: 0;
     bottom: 0;
     text-align: center;
-    background-color: white;
+    background-color: #f9f9f9;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-bottom: none;
     border-right: none;
 }
@@ -1239,14 +1224,14 @@ padding: 6px 10px;
     background-color: white;
     text-align: right;
 
-    border: 1px solid lightgrey;
+    border: 1px solid #ededed;
     border-bottom: none;
     border-right: none;
     border-left: none;
 
     /* depends on if side panels are collapsed or not */
-    margin-left: 400px;
-    margin-right: 400px;
+    /* margin-left: 400px;
+    margin-right: 400px; */
 }
 
 .main-searchbar-container {
@@ -1259,12 +1244,7 @@ padding: 6px 10px;
 }
 
 .main-pain-searchbar {
-    /* position: fixed; */
-    width: 100%;
-    /* max-width: 800px; */
-    background: white;
-    /* margin: auto; */
-    margin-top: 10px;
+    width: 800px;
 }
 
 .main-panel-content {
@@ -1276,41 +1256,48 @@ padding: 6px 10px;
 
 
 /* ------- directory tree -------- */
+.medium-folder {
+    min-width: 300px;
+}
+.max-folder {
+    min-width: 400px;
+}
+
 .folder {
-    margin-top: 0px;
-    /* background-color: whitesmoke; */
+    /* margin-top: 0px; */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 55px;
+    padding-left: 50px;
     width: 100%;
-    min-width: 400px;
     cursor: pointer;
     border-radius: 2px;
-    transition: .1s;
-    font: 15px system-ui;
+    font: 14px system-ui;
   }
   
   .folder > span {
-    margin: 0 5px 2px 0;
+    /* margin: 0 5px 2px 0; */
     width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .folder:hover {
-    background-color: #ececec;
+  .folder:hover, .file:hover {
+    background-color: #ededed;
+    transition: .1s;
   }
   
   .file {
     font-size: 16px;
-    margin-top: 5px;
-    padding-left: 55px;
+    /* margin-top: 5px; */
+    padding: 5px;
+    padding-left: 50px;
     display: flex;
     flex-direction: column;
     transition: .1s;
-    font: 15px system-ui;
+    font: 14px system-ui;
+    cursor: pointer;
   }
   
   .folder > div > button {
@@ -1322,7 +1309,7 @@ padding: 6px 10px;
   }
 
   .folder > div > button:hover {
-    background-color: whitesmoke;
+    background-color: #e0e0e0;
   }
   
   .inputContainer {
@@ -1333,14 +1320,15 @@ padding: 6px 10px;
   
   .inputContainer > span {
     /* margin-top: 5px; */
-    padding-left: 50px;
+    padding-left: 45px;
+    /* font-size: 16px; */
   }
   
   .inputContainer__input {
-    margin: 6px 0 0px 0;
+    /* margin: 6px 0 0px 0; */
     padding: 5px;
     display: flex;
-    border: 1px solid lightgray;
+    border: 1px solid #ededed;
     align-items: center;
     justify-content: space-between;
     cursor: text;
@@ -1365,7 +1353,7 @@ padding: 6px 10px;
   }
 
   .select-folder {
-    background-color: whitesmoke;
+    background-color: #e0e0e0;
   }
 
   .dropzone {
@@ -1375,8 +1363,7 @@ padding: 6px 10px;
     transition: .1s;
   }
 
-  /* replace with on drop func call */
   .dragging {
-    border: 1px dashed #ccc;
-    background-color: whitesmoke;
+    /* border: 1px dashed #ededed; */
+    background-color: #fafafa;
   }

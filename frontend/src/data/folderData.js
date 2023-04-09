@@ -1,7 +1,7 @@
 const explorer = {
   id: "1",
   name: "Home",
-  isFolder: true,
+  type: "folder",
   items: [
     /* all the users content will be 
         nested inside this folder, and 
@@ -10,23 +10,23 @@ const explorer = {
     {
       id: "2",
       name: "public",
-      isFolder: true,
+      type: "folder",
       items: [
         {
           id: "3",
           name: "public nested 1",
-          isFolder: true,
+          type: "folder",
           items: [
             {
               id: "4",
-              name: "index.html",
-              isFolder: false,
+              name: "index.txt",
+              type: "txt",
               items: [],
             },
             {
               id: "5",
-              name: "hello.html",
-              isFolder: false,
+              name: "hello.pdf",
+              type: "pdf",
               items: [],
             },
           ],
@@ -37,23 +37,23 @@ const explorer = {
     {
       id: "6",
       name: "src",
-      isFolder: true,
+      type: "folder",
       items: [
         {
           id: "7",
           name: "public nested 2",
-          isFolder: true,
+          type: "folder",
           items: [
             {
               id: "8",
-              name: "about.html",
-              isFolder: false,
+              name: "about.jpg",
+              type: "jpg",
               items: [],
             },
             {
               id: "9",
-              name: "home.html",
-              isFolder: false,
+              name: "home.mp4",
+              type: "mp4",
               items: [],
             },
           ],

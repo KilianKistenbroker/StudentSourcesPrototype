@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import DropZone from "../components/DropZone";
 import Sources from "./Sources";
 
-const Student = (data, windowDimension) => {
+const Student = ({ windowDimension }) => {
   const [explorerData, setExplorerData] = useState(folderData);
   const [currentDirectory, setCurrentDirectory] = useState({});
   const [loading, setLoading] = useState(true);
@@ -38,55 +38,223 @@ const Student = (data, windowDimension) => {
 
   return (
     <div className="page">
-      <StudentSearch currentDirectory={currentDirectory} />
+      <StudentSearch
+        currentDirectory={currentDirectory}
+        windowDimension={windowDimension}
+      />
 
       <div className="grid-foundation">
-        <div className="left-panel-grid">
-          <div className="left-panel-title">EXPLORER</div>
+        <div
+          className={
+            windowDimension.winWidth > 1200
+              ? "left-panel-grid max-panel-width"
+              : "left-panel-grid medium-panel-width"
+          }
+          style={windowDimension.winWidth < 800 ? { display: "none" } : {}}
+        >
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "left-panel-title max-panel-width"
+                : "left-panel-title medium-panel-width"
+            }
+          >
+            EXPLORER
+          </div>
           <div
             className="header-tab"
             style={{ marginTop: "67.5px", direction: "ltr" }}
           >
             Files
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </span>
           </div>
+
           <div className="left-panel-tree">
             <DirectoryTree
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
               setCurrentDirectory={handleSetCurrentDirectory}
               currentDirectory={currentDirectory}
-              // currentDirectory={currentDirectory}
-              // loading={loading}
+              windowDimension={windowDimension}
             />
             {/* spacing */}
             <div style={{ height: "20px", width: "20px" }}> </div>
           </div>
           <div className="header-tab" style={{ direction: "ltr" }}>
             Ask Chatbot
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </span>
           </div>
-          <div className="left-panel-chatbot">{/* ask chatbot */}</div>
-          <div className="left-panel-textbox">textbox</div>
+          <div className="left-panel-chatbot">
+            {/* add CHATBOT components here */}
+          </div>
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "left-panel-textbox max-panel-width"
+                : "left-panel-textbox medium-panel-width"
+            }
+          >
+            {/* add INPUT FIELD for CHATBOT here */}
+            chatbot input field
+          </div>
         </div>
 
-        <div className="right-panel-grid">
-          <div className="right-panel-title">
+        <div
+          className={
+            windowDimension.winWidth > 1200
+              ? "right-panel-grid max-panel-width"
+              : "right-panel-grid medium-panel-width"
+          }
+        >
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "right-panel-title max-panel-width"
+                : "right-panel-title medium-panel-width"
+            }
+          >
             {currentDirectory.name.toUpperCase()}
           </div>
           <div className="header-tab" style={{ marginTop: "67.5px" }}>
             Info
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </span>
           </div>
-          <div className="right-panel-info">{/* info */}</div>
-          <div className="header-tab">Notes</div>
-          <div className="right-panel-notes">{/* notes */}</div>
-          <div className="header-tab">Comments</div>
-          <div className="right-panel-coments">{/* comments */}</div>
-          <div className="right-panel-textbox">textbox</div>
+          <div className="right-panel-info">
+            {/* add INFO components here */}
+          </div>
+          <div className="header-tab">
+            Notes
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </span>
+          </div>
+          <div className="right-panel-notes">
+            {/* add NOTES components here */}
+          </div>
+          <div className="header-tab">
+            Comments
+            <span style={{ float: "right" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </span>
+          </div>
+          <div className="right-panel-coments">
+            {/* add COMMENTS components here */}
+          </div>
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "right-panel-textbox max-panel-width"
+                : "right-panel-textbox medium-panel-width"
+            }
+          >
+            {/* add INPUT FIELD for COMMENTS here */}
+            comments input field
+          </div>
         </div>
 
-        <div className="main-panel-grid">
-          {/* <StudentSearch currentDirectory={currentDirectory} /> */}
-          <div className="main-panel-content">
-            {/* main content */}
+        <div
+          className={
+            windowDimension.winWidth > 1200
+              ? "main-panel-grid max-margin"
+              : "main-panel-grid medium-margin"
+          }
+          style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
+        >
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "main-panel-content max-margin"
+                : "main-panel-content medium-margin"
+            }
+          >
+            {/* add MAIN CONTENT components here */}
+
+            {/* display header */}
+            <div className="box" style={{ overflow: "hidden" }}>
+              {/* file type and file name */}
+              <div
+                className=""
+                style={{
+                  margin: "0px",
+                  width: "150px",
+                  padding: "5px",
+                  fontSize: "16px",
+                  overflow: "hidden",
+                  color: "dimgray",
+                  fontWeight: "bolder",
+                }}
+              >
+                Name
+              </div>
+
+              <div
+                style={{
+                  margin: "0px",
+                  padding: "5px",
+                  fontSize: "16px",
+                  overflow: "hidden",
+                  color: "dimgray",
+                  fontWeight: "bolder",
+                  // paddingLeft: "20px",
+                }}
+              >
+                Pinned
+              </div>
+
+              <div
+                style={{
+                  margin: "0px",
+                  padding: "5px",
+                  fontSize: "16px",
+                  overflow: "hidden",
+                  color: "dimgray",
+                  fontWeight: "bolder",
+                }}
+              >
+                Visibility
+              </div>
+            </div>
 
             {loading ? (
               <div>loading...</div>
@@ -97,7 +265,30 @@ const Student = (data, windowDimension) => {
 
           <DropZone />
 
-          <div className="tiny-footer">
+          <div
+            className={
+              windowDimension.winWidth > 1200
+                ? "tiny-footer max-margin"
+                : "tiny-footer medium-margin"
+            }
+            style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
+          >
+            {windowDimension.winWidth < 800 ? (
+              <span
+                style={{
+                  float: "left",
+                  color: "dimgrey",
+                  fontSize: "18px",
+                  fontWeight: "bolder",
+                  paddingLeft: "20px",
+                }}
+              >
+                {" "}
+                {"<"} Back
+              </span>
+            ) : (
+              ""
+            )}
             {/* trash */}
             <svg
               xmlns="http://www.w3.org/2000/svg"

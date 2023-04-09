@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const StudentSearch = ({ currentDirectory }) => {
+const StudentSearch = ({ currentDirectory, windowDimension }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
@@ -9,11 +9,12 @@ const StudentSearch = ({ currentDirectory }) => {
     <div className="sub-navbar">
       <div></div>
       <div
-        style={{
-          width: "800px",
-          marginLeft: "400px",
-          marginRight: "400px",
-        }}
+        className={
+          windowDimension.winWidth > 1200
+            ? "main-pain-searchbar max-margin"
+            : "main-pain-searchbar medium-margin"
+        }
+        style={windowDimension.winWidth < 800 ? { margin: "0px" } : {}}
       >
         <form id="search_form">
           <button

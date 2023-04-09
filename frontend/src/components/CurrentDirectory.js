@@ -5,22 +5,22 @@ const CurrentDirectory = ({ currentDirectory }) => {
 
   return currentDirectory.items.map((loadData) => (
     // <div> {loadData.name} </div>
-    <div className="box" style={{ marginTop: "10px", overflow: "hidden" }}>
+    <div className="box" style={{ overflow: "hidden" }}>
       {/* file type and file name */}
       <div
         className=""
         style={{
-          margin: "0",
+          margin: "0px",
           padding: "5px",
-          fontSize: "18px",
-          width: "190px",
+          fontSize: "16px",
+          width: "150px",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
           color: "dimgray",
         }}
       >
-        {loadData.isFolder ? (
+        {loadData.type === "folder" ? (
           <span style={{ marginRight: "5px" }}>📁</span>
         ) : (
           <span style={{ marginRight: "5px" }}>📄</span>
@@ -60,7 +60,7 @@ const CurrentDirectory = ({ currentDirectory }) => {
             fill="currentColor"
             viewBox="0 0 16 16"
           >
-            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
           </svg>
         </div>
       </div>
