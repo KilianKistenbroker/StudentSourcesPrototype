@@ -1,30 +1,39 @@
 import { useEffect } from "react";
 
-const CurrentDirectory = ({ currentDirectory }) => {
+const CurrentDirectory = ({
+  currentDirectory,
+  setCurrentDirectory,
+  setCurrentFile,
+}) => {
   /* render items of current node (i.e. home directory for now) */
 
-  return currentDirectory.items.map((loadData) => (
+  return currentDirectory.items.map((loadData, index) => (
     // <div> {loadData.name} </div>
-    <div className="box" style={{ overflow: "hidden" }}>
+    <div className="box" style={{ overflow: "hidden" }} key={index}>
       {/* file type and file name */}
       <div
-        className=""
-        style={{
-          margin: "0px",
-          padding: "5px",
-          fontSize: "16px",
-          width: "150px",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          color: "dimgray",
-          userSelect: "none",
-        }}
+        className="main-panel-filename cursor-enabled"
+        onClick={
+          loadData.type === "folder"
+            ? () => setCurrentDirectory(loadData)
+            : // change below func to display file contents
+              () => setCurrentFile(loadData)
+        }
       >
         {loadData.type === "folder" ? (
           <span style={{ marginRight: "5px" }}>📁</span>
         ) : (
-          <span style={{ marginRight: "5px" }}>📄</span>
+          <span style={{ marginRight: "5px" }}>
+            {["jpeg", "jpg", "gif", "png"].includes(loadData.type)
+              ? "🖼️"
+              : "txt" === loadData.type
+              ? "📑"
+              : "pdf" === loadData.type
+              ? "📖"
+              : "mp4" === loadData.type
+              ? "📺"
+              : "💀"}
+          </span>
         )}
         {loadData.name}
       </div>
@@ -32,7 +41,7 @@ const CurrentDirectory = ({ currentDirectory }) => {
       <div className="box-star">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="header-icons"
+          className="header-icons cursor-enabled"
           fill="currentColor"
           viewBox="0 0 16 16"
         >
@@ -41,13 +50,10 @@ const CurrentDirectory = ({ currentDirectory }) => {
       </div>
 
       <div style={{ display: "flex", width: "70px", marginLeft: "5px" }}>
-        {/* <p style={{ fontSize: "16px", margin: "auto", color: "dimgrey" }}>
-          public
-        </p> */}
         <div className="box-star">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="header-icons"
+            className="header-icons cursor-enabled"
             fill="currentColor"
             viewBox="0 0 16 16"
           >
@@ -57,7 +63,7 @@ const CurrentDirectory = ({ currentDirectory }) => {
         <div className="box-star">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="header-icons"
+            className="header-icons cursor-enabled"
             fill="currentColor"
             viewBox="0 0 16 16"
           >

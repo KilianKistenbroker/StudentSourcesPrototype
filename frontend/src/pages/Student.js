@@ -3,10 +3,8 @@ import DirectoryTree from "../components/DirectoryTree";
 import folderData from "../data/folderData";
 import useTreeTraversal from "../hooks/useTreeTraversal";
 import StudentSearch from "../components/StudentSearch";
-import CurrentDirectory from "../components/CurrentDirectory";
-import { useEffect } from "react";
-import DropZone from "../components/DropZone";
-import Sources from "./Sources";
+import FolderContent from "../components/FolderContent";
+import FileContent from "../components/FileContent";
 
 const Student = ({ windowDimension }) => {
   // ----------- move to app.js later ------------ //
@@ -14,6 +12,7 @@ const Student = ({ windowDimension }) => {
   const [explorerData, setExplorerData] = useState(folderData);
   const [currentDirectory, setCurrentDirectory] = useState(folderData);
   const [showingRightPanel, setShowingRightPanel] = useState(true);
+  const [currentFile, setCurrentFile] = useState(null);
 
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (folderId, item, isFolder) => {
@@ -37,6 +36,8 @@ const Student = ({ windowDimension }) => {
         currentDirectory={currentDirectory}
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
+        currentFile={currentFile}
+        setCurrentFile={setCurrentFile}
       />
 
       <span
@@ -51,14 +52,11 @@ const Student = ({ windowDimension }) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="header-icons"
+          className="header-icons cursor-enabled"
           fill="currentColor"
           viewBox="0 0 16 16"
         >
-          <path
-            fill-rule="evenodd"
-            d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0zM4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5z"
-          />
+          <path d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0zM4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5z" />
         </svg>
       </span>
 
@@ -90,7 +88,7 @@ const Student = ({ windowDimension }) => {
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
@@ -106,6 +104,7 @@ const Student = ({ windowDimension }) => {
               setCurrentDirectory={handleSetCurrentDirectory}
               currentDirectory={currentDirectory}
               windowDimension={windowDimension}
+              setCurrentFile={setCurrentFile}
             />
             {/* spacing */}
             <div style={{ height: "20px", width: "20px" }}> </div>
@@ -116,7 +115,7 @@ const Student = ({ windowDimension }) => {
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
@@ -155,23 +154,19 @@ const Student = ({ windowDimension }) => {
                 : "right-panel-title medium-panel-width"
             }
           >
-            {currentDirectory.name.toUpperCase()}
+            {currentFile
+              ? currentFile.name.toUpperCase()
+              : currentDirectory.name.toUpperCase()}
 
             {/* collapse right panel button */}
-            <span
-              style={{ float: "right" }}
-              onClick={() => setShowingRightPanel(false)}
-            >
+            <span onClick={() => setShowingRightPanel(false)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z"
-                />
+                <path d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z" />
               </svg>
             </span>
           </div>
@@ -181,7 +176,7 @@ const Student = ({ windowDimension }) => {
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
@@ -198,7 +193,7 @@ const Student = ({ windowDimension }) => {
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
@@ -215,7 +210,7 @@ const Student = ({ windowDimension }) => {
             <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="header-icons"
+                className="header-icons cursor-enabled"
                 fill="currentColor"
                 viewBox="0 0 16 16"
               >
@@ -252,103 +247,27 @@ const Student = ({ windowDimension }) => {
               : {}
           }
         >
-          <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "main-panel-content max-margin"
-                : "main-panel-content medium-margin"
-            }
-          >
-            {/* add MAIN CONTENT components here */}
+          {/* add MAIN CONTENT components here */}
 
-            {/* display header */}
-            <div className="box" style={{ overflow: "hidden" }}>
-              <div
-                className=""
-                style={{
-                  margin: "0px",
-                  width: "150px",
-                  padding: "5px",
-                  fontSize: "16px",
-                  overflow: "hidden",
-                  color: "dimgray",
-                  fontWeight: "bolder",
-                }}
-              >
-                Name
-              </div>
-
-              <div
-                style={{
-                  margin: "0px",
-                  padding: "5px",
-                  fontSize: "16px",
-                  overflow: "hidden",
-                  color: "dimgray",
-                  fontWeight: "bolder",
-                }}
-              >
-                Pinned
-              </div>
-
-              <div
-                style={{
-                  margin: "0px",
-                  padding: "5px",
-                  fontSize: "16px",
-                  overflow: "hidden",
-                  color: "dimgray",
-                  fontWeight: "bolder",
-                }}
-              >
-                Visibility
-              </div>
-            </div>
-
-            <CurrentDirectory currentDirectory={currentDirectory} />
-          </div>
-
-          <DropZone />
-
-          <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "tiny-footer max-margin"
-                : "tiny-footer medium-margin"
-            }
-            style={
-              windowDimension.winWidth < 800 || !showingRightPanel
-                ? { margin: "0px" }
-                : {}
-            }
-          >
-            {windowDimension.winWidth < 800 ? (
-              <span
-                style={{
-                  float: "left",
-                  color: "dimgrey",
-                  fontSize: "18px",
-                  fontWeight: "bolder",
-                  paddingLeft: "20px",
-                }}
-              >
-                {" "}
-                {"<"} Back
-              </span>
-            ) : (
-              ""
-            )}
-            {/* trashbin */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              // className="header-icons"
-              style={{ width: "30px", height: "30px", color: "grey" }}
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M14 3a.702.702 0 0 1-.037.225l-1.684 10.104A2 2 0 0 1 10.305 15H5.694a2 2 0 0 1-1.973-1.671L2.037 3.225A.703.703 0 0 1 2 3c0-1.105 2.686-2 6-2s6 .895 6 2zM3.215 4.207l1.493 8.957a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836l1.493-8.957C11.69 4.689 9.954 5 8 5c-1.954 0-3.69-.311-4.785-.793z" />
-            </svg>
-          </div>
+          {/* if a file is selected, then load file here */}
+          {currentFile ? (
+            <FileContent
+              currentFile={currentFile}
+              setCurrentFile={setCurrentFile}
+              windowDimension={windowDimension}
+              showingRightPanel={showingRightPanel}
+            />
+          ) : (
+            <FolderContent
+              windowDimension={windowDimension}
+              currentDirectory={currentDirectory}
+              setCurrentDirectory={setCurrentDirectory}
+              explorerData={explorerData}
+              setExplorerData={setExplorerData}
+              showingRightPanel={showingRightPanel}
+              setCurrentFile={setCurrentFile}
+            />
+          )}
         </div>
       </div>
     </div>

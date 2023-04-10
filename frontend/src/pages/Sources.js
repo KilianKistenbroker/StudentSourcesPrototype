@@ -70,7 +70,6 @@ and also call request to update lists */
     setSelected(select);
   };
 
-  //  get users with given username, first, or last name
   const handleUserSearch = async (e) => {
     e.preventDefault();
     getFriends();
@@ -78,10 +77,17 @@ and also call request to update lists */
     let str2 = search.toLowerCase();
     str2 = str2.replace(/ +/g, "");
 
-    if (str2 === "all") {
+    // clear results if query is empty
+    if (str2.length === 0) {
+      setLoadUsers([]);
+
+      // get all users if query is all
+    } else if (str2 === "all") {
       const res = await axios.get("/users");
       setLoadUsers(res.data);
       console.log(res.data);
+
+      // fetch query results from backend
     } else {
       const res = await axios.get(`/search/${search}`);
       if (res.data.length === 0) setLoadUsers([]);
@@ -321,7 +327,7 @@ and also call request to update lists */
                 {/* Users */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons"
+                  className="header-icons cursor-enabled"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
@@ -338,7 +344,7 @@ and also call request to update lists */
                 {/* Folders */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons"
+                  className="header-icons cursor-enabled"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
@@ -355,14 +361,11 @@ and also call request to update lists */
                 {/* Saved */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons"
+                  className="header-icons cursor-enabled"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"
-                  />
+                  <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
                   <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
                 </svg>
               </div>
@@ -376,7 +379,7 @@ and also call request to update lists */
                 {/* Friends */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons"
+                  className="header-icons cursor-enabled"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >

@@ -405,7 +405,7 @@ const Signup = ({ data, windowDimension }) => {
             </div>
 
             <div className="messages">
-              <p
+              <div
                 id="firstnamenote"
                 className={
                   firstNameFocus
@@ -422,9 +422,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Required field.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="lastnamenote"
                 className={
                   lastNameFocus
@@ -441,9 +441,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Required field.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="emailnote"
                 className={
                   emailFocus
@@ -460,9 +460,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Please use valid email formatting.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="uidnote"
                 className={
                   userFocus
@@ -481,9 +481,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Must contain 4 to 24 characters.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="pwdnote"
                 className={
                   passwordFocus
@@ -542,9 +542,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Must contain at least 1 letter.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="checkboxnote"
                 className={
                   checkboxFocus
@@ -561,7 +561,7 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Required field.
                 </div>
-              </p>
+              </div>
             </div>
           </div>
 
@@ -805,7 +805,7 @@ const Signup = ({ data, windowDimension }) => {
             </div>
 
             <div className="messages-mobile">
-              <p
+              <div
                 id="firstnamenote"
                 className={firstNameFocus ? "instructions" : "offscreen"}
               >
@@ -818,9 +818,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Please enter your first name.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="lastnamenote"
                 className={lastNameFocus ? "instructions" : "offscreen"}
               >
@@ -833,9 +833,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Please enter your last name.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="emailnote"
                 className={emailFocus ? "instructions" : "offscreen"}
               >
@@ -848,9 +848,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Please use valid email formatting.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="uidnote"
                 className={userFocus ? "instructions" : "offscreen"}
               >
@@ -865,9 +865,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Username must contain 4 to 24 characters.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="pwdnote"
                 className={passwordFocus ? "instructions" : "offscreen"}
               >
@@ -922,9 +922,9 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Password must contain at least 1 letter.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="checkboxnote"
                 className={checkboxFocus ? "instructions" : "offscreen"}
               >
@@ -937,7 +937,7 @@ const Signup = ({ data, windowDimension }) => {
                   </span>
                   Agreement with our terms of service is required.
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           <Footer />

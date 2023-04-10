@@ -5,7 +5,12 @@ import readDroppedFiles from "../helpers/readDroppedFiles";
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const DropZone = ({ folderData }) => {
+const DropZone = ({
+  explorerData,
+  currentDirectory,
+  setCurrentDirectory,
+  setExplorerData,
+}) => {
   const [folderJson, setFolderJson] = useState(null);
   const [pdfDataUrl, setPdfDataUrl] = useState(null);
   const [numPages, setNumPages] = useState(null);
@@ -13,18 +18,55 @@ const DropZone = ({ folderData }) => {
   const [videoURL, setVideoURL] = useState(null);
   const [textURL, setTextURL] = useState(null);
   const [dragOver, setDragOver] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
+    setLoading(true);
+
     setDragOver(false);
 
-    const json = await readDroppedFiles(e.dataTransfer.items);
-    setFolderJson(json);
+    const objArr = await readDroppedFiles(e.dataTransfer.items);
+    // setFolderJson(json);
 
+    // --- this will update and sort global currDir --- //
+
+    for (let i = 0; i < objArr.length; i++) {
+      if (currentDirectory.items.some((item) => item.name === objArr[i].name)) {
+        // prompt skip or replace b/c merge is too hard to code :/
+      } else {
+        currentDirectory.items.push(objArr[i]);
+      }
+    }
+
+    currentDirectory.items.sort((a, b) => {
+      let fa = a.name.toLowerCase(),
+        fb = b.name.toLowerCase();
+
+      if (fa < fb) {
+        return -1;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+
+    let tempCurrDir = JSON.parse(JSON.stringify(currentDirectory));
+    let tempExplorer = JSON.parse(JSON.stringify(explorerData));
+
+    setCurrentDirectory(tempCurrDir);
+    setExplorerData(tempExplorer);
+
+    setLoading(false);
+
+    // send req to backend to sync files in cloud
+
+    // check contents of dropped items
     console.log("from fdz");
-    console.log(json);
+    console.log(objArr);
   };
 
   const handleDragOver = (e) => {
@@ -82,15 +124,40 @@ const DropZone = ({ folderData }) => {
     return pages;
   };
 
+  if (loading) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "60px",
+          color: "dimgrey",
+          fontSize: "22px",
+        }}
+      >
+        Loading...
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={dragOver ? "dropzone dragging" : "dropzone"}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragExit={() => setDragOver(false)}
-    >
-      {folderJson && renderNode(folderJson)}
-    </div>
+    <>
+      {dragOver ? (
+        <div
+          className={"dropzone dragging"}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragExit={() => setDragOver(false)}
+        >
+          Drop files here to upload
+        </div>
+      ) : (
+        <div className={"dropzone"} onDragOver={handleDragOver}>
+          {/* no rendering here */}
+
+          {/* {folderJson && renderNode(folderJson)} */}
+        </div>
+      )}
+    </>
   );
 };
 

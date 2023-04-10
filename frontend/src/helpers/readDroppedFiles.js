@@ -44,7 +44,7 @@ const readEntries = async (entry, parent) => {
 // ------- gets all contents of users home folder -------- //
 
 const readDroppedFiles = async (items) => {
-  let rootFolder = { name: "root", type: "folder", items: [] };
+  const rootFolder = { name: "root", type: "folder", items: [] };
 
   for (const item of items) {
     const entry = item.webkitGetAsEntry();
@@ -56,10 +56,11 @@ const readDroppedFiles = async (items) => {
   /* change og root name to 'Home'and store 
   og name somewhere else for reference. */
 
-  rootFolder.items[0].name = "Home";
-  const adjustedFolder = rootFolder.items[0];
+  // rootFolder.items[0].name = "Home";
+  // const adjustedFolder = rootFolder.items[0];
 
-  return adjustedFolder;
+  // return the items only
+  return rootFolder.items;
 };
 
 export default readDroppedFiles;

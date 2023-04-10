@@ -7,6 +7,7 @@ const DirectoryTree = ({
   setCurrentDirectory,
   currentDirectory,
   windowDimension,
+  setCurrentFile,
 }) => {
   const [expand, setExpand] = useState(false);
   const [specialExpand, setSpecialExpand] = useState(false);
@@ -20,11 +21,19 @@ const DirectoryTree = ({
     if (explorer.name === "Home") setExpand(true);
   }, []);
 
+  // update to always expand next current directory. this was made for tree traversing from the main panel.
+  useEffect(() => {
+    if (explorer.name === currentDirectory.name && !specialExpand)
+      setExpand(true);
+  }, [currentDirectory]);
+
   const handleSetExpand = (e) => {
     // set curr dir
     if (currentDirectory.name !== explorer.name) {
-      if (specialExpand) setExpand(!expand);
-      else setExpand(true);
+      if (specialExpand) {
+        setExpand(!expand);
+        return;
+      } else setExpand(true);
     } else {
       // set expand
       setExpand(!expand);
@@ -68,10 +77,10 @@ const DirectoryTree = ({
           }
           onClick={() => handleSetExpand(explorer)}
         >
-          <span>
+          <span className="cursor-enabled" style={{ width: "fit-content" }}>
             {" "}
             {expand ? (
-              <p
+              <div
                 onMouseEnter={() => setSpecialExpand(true)}
                 onMouseLeave={() => setSpecialExpand(false)}
                 className="folder-icon"
@@ -83,14 +92,11 @@ const DirectoryTree = ({
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  />
+                  <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                 </svg>
-              </p>
+              </div>
             ) : (
-              <p
+              <div
                 onMouseEnter={() => setSpecialExpand(true)}
                 onMouseLeave={() => setSpecialExpand(false)}
                 className="folder-icon"
@@ -102,12 +108,9 @@ const DirectoryTree = ({
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
-                  />
+                  <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-              </p>
+              </div>
             )}{" "}
             📁 {explorer.name}
           </span>
@@ -153,15 +156,16 @@ const DirectoryTree = ({
             </div>
           )}
 
-          {explorer.items.map((exp) => {
+          {explorer.items.map((exp, index) => {
             return (
               <DirectoryTree
                 handleInsertNode={handleInsertNode}
                 explorer={exp}
-                key={exp.id}
+                key={index}
                 setCurrentDirectory={setCurrentDirectory}
                 currentDirectory={currentDirectory}
                 windowDimension={windowDimension}
+                setCurrentFile={setCurrentFile}
               />
             );
           })}
@@ -169,7 +173,42 @@ const DirectoryTree = ({
       </div>
     );
   } else {
-    return <span className="file"> 📄 {explorer.name} </span>;
+    return (
+      <div className="file" onClick={() => setCurrentFile(explorer)}>
+        <div
+          className="cursor-enabled"
+          style={
+            windowDimension.winWidth > 1200
+              ? {
+                  width: "fit-content",
+                  maxWidth: "260px",
+                  overflow: "hidden",
+                  textOverflow: "ellipses",
+                  whiteSpace: "nowrap",
+                  transition: ".1s",
+                }
+              : {
+                  width: "fit-content",
+                  maxWidth: "160px",
+                  overflow: "hidden",
+                  textOverflow: "ellipses",
+                  whiteSpace: "nowrap",
+                }
+          }
+        >
+          {["jpeg", "jpg", "gif", "png"].includes(explorer.type)
+            ? "🖼️"
+            : "txt" === explorer.type
+            ? "📑"
+            : "pdf" === explorer.type
+            ? "📖"
+            : "mp4" === explorer.type
+            ? "📺"
+            : "💀"}
+          {explorer.name}
+        </div>
+      </div>
+    );
   }
 };
 

@@ -239,7 +239,7 @@ const Login = ({ data, windowDimension }) => {
             </div>
 
             <div className="messages">
-              <p
+              <div
                 id="uidnote"
                 className={
                   userFocus
@@ -256,9 +256,9 @@ const Login = ({ data, windowDimension }) => {
                   </span>
                   Required field.
                 </div>
-              </p>
+              </div>
 
-              <p
+              <div
                 id="pwdnote"
                 className={
                   passwordFocus
@@ -275,7 +275,7 @@ const Login = ({ data, windowDimension }) => {
                   </span>
                   Required field.
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           <Footer />
