@@ -5,10 +5,10 @@ import useTreeTraversal from "../hooks/useTreeTraversal";
 import StudentSearch from "../components/StudentSearch";
 import FolderContent from "../components/FolderContent";
 import FileContent from "../components/FileContent";
+import { saveAs } from "file-saver";
 
 const Student = ({ windowDimension }) => {
-  // ----------- move to app.js later ------------ //
-
+  // ----------- move to app.js later (maybe) ------------ //
   const [explorerData, setExplorerData] = useState(folderData);
   const [currentDirectory, setCurrentDirectory] = useState(folderData);
   const [showingRightPanel, setShowingRightPanel] = useState(true);
@@ -26,6 +26,35 @@ const Student = ({ windowDimension }) => {
     setCurrentDirectory(event);
   }
 
+  const [textURL, setTextURL] = useState("");
+
+  const handleDownload = () => {
+    if (currentFile.type === "txt") {
+      const updatedContent = textURL;
+      const blob = new Blob([updatedContent], {
+        type: "text/plain;charset=utf-8",
+      });
+
+      saveAs(blob, currentFile.name + "." + currentFile.type);
+    } else if (
+      [["jpeg", "jpg", "gif", "png", "pdf"].includes(currentFile.type)]
+    ) {
+      const imgURL = currentFile.dataUrl;
+      const imgDataUrlParts = imgURL.split(",");
+      const byteString = window.atob(imgDataUrlParts[1]);
+      const mimeString = imgDataUrlParts[0].split(":")[1].split(";")[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([ab], { type: mimeString });
+      saveAs(blob, currentFile.name + "." + currentFile.type);
+    }
+  };
+
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -38,6 +67,7 @@ const Student = ({ windowDimension }) => {
         showingRightPanel={showingRightPanel}
         currentFile={currentFile}
         setCurrentFile={setCurrentFile}
+        handleDownload={handleDownload}
       />
 
       <span
@@ -256,6 +286,8 @@ const Student = ({ windowDimension }) => {
               setCurrentFile={setCurrentFile}
               windowDimension={windowDimension}
               showingRightPanel={showingRightPanel}
+              textURL={textURL}
+              setTextURL={setTextURL}
             />
           ) : (
             <FolderContent

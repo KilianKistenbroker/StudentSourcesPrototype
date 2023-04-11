@@ -152,7 +152,7 @@ const Signup = ({ data, windowDimension }) => {
 
         localStorage.setItem("data", JSON.stringify(data));
 
-        navigate("/sources");
+        navigate("/student");
         return;
       }
     } catch (err) {

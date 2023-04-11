@@ -65,19 +65,39 @@ const DirectoryTree = ({
       <div>
         <div
           className={
-            explorer.name === currentDirectory.name &&
+            explorer.id === currentDirectory.id &&
             windowDimension.winWidth > 1200
               ? "folder select-folder max-folder"
               : explorer.name !== currentDirectory.name &&
                 windowDimension.winWidth > 1200
               ? "folder max-folder"
-              : explorer.name === currentDirectory.name
+              : explorer.id === currentDirectory.id
               ? "folder select-folder medium-folder"
               : "folder medium-folder"
           }
           onClick={() => handleSetExpand(explorer)}
         >
-          <span className="cursor-enabled" style={{ width: "fit-content" }}>
+          <span
+            className="cursor-enabled"
+            style={
+              windowDimension.winWidth > 1200
+                ? {
+                    width: "fit-content",
+                    maxWidth: "260px",
+                    overflow: "hidden",
+                    textOverflow: "ellipses",
+                    whiteSpace: "nowrap",
+                    transition: ".1s",
+                  }
+                : {
+                    width: "fit-content",
+                    maxWidth: "160px",
+                    overflow: "hidden",
+                    textOverflow: "ellipses",
+                    whiteSpace: "nowrap",
+                  }
+            }
+          >
             {" "}
             {expand ? (
               <div
@@ -115,7 +135,7 @@ const DirectoryTree = ({
             📁 {explorer.name}
           </span>
 
-          <div>
+          <div style={{ whiteSpace: "nowrap" }}>
             <button onClick={(e) => handleNewFolder(e, "folder")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,14 +194,17 @@ const DirectoryTree = ({
     );
   } else {
     return (
-      <div className="file" onClick={() => setCurrentFile(explorer)}>
+      <div
+        className="file cursor-enabled"
+        onClick={() => setCurrentFile(explorer)}
+      >
         <div
-          className="cursor-enabled"
+          className=""
           style={
             windowDimension.winWidth > 1200
               ? {
                   width: "fit-content",
-                  maxWidth: "260px",
+                  maxWidth: "200px",
                   overflow: "hidden",
                   textOverflow: "ellipses",
                   whiteSpace: "nowrap",
@@ -189,7 +212,7 @@ const DirectoryTree = ({
                 }
               : {
                   width: "fit-content",
-                  maxWidth: "160px",
+                  maxWidth: "100px",
                   overflow: "hidden",
                   textOverflow: "ellipses",
                   whiteSpace: "nowrap",

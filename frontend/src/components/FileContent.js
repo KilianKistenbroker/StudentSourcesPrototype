@@ -1,15 +1,30 @@
 import { useState } from "react";
 import TinyFooter from "./TinyFooter";
 import { useEffect } from "react";
-import { saveAs } from "file-saver";
+import { Document, Page, pdfjs } from "react-pdf";
+import "pdfjs-dist/web/pdf_viewer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FileContent = ({
   windowDimension,
   currentFile,
   setCurrentFile,
   showingRightPanel,
+  textURL,
+  setTextURL,
 }) => {
-  const [textURL, setTextURL] = useState("");
+  const [numPages, setNumPages] = useState(null);
+  const [scale, setScale] = useState(1);
+  const [containerStyle, setContainerStyle] = useState({});
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentFile && currentFile.type === "txt") {
@@ -27,30 +42,27 @@ const FileContent = ({
     }
   }, [currentFile]);
 
-  //   Downloads file from file viewer
-  const handleDownload = () => {
-    if (currentFile.type === "txt") {
-      const updatedContent = textURL;
-      const blob = new Blob([updatedContent], {
-        type: "text/plain;charset=utf-8",
+  const handleResize = () => {
+    const newScale = Math.max(window.innerWidth / 880, 0);
+    if (newScale > 0.95) {
+      setContainerStyle({
+        transform: `scale(${0.95})`,
+        transformOrigin: "0 0",
       });
-
-      saveAs(blob, currentFile.name + "." + currentFile.type);
-    } else if ([["jpeg", "jpg", "gif", "png"].includes(currentFile.type)]) {
-      const imgURL = currentFile.dataUrl;
-      const imgDataUrlParts = imgURL.split(",");
-      const byteString = window.atob(imgDataUrlParts[1]);
-      const mimeString = imgDataUrlParts[0].split(":")[1].split(";")[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      const blob = new Blob([ab], { type: mimeString });
-      saveAs(blob, currentFile.name + "." + currentFile.type);
+    } else {
+      setContainerStyle({
+        transform: `scale(${newScale})`,
+        transformOrigin: "0 0",
+      });
     }
+  };
+
+  const renderAllPages = (scale = 1) => {
+    const pages = [];
+    for (let i = 1; i <= numPages; i++) {
+      pages.push(<Page key={`page_${i}`} pageNumber={i} scale={scale} />);
+    }
+    return pages;
   };
 
   const handleSaveChanges = () => {
@@ -62,18 +74,6 @@ const FileContent = ({
 
   return (
     <div className={"main-panel-content"} style={{ maxWidth: "800px" }}>
-      <div
-        className="selection nested nested-content "
-        style={{
-          marginTop: "-50px",
-          float: "right",
-          width: "fit-content",
-        }}
-        onClick={() => handleDownload()}
-      >
-        Download
-      </div>
-
       {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
         <img
           src={currentFile.dataUrl}
@@ -94,7 +94,19 @@ const FileContent = ({
           onChange={(e) => setTextURL(e.target.value)}
         ></textarea>
       ) : "pdf" === currentFile.type ? (
-        "📖"
+        <div style={containerStyle}>
+          <Document
+            file={currentFile.dataUrl}
+            onLoadSuccess={({ numPages }) => {
+              console.log(`PDF loaded with ${numPages} pages.`);
+
+              // load more when user scrolls near bottom of page
+              setNumPages(50);
+            }}
+          >
+            {renderAllPages(1.75)}
+          </Document>
+        </div>
       ) : "mp4" === currentFile.type ? (
         "📺"
       ) : (

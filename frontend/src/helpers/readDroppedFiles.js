@@ -8,32 +8,40 @@ const readFileContent = async (file) => {
   });
 };
 
-const readEntries = async (entry, parent) => {
+const readEntries = async (entry, parent, path) => {
+  const currentPath = path ? `${path}/${entry.name}` : entry.name;
+
   if (entry.isFile) {
     const nameAndType = entry.name.split(".");
-    console.log(nameAndType);
 
     return new Promise(async (resolve) => {
       entry.file(async (file) => {
         const dataUrl = await readFileContent(file);
         parent.items.push({
+          id: currentPath,
           name: nameAndType[0],
           type: nameAndType[1],
           size: file.size,
-          dataUrl, //  <--------- replace with fetch req later on.
+          dataUrl,
         });
         resolve();
       });
     });
   } else if (entry.isDirectory) {
-    const newFolder = { name: entry.name, type: "folder", items: [] };
+    const newFolder = {
+      id: currentPath,
+      name: entry.name,
+      type: "folder",
+      items: [],
+    };
     parent.items.push(newFolder);
 
     const reader = entry.createReader();
     return new Promise((resolve) => {
       reader.readEntries(async (entries) => {
-        for (const e of entries) {
-          await readEntries(e, newFolder);
+        for (let i = 0; i < entries.length; i++) {
+          const e = entries[i];
+          await readEntries(e, newFolder, currentPath);
         }
         resolve();
       });
@@ -46,20 +54,14 @@ const readEntries = async (entry, parent) => {
 const readDroppedFiles = async (items) => {
   const rootFolder = { name: "root", type: "folder", items: [] };
 
-  for (const item of items) {
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
     const entry = item.webkitGetAsEntry();
     if (entry) {
-      await readEntries(entry, rootFolder);
+      await readEntries(entry, rootFolder, "");
     }
   }
 
-  /* change og root name to 'Home'and store 
-  og name somewhere else for reference. */
-
-  // rootFolder.items[0].name = "Home";
-  // const adjustedFolder = rootFolder.items[0];
-
-  // return the items only
   return rootFolder.items;
 };
 

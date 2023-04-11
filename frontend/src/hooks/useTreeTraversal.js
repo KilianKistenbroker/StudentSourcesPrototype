@@ -8,6 +8,9 @@ const useTreeTraversal = () => {
         items: [],
       });
 
+      console.log("inserted node");
+      console.log(tree);
+
       return tree;
     }
 

@@ -84,7 +84,7 @@ const Login = ({ data, windowDimension }) => {
         setUser("");
         setPassword("");
 
-        navigate("/sources");
+        navigate("/student");
         return;
       }
     } catch (err) {

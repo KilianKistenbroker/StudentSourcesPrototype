@@ -1295,7 +1295,6 @@ padding: 6px 10px;
   }
   
   .folder > span {
-    width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1398,3 +1397,34 @@ padding: 6px 10px;
     font-size: 22px;
     /* font-weight: bolder; */
   }
+
+  /* ---------- for displaying pdf's --------  */
+
+ .react-pdf__Page__canvas {
+}
+
+  .react-pdf__Document {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .react-pdf__Page {
+    border-bottom:1px solid lightgrey ;
+    margin: 0 auto;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .react-pdf__Page__annotations {
+    display: none;
+  } 
+  
+  .annotationLayer {
+    display: none;
+  }
+
+.react-pdf__Page__textContent {
+}
+.textLayer > span{
+}
