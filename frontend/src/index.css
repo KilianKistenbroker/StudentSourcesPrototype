@@ -542,7 +542,7 @@ button {
     align-items: center;
     z-index: 1;
     width: 100%;
-    transition: .1s;
+    transition: .2s;
 }
 
 .selected {
@@ -1152,7 +1152,6 @@ padding: 6px 10px;
     z-index: 1;
     display: flex;
     justify-content: space-between;
-    overflow: hidden;
 }
 
 .right-panel-info {
@@ -1270,11 +1269,9 @@ padding: 6px 10px;
 /* ------- directory tree -------- */
 .medium-folder {
     min-width: 300px;
-    transition: .1s;
 }
 .max-folder {
     min-width: 400px;
-    transition: .1s;
 }
 
 .folder {
@@ -1302,7 +1299,6 @@ padding: 6px 10px;
 
   .folder:hover, .file:hover {
     background-color: #ededed;
-    transition: .1s;
   }
   
   .file {
@@ -1400,10 +1396,12 @@ padding: 6px 10px;
 
   /* ---------- for displaying pdf's --------  */
 
- .react-pdf__Page__canvas {
+ .react-pdf__Page__canvas {width: 100% !important;
+    height: 100% !important;
 }
 
   .react-pdf__Document {
+    
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -1424,7 +1422,9 @@ padding: 6px 10px;
     display: none;
   }
 
+  /* temporarily disable text highlighting until i figure out how to scale properly */
 .react-pdf__Page__textContent {
+    display: none;
 }
 .textLayer > span{
 }

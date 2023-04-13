@@ -1,9 +1,12 @@
 const explorer = {
   // default folder, will be replaced on init
-
-  id: "1",
   name: "Home",
+  pathname: "Home",
   type: "folder",
+  size: 0,
+  isPinned: false,
+  visibility: "public",
+  dataUrl: "",
   items: [],
 };
 

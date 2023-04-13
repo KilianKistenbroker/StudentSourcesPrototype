@@ -5,8 +5,6 @@ const CurrentDirectory = ({
   setCurrentDirectory,
   setCurrentFile,
 }) => {
-  /* render items of current node (i.e. home directory for now) */
-
   return currentDirectory.items.map((loadData, index) => (
     // <div> {loadData.name} </div>
     <div className="box" style={{ overflow: "hidden" }} key={index}>

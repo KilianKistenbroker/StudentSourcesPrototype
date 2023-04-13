@@ -1,47 +1,65 @@
 import React, { useState } from "react";
 import readDroppedFiles from "../helpers/readDroppedFiles";
-// import { Document, Page, pdfjs } from "react-pdf";
-// import "pdfjs-dist/web/pdf_viewer.css";
-
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const DropZone = ({
   explorerData,
   currentDirectory,
   setCurrentDirectory,
   setExplorerData,
+  setLoading,
+  loading,
 }) => {
-  const [folderJson, setFolderJson] = useState(null);
-  const [pdfDataUrl, setPdfDataUrl] = useState(null);
-  const [numPages, setNumPages] = useState(null);
-  const [imgURL, setImgURL] = useState(null);
-  const [videoURL, setVideoURL] = useState(null);
-  const [textURL, setTextURL] = useState(null);
   const [dragOver, setDragOver] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const updateParentSizeAndInsert = (node, parsingArr, size, insert) => {
+    let myNode = JSON.parse(JSON.stringify(node));
+    parsingArr.shift();
+    if (parsingArr.length === 0) {
+      insert.size += size;
+      myNode = insert;
+
+      return insert;
+    }
+    myNode.size += size;
+    for (let i = 0; i < myNode.items.length; i++) {
+      if (myNode.items[i].name === parsingArr[0]) {
+        myNode.items[i] = updateParentSizeAndInsert(
+          myNode.items[i],
+          parsingArr,
+          size,
+          insert
+        );
+        return myNode;
+      }
+    }
+  };
 
   const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
     setLoading(true);
-
     setDragOver(false);
 
-    const objArr = await readDroppedFiles(e.dataTransfer.items);
-    // setFolderJson(json);
+    const objArr = await readDroppedFiles(
+      e.dataTransfer.items,
+      currentDirectory
+    );
 
     // --- this will update and sort global currDir --- //
 
+    let size = 0;
+    let tempCurrDir = JSON.parse(JSON.stringify(currentDirectory));
+
     for (let i = 0; i < objArr.length; i++) {
-      if (currentDirectory.items.some((item) => item.name === objArr[i].name)) {
+      if (tempCurrDir.items.some((item) => item.name === objArr[i].name)) {
         // prompt skip or replace b/c merge is too hard to code :/
       } else {
-        currentDirectory.items.push(objArr[i]);
+        size += objArr[i].size;
+        tempCurrDir.items.push(objArr[i]);
       }
     }
 
-    currentDirectory.items.sort((a, b) => {
+    tempCurrDir.items.sort((a, b) => {
       let fa = a.name.toLowerCase(),
         fb = b.name.toLowerCase();
 
@@ -54,74 +72,37 @@ const DropZone = ({
       return 0;
     });
 
-    let tempCurrDir = JSON.parse(JSON.stringify(currentDirectory));
-    let tempExplorer = JSON.parse(JSON.stringify(explorerData));
+    /* parse through tree using pathname from current directory. 
+    then add size to each node in branch */
 
+    let parsingArr = currentDirectory.pathname.split("/");
+
+    const temp = updateParentSizeAndInsert(
+      explorerData,
+      parsingArr,
+      size,
+      tempCurrDir
+    );
+
+    explorerData = temp;
+    const temp2 = JSON.parse(JSON.stringify(explorerData));
+
+    setExplorerData(temp2);
     setCurrentDirectory(tempCurrDir);
-    setExplorerData(tempExplorer);
 
     setLoading(false);
 
-    // send req to backend to sync files in cloud
+    console.log("snapshot");
+    console.log(explorerData);
 
-    // check contents of dropped items
-    console.log("from fdz");
-    console.log(objArr);
+    // send req to backend to sync files in cloud
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
     setDragOver(true);
-
     e.dataTransfer.dropEffect = "copy";
-  };
-
-  const renderNode = (node) => {
-    if (node.type !== "folder") {
-      return (
-        <div
-          key={node.name}
-          onClick={() => {
-            if (["jpeg", "jpg", "gif", "png"].includes(node.type)) {
-              setImgURL(node.dataUrl);
-            } else if ("pdf" === node.type) {
-              setPdfDataUrl(node.dataUrl);
-            } else if ("txt" === node.type) {
-              const txtContent = window.atob(node.dataUrl.split(",")[1]);
-            } else if ("mp4" === node.type) {
-              const videoData = window.atob(node.dataUrl.split(",")[1]);
-              const byteArray = new Uint8Array(videoData.length);
-              for (let i = 0; i < videoData.length; i++) {
-                byteArray[i] = videoData.charCodeAt(i);
-              }
-              const blob = new Blob([byteArray.buffer], { type: "video/mp4" });
-              setVideoURL(URL.createObjectURL(blob));
-            }
-          }}
-        >
-          {node.name}
-        </div>
-      );
-    } else if (node.type === "folder") {
-      return (
-        <div key={node.name}>
-          <div>{node.name}</div>
-          <div style={{ paddingLeft: "20px" }}>
-            {node.items.map(renderNode)}
-          </div>
-        </div>
-      );
-    }
-  };
-
-  const renderAllPages = (scale = 1) => {
-    const pages = [];
-    for (let i = 1; i <= numPages; i++) {
-      //   pages.push(<Page key={`page_${i}`} pageNumber={i} scale={scale} />);
-    }
-    return pages;
   };
 
   if (loading) {

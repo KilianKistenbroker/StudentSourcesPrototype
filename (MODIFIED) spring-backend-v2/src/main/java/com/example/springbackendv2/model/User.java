@@ -1,5 +1,8 @@
 package com.example.springbackendv2.model;
 
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +18,12 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonType")
+    private Tree tree;
+
+    public Tree getTree() {
+        return tree;
+    }
 
 
     public Long getId() {
@@ -65,3 +74,4 @@ public class User {
         this.password = password;
     }
 }
+

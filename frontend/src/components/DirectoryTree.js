@@ -8,6 +8,7 @@ const DirectoryTree = ({
   currentDirectory,
   windowDimension,
   setCurrentFile,
+  loading,
 }) => {
   const [expand, setExpand] = useState(false);
   const [specialExpand, setSpecialExpand] = useState(false);
@@ -23,13 +24,13 @@ const DirectoryTree = ({
 
   // update to always expand next current directory. this was made for tree traversing from the main panel.
   useEffect(() => {
-    if (explorer.name === currentDirectory.name && !specialExpand)
+    if (explorer.pathname === currentDirectory.pathname && !specialExpand)
       setExpand(true);
   }, [currentDirectory]);
 
   const handleSetExpand = (e) => {
     // set curr dir
-    if (currentDirectory.name !== explorer.name) {
+    if (currentDirectory.pathname !== explorer.pathname) {
       if (specialExpand) {
         setExpand(!expand);
         return;
@@ -44,6 +45,8 @@ const DirectoryTree = ({
 
   const handleNewFolder = (e, type) => {
     e.stopPropagation();
+
+    setCurrentDirectory(explorer);
     setExpand(true);
 
     setShowInput({
@@ -54,24 +57,27 @@ const DirectoryTree = ({
 
   const onAddFolder = (e) => {
     if (e.keyCode === 13 && e.target.value) {
-      console.log("onAddFolder executed");
-      handleInsertNode(explorer.id, e.target.value, showInput.type);
+      handleInsertNode(e.target.value, showInput.type);
       setShowInput({ ...showInput, visible: false });
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (explorer.type === "folder") {
     return (
       <div>
         <div
           className={
-            explorer.id === currentDirectory.id &&
+            explorer.pathname === currentDirectory.pathname &&
             windowDimension.winWidth > 1200
               ? "folder select-folder max-folder"
               : explorer.name !== currentDirectory.name &&
                 windowDimension.winWidth > 1200
               ? "folder max-folder"
-              : explorer.id === currentDirectory.id
+              : explorer.pathname === currentDirectory.pathname
               ? "folder select-folder medium-folder"
               : "folder medium-folder"
           }
@@ -177,17 +183,20 @@ const DirectoryTree = ({
           )}
 
           {explorer.items.map((exp, index) => {
-            return (
-              <DirectoryTree
-                handleInsertNode={handleInsertNode}
-                explorer={exp}
-                key={index}
-                setCurrentDirectory={setCurrentDirectory}
-                currentDirectory={currentDirectory}
-                windowDimension={windowDimension}
-                setCurrentFile={setCurrentFile}
-              />
-            );
+            if (expand) {
+              // <--------  this if statement is VERY important for time complexity !!!
+              return (
+                <DirectoryTree
+                  handleInsertNode={handleInsertNode}
+                  explorer={exp}
+                  key={index}
+                  setCurrentDirectory={setCurrentDirectory}
+                  currentDirectory={currentDirectory}
+                  windowDimension={windowDimension}
+                  setCurrentFile={setCurrentFile}
+                />
+              );
+            }
           })}
         </div>
       </div>

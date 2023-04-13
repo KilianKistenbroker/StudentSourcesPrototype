@@ -6,6 +6,7 @@ import StudentSearch from "../components/StudentSearch";
 import FolderContent from "../components/FolderContent";
 import FileContent from "../components/FileContent";
 import { saveAs } from "file-saver";
+import explorer from "../data/folderData";
 
 const Student = ({ windowDimension }) => {
   // ----------- move to app.js later (maybe) ------------ //
@@ -13,11 +14,20 @@ const Student = ({ windowDimension }) => {
   const [currentDirectory, setCurrentDirectory] = useState(folderData);
   const [showingRightPanel, setShowingRightPanel] = useState(true);
   const [currentFile, setCurrentFile] = useState(null);
+  const [loading, setLoading] = useState(null);
 
+  // function insertNode(currentDirectory, name, type, setCurrentDirectory, setExplorerData)
   const { insertNode } = useTreeTraversal();
-  const handleInsertNode = (folderId, item, isFolder) => {
-    const finalTree = insertNode(explorerData, folderId, item, isFolder);
-    setExplorerData(finalTree);
+  const handleInsertNode = (name, type) => {
+    const finalTree = insertNode(
+      explorerData,
+      currentDirectory,
+      setCurrentDirectory,
+      setExplorerData,
+      name,
+      type
+    );
+    // setExplorerData(finalTree);
   };
 
   // ---------------------------------------------- //
@@ -184,12 +194,20 @@ const Student = ({ windowDimension }) => {
                 : "right-panel-title medium-panel-width"
             }
           >
-            {currentFile
-              ? currentFile.name.toUpperCase()
-              : currentDirectory.name.toUpperCase()}
+            <div
+              style={{
+                width: "300px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {currentFile
+                ? currentFile.name.toUpperCase()
+                : currentDirectory.name.toUpperCase()}
+            </div>
 
             {/* collapse right panel button */}
-            <span onClick={() => setShowingRightPanel(false)}>
+            <div onClick={() => setShowingRightPanel(false)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"
@@ -198,7 +216,7 @@ const Student = ({ windowDimension }) => {
               >
                 <path d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z" />
               </svg>
-            </span>
+            </div>
           </div>
           <div className="header-tab" style={{ marginTop: "67.5px" }}>
             Info
@@ -298,6 +316,9 @@ const Student = ({ windowDimension }) => {
               setExplorerData={setExplorerData}
               showingRightPanel={showingRightPanel}
               setCurrentFile={setCurrentFile}
+              explorer={explorer}
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
         </div>

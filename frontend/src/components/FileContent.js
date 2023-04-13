@@ -15,47 +15,49 @@ const FileContent = ({
   setTextURL,
 }) => {
   const [numPages, setNumPages] = useState(null);
-  const [scale, setScale] = useState(1);
-  const [containerStyle, setContainerStyle] = useState({});
+  const [videoURL, setVideoURL] = useState(null);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (currentFile && currentFile.type === "txt") {
+    if (!currentFile) return;
+    else if (currentFile.type === "txt") {
       let temp = "";
       try {
-        console.log("recieved txt file");
-        console.log(currentFile.dataUrl);
-
         temp = window.atob(currentFile.dataUrl.split(",")[1]);
         setTextURL(temp);
       } catch (err) {
-        console.log("ERROR: could not decode this");
-        setTextURL(currentFile.dataUrl);
+        console.log(
+          "ERROR: could not decode: " +
+            currentFile.name +
+            "." +
+            currentFile.type
+        );
+        console.log(err);
+        setTextURL("");
+      }
+    } else if (currentFile.type === "mp4") {
+      try {
+        // convert to streaming data from backend.
+
+        const videoData = window.atob(currentFile.dataUrl.split(",")[1]);
+        const byteArray = new Uint8Array(videoData.length);
+        for (let i = 0; i < videoData.length; i++) {
+          byteArray[i] = videoData.charCodeAt(i);
+        }
+        const blob = new Blob([byteArray.buffer], { type: "video/mp4" });
+        setVideoURL(URL.createObjectURL(blob)); // this is for rendering the video
+        setTextURL(URL.createObjectURL(blob)); // this  is for downloading the video
+      } catch (err) {
+        console.log(
+          "ERROR: could not decode: " +
+            currentFile.name +
+            "." +
+            currentFile.type
+        );
+        console.log(err);
+        setTextURL("");
       }
     }
   }, [currentFile]);
-
-  const handleResize = () => {
-    const newScale = Math.max(window.innerWidth / 880, 0);
-    if (newScale > 0.95) {
-      setContainerStyle({
-        transform: `scale(${0.95})`,
-        transformOrigin: "0 0",
-      });
-    } else {
-      setContainerStyle({
-        transform: `scale(${newScale})`,
-        transformOrigin: "0 0",
-      });
-    }
-  };
 
   const renderAllPages = (scale = 1) => {
     const pages = [];
@@ -68,8 +70,6 @@ const FileContent = ({
   const handleSaveChanges = () => {
     let temp = "application/octet-stream;base64," + window.btoa(textURL);
     currentFile.dataUrl = temp;
-    console.log("saved these changes");
-    console.log(currentFile.dataUrl);
   };
 
   return (
@@ -94,21 +94,25 @@ const FileContent = ({
           onChange={(e) => setTextURL(e.target.value)}
         ></textarea>
       ) : "pdf" === currentFile.type ? (
-        <div style={containerStyle}>
-          <Document
-            file={currentFile.dataUrl}
-            onLoadSuccess={({ numPages }) => {
-              console.log(`PDF loaded with ${numPages} pages.`);
+        <Document
+          file={currentFile.dataUrl}
+          onLoadSuccess={({ numPages }) => {
+            console.log(`PDF loaded with ${numPages} pages.`);
 
-              // load more when user scrolls near bottom of page
-              setNumPages(50);
-            }}
-          >
-            {renderAllPages(1.75)}
-          </Document>
-        </div>
+            // load more when user scrolls near bottom of page
+            setNumPages(20);
+          }}
+        >
+          {renderAllPages(1.75)}
+        </Document>
       ) : "mp4" === currentFile.type ? (
-        "📺"
+        <video
+          src={videoURL}
+          style={{ width: "100%", padding: "10px" }}
+          controls
+        >
+          Your browser does not support the video tag.
+        </video>
       ) : (
         "💀"
       )}

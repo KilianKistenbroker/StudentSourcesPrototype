@@ -10,6 +10,9 @@ const FolderContent = ({
   setExplorerData,
   showingRightPanel,
   setCurrentFile,
+  explorer,
+  loading,
+  setLoading,
 }) => {
   return (
     <div>
@@ -68,6 +71,7 @@ const FolderContent = ({
           currentDirectory={currentDirectory}
           setCurrentDirectory={setCurrentDirectory}
           setCurrentFile={setCurrentFile}
+          explorer={explorer}
         />
       </div>
 
@@ -76,6 +80,8 @@ const FolderContent = ({
         currentDirectory={currentDirectory}
         setCurrentDirectory={setCurrentDirectory}
         setExplorerData={setExplorerData}
+        loading={loading}
+        setLoading={setLoading}
       />
 
       <TinyFooter
