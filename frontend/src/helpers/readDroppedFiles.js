@@ -126,8 +126,7 @@ const readDroppedFiles = async (items, currentDirectory) => {
   };
 
   for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    const entry = item.webkitGetAsEntry();
+    const entry = items[i].webkitGetAsEntry();
     if (entry) {
       await readEntries(entry, rootFolder, relPath);
     }

@@ -40,6 +40,9 @@ const DropZone = ({
     setLoading(true);
     setDragOver(false);
 
+    console.log("transfering this data");
+    console.log(e.dataTransfer.items);
+
     const objArr = await readDroppedFiles(
       e.dataTransfer.items,
       currentDirectory
