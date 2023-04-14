@@ -13,6 +13,7 @@ const FolderContent = ({
   explorer,
   loading,
   setLoading,
+  pinSelected,
 }) => {
   return (
     <div>
@@ -71,7 +72,9 @@ const FolderContent = ({
           currentDirectory={currentDirectory}
           setCurrentDirectory={setCurrentDirectory}
           setCurrentFile={setCurrentFile}
-          explorer={explorer}
+          explorerData={explorerData}
+          setExplorerData={setExplorerData}
+          pinSelected={pinSelected}
         />
       </div>
 

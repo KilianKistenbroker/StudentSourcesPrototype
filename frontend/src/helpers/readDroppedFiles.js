@@ -24,7 +24,7 @@ const readEntries = async (entry, parent, path) => {
           size: file.size,
           isPinned: false,
           visibility: "private",
-          dataUrl: "",
+          dataUrl: dataUrl,
           items: [],
         };
         parent.items.push(newItem);
@@ -46,73 +46,28 @@ const readEntries = async (entry, parent, path) => {
     parent.items.push(newFolder);
 
     const reader = entry.createReader();
-    return new Promise((resolve) => {
-      reader.readEntries(async (entries) => {
-        for (let i = 0; i < entries.length; i++) {
-          const e = entries[i];
-          await readEntries(e, newFolder, currentPath);
-        }
-        parent.size += newFolder.size; // Add the folder's size to the parent folder's size
-        resolve();
+
+    const readAllEntries = async () => {
+      return new Promise((resolve) => {
+        reader.readEntries(async (entries) => {
+          if (entries.length === 0) {
+            resolve();
+            return;
+          }
+
+          for (let i = 0; i < entries.length; i++) {
+            const e = entries[i];
+            await readEntries(e, newFolder, currentPath);
+          }
+          await readAllEntries(); // Recursively call readAllEntries()
+          resolve();
+        });
       });
-    });
+    };
+
+    return readAllEntries();
   }
 };
-
-// const readEntries = async (entry, parent, path) => {
-//   const currentPath = path ? `${path}/${entry.name}` : entry.name;
-
-//   if (entry.isFile) {
-//     const nameAndType = entry.name.split(".");
-
-//     return new Promise(async (resolve) => {
-//       entry.file(async (file) => {
-//         /* data url will be req from backend
-//         and emptied when not in use to prevent
-//         over allocation */
-
-//         // const dataUrl = "";
-
-//         // temp placement. will replace with file streaming service.
-//         const dataUrl = await readFileContent(file);
-//         parent.items.push({
-//           name: nameAndType[0],
-//           pathname: currentPath,
-//           type: nameAndType[1],
-//           size: file.size,
-//           isPinned: false,
-//           visibility: "private",
-//           dataUrl: "",
-//           items: [],
-//         });
-//         resolve();
-//       });
-//     });
-//   } else if (entry.isDirectory) {
-//     const newFolder = {
-//       name: entry.name,
-//       pathname: currentPath,
-//       type: "folder",
-//       size: 0, // this should be a summation of its childrens size
-//       isPinned: false,
-//       visibility: "private",
-//       dataUrl: "",
-//       items: [],
-//     };
-//     parent.items.push(newFolder);
-
-//     const reader = entry.createReader();
-//     return new Promise((resolve) => {
-//       reader.readEntries(async (entries) => {
-//         for (let i = 0; i < entries.length; i++) {
-//           const e = entries[i];
-//           await readEntries(e, newFolder, currentPath);
-//         }
-//         resolve();
-//       });
-//     });
-//   }
-// };
 
 // ------- gets all contents of users home folder -------- //
 
@@ -125,8 +80,8 @@ const readDroppedFiles = async (items, currentDirectory) => {
     items: [],
   };
 
-  for (let i = 0; i < items.length; i++) {
-    const entry = items[i].webkitGetAsEntry();
+  for (const item of items) {
+    const entry = item.webkitGetAsEntry();
     if (entry) {
       await readEntries(entry, rootFolder, relPath);
     }

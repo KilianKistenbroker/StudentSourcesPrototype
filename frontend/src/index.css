@@ -531,7 +531,7 @@ button {
 .sub-navbar {
     background: white;
     margin-top: 60px;
-    padding: 20px;
+    padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
     display: flex;
@@ -543,6 +543,8 @@ button {
     z-index: 1;
     width: 100%;
     transition: .2s;
+    
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .selected {
@@ -1269,9 +1271,11 @@ padding: 6px 10px;
 /* ------- directory tree -------- */
 .medium-folder {
     min-width: 300px;
+    transition: .1s;
 }
 .max-folder {
     min-width: 400px;
+    transition: .1s;
 }
 
 .folder {

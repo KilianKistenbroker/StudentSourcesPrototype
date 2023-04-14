@@ -40,13 +40,13 @@ const DirectoryTree = ({
       setExpand(!expand);
     }
 
-    setCurrentDirectory(explorer);
+    setCurrentDirectory(explorer, explorer.pathname, -1);
   };
 
   const handleNewFolder = (e, type) => {
     e.stopPropagation();
 
-    setCurrentDirectory(explorer);
+    setCurrentDirectory(explorer, explorer.pathname, -1);
     setExpand(true);
 
     setShowInput({

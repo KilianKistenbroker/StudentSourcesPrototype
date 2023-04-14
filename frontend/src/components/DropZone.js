@@ -11,25 +11,17 @@ const DropZone = ({
 }) => {
   const [dragOver, setDragOver] = useState(false);
 
-  const updateParentSizeAndInsert = (node, parsingArr, size, insert) => {
-    let myNode = JSON.parse(JSON.stringify(node));
+  const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
     if (parsingArr.length === 0) {
-      insert.size += size;
-      myNode = insert;
-
-      return insert;
+      node.size += size;
+      return node;
     }
-    myNode.size += size;
-    for (let i = 0; i < myNode.items.length; i++) {
-      if (myNode.items[i].name === parsingArr[0]) {
-        myNode.items[i] = updateParentSizeAndInsert(
-          myNode.items[i],
-          parsingArr,
-          size,
-          insert
-        );
-        return myNode;
+    node.size += size;
+    for (let i = 0; i < node.items.length; i++) {
+      if (node.items[i].name === parsingArr[0]) {
+        node.items[i] = updateParentSize(node.items[i], parsingArr, size);
+        return node;
       }
     }
   };
@@ -51,18 +43,16 @@ const DropZone = ({
     // --- this will update and sort global currDir --- //
 
     let size = 0;
-    let tempCurrDir = JSON.parse(JSON.stringify(currentDirectory));
-
     for (let i = 0; i < objArr.length; i++) {
-      if (tempCurrDir.items.some((item) => item.name === objArr[i].name)) {
+      if (currentDirectory.items.some((item) => item.name === objArr[i].name)) {
         // prompt skip or replace b/c merge is too hard to code :/
       } else {
         size += objArr[i].size;
-        tempCurrDir.items.push(objArr[i]);
+        currentDirectory.items.push(objArr[i]);
       }
     }
 
-    tempCurrDir.items.sort((a, b) => {
+    currentDirectory.items.sort((a, b) => {
       let fa = a.name.toLowerCase(),
         fb = b.name.toLowerCase();
 
@@ -80,18 +70,8 @@ const DropZone = ({
 
     let parsingArr = currentDirectory.pathname.split("/");
 
-    const temp = updateParentSizeAndInsert(
-      explorerData,
-      parsingArr,
-      size,
-      tempCurrDir
-    );
-
-    explorerData = temp;
-    const temp2 = JSON.parse(JSON.stringify(explorerData));
-
-    setExplorerData(temp2);
-    setCurrentDirectory(tempCurrDir);
+    console.log("from update parents");
+    console.log(updateParentSize(explorerData, parsingArr, size));
 
     setLoading(false);
 
@@ -137,8 +117,6 @@ const DropZone = ({
       ) : (
         <div className={"dropzone"} onDragOver={handleDragOver}>
           {/* no rendering here */}
-
-          {/* {folderJson && renderNode(folderJson)} */}
         </div>
       )}
     </>

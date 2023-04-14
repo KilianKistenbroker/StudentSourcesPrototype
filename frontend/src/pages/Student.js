@@ -16,7 +16,9 @@ const Student = ({ windowDimension }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  // function insertNode(currentDirectory, name, type, setCurrentDirectory, setExplorerData)
+  const [pinSelected, setPinSelected] = useState(false);
+  const [format, setFormat] = useState("list");
+
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (name, type) => {
     const finalTree = insertNode(
@@ -27,13 +29,44 @@ const Student = ({ windowDimension }) => {
       name,
       type
     );
-    // setExplorerData(finalTree);
   };
 
   // ---------------------------------------------- //
 
-  async function handleSetCurrentDirectory(event) {
-    setCurrentDirectory(event);
+  const parseTree = (node, pathname, state) => {
+    // setup parsing array
+    let parsingArr = [];
+    if (state === -1) {
+      // init parsing array
+      parsingArr = pathname.split("/");
+    } else {
+      parsingArr = pathname;
+    }
+    console.log(parsingArr);
+
+    parsingArr.shift(); // remove the first one
+
+    console.log(parsingArr);
+
+    if (parsingArr.length === 0) {
+      return node;
+    }
+
+    console.log(node.items.length);
+
+    for (let i = 0; i < node.items.length; i++) {
+      if (node.items[i].name === parsingArr[0]) {
+        const myNodeRef = parseTree(node.items[i], parsingArr, 0);
+        console.log(myNodeRef);
+        console.log(currentDirectory);
+        return myNodeRef;
+      }
+    }
+  };
+
+  async function handleSetCurrentDirectory(node, pathname, state) {
+    const temp = parseTree(node, pathname, state);
+    setCurrentDirectory(temp);
   }
 
   const [textURL, setTextURL] = useState("");
@@ -78,6 +111,8 @@ const Student = ({ windowDimension }) => {
         currentFile={currentFile}
         setCurrentFile={setCurrentFile}
         handleDownload={handleDownload}
+        setPinSelected={setPinSelected}
+        pinSelected={pinSelected}
       />
 
       <span
@@ -141,7 +176,7 @@ const Student = ({ windowDimension }) => {
             <DirectoryTree
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
-              setCurrentDirectory={handleSetCurrentDirectory}
+              setCurrentDirectory={setCurrentDirectory}
               currentDirectory={currentDirectory}
               windowDimension={windowDimension}
               setCurrentFile={setCurrentFile}
@@ -311,7 +346,7 @@ const Student = ({ windowDimension }) => {
             <FolderContent
               windowDimension={windowDimension}
               currentDirectory={currentDirectory}
-              setCurrentDirectory={setCurrentDirectory}
+              setCurrentDirectory={handleSetCurrentDirectory}
               explorerData={explorerData}
               setExplorerData={setExplorerData}
               showingRightPanel={showingRightPanel}
@@ -319,6 +354,7 @@ const Student = ({ windowDimension }) => {
               explorer={explorer}
               loading={loading}
               setLoading={setLoading}
+              pinSelected={pinSelected}
             />
           )}
         </div>
