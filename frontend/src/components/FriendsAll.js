@@ -6,6 +6,7 @@ const FriendsAll = ({
   insertSaved,
   removeSaved,
   handleFriendRequest,
+  getUsersPage,
 }) => {
   return loadFriends
     .filter(function (loadData) {
@@ -24,7 +25,10 @@ const FriendsAll = ({
             </svg>
           </div>
 
-          <div className="box-username">
+          <div
+            className="box-username cursor-enabled"
+            onClick={() => getUsersPage(loadData)}
+          >
             @{loadData.user} <br />
             {loadData.firstName} {loadData.lastName}
           </div>

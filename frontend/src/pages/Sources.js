@@ -477,6 +477,7 @@ and also call request to update lists */
               insertSaved={insertSaved}
               removeSaved={removeSaved}
               handleFriendRequest={handleFriendRequest}
+              getUsersPage={getUsersPage}
             />
           )}
 
@@ -489,6 +490,7 @@ and also call request to update lists */
               savedUserList={savedUserList}
               insertSaved={insertSaved}
               removeSaved={removeSaved}
+              getUsersPage={getUsersPage}
             />
           )}
 
@@ -505,6 +507,7 @@ and also call request to update lists */
               insertSaved={insertSaved}
               removeSaved={removeSaved}
               pendingList={pendingList}
+              getUsersPage={getUsersPage}
             />
           )}
         </div>

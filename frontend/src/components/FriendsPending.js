@@ -6,6 +6,7 @@ const FriendsPending = ({
   savedUserList,
   removeSaved,
   insertSaved,
+  getUsersPage,
 }) => {
   return loadPending
     .filter(function (loadData) {
@@ -24,7 +25,10 @@ const FriendsPending = ({
             </svg>
           </div>
 
-          <div className="box-username">
+          <div
+            className="box-username cursor-enabled"
+            onClick={() => getUsersPage(loadData)}
+          >
             @{loadData.user} <br />
             {loadData.firstName} {loadData.lastName}
           </div>

@@ -877,6 +877,7 @@ padding: 6px 10px;
     justify-self: center;
     justify-content: space-between;
     padding: 10px;
+    border-radius: 5px;
 
     /* this order will fill the width where 200px < x < 500px */
     max-width: 600px;
@@ -890,7 +891,7 @@ padding: 6px 10px;
 
 /* replace with dragging effect */
 .box:hover {
-    background-color: #f6f6f6;
+    background-color: #fafafa;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -1619,7 +1620,19 @@ padding: 6px 10px;
 }
 
 .search-results {
-    background-color:#f6f6f6;
+    background-color:#fafafa;
     border-radius: 5px;
     font: 18px system-ui;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 45px;
+}
+
+.exit {
+    color: #fafafa;
+    background-color: #3d3d3d;
+    transition: .1s;
+}
+.exit:hover {
+    color: #ff9999;
 }

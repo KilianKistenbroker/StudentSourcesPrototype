@@ -12,6 +12,7 @@ const SavedAll = ({
   insertSaved,
   removeSaved,
   pendingList,
+  getUsersPage,
 }) => {
   const checkFriendStatus = (id) => {
     return friendsList.includes(id);
@@ -34,7 +35,10 @@ const SavedAll = ({
             </svg>
           </div>
 
-          <div className="box-username">
+          <div
+            className="box-username cursor-enabled"
+            onClick={() => getUsersPage(loadData)}
+          >
             @{loadData.user} <br />
             {loadData.firstName} {loadData.lastName}
           </div>
