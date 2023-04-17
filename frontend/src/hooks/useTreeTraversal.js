@@ -17,7 +17,6 @@ const useTreeTraversal = () => {
 
       // convert.com to .url file
       if (type === "url") {
-        name = name + ".url";
         dataUrl =
           "application/octet-stream;base64," + window.btoa("URL=" + name);
       }

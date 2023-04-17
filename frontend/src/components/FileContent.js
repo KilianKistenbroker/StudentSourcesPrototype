@@ -13,6 +13,8 @@ const FileContent = ({
   textURL,
   setTextURL,
   scale,
+  owner,
+  data,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [videoURL, setVideoURL] = useState(null);
@@ -244,6 +246,8 @@ const FileContent = ({
       <TinyFooter
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
+        owner={owner}
+        data={data}
       />
     </div>
   );

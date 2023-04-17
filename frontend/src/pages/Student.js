@@ -140,7 +140,11 @@ const Student = ({
         type: "application/internet-shortcut",
       });
 
-      saveAs(blob, currentFile.name);
+      const fileName = currentFile.name.endsWith(".url")
+        ? currentFile.name
+        : `${currentFile.name}.url`;
+
+      saveAs(blob, fileName);
     } else if (
       [["jpeg", "jpg", "gif", "png", "pdf"].includes(currentFile.type)]
     ) {
@@ -508,6 +512,8 @@ const Student = ({
               textURL={textURL}
               setTextURL={setTextURL}
               scale={scale}
+              owner={owner}
+              data={data}
             />
           ) : (
             <FolderContent

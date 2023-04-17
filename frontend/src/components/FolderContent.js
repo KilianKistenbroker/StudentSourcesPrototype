@@ -158,6 +158,8 @@ const FolderContent = ({
       <TinyFooter
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
+        owner={owner}
+        data={data}
       />
     </div>
   );

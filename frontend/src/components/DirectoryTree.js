@@ -97,7 +97,8 @@ const DirectoryTree = ({
       if (showInput.type === "file") {
         const temp = input.split(delimiters);
         if (temp.includes("com")) {
-          handleInsertNode(e.target.value, "url");
+          if (temp.includes("https:")) handleInsertNode(e.target.value, "url");
+          else handleInsertNode("https://" + e.target.value, "url");
         } else {
           handleInsertNode(e.target.value, temp[1]);
         }

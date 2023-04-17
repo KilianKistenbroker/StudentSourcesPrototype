@@ -1197,7 +1197,7 @@ padding: 6px 10px;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
 
     min-height: 150px;
     height: 14.5%;
