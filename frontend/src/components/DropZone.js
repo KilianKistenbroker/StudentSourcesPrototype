@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import readDroppedFiles from "../helpers/readDroppedFiles";
 
 const DropZone = ({
   explorerData,
   currentDirectory,
-  setCurrentDirectory,
-  setExplorerData,
   setLoading,
   loading,
+  files,
+  setFiles,
 }) => {
   const [dragOver, setDragOver] = useState(false);
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (files) {
+      console.log(files);
+      handleDrop(files);
+      setFiles(null);
+    }
+  }, [files]);
 
   const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
@@ -33,12 +42,9 @@ const DropZone = ({
     setDragOver(false);
 
     console.log("transfering this data");
-    console.log(e.dataTransfer.items);
+    console.log(e);
 
-    const objArr = await readDroppedFiles(
-      e.dataTransfer.items,
-      currentDirectory
-    );
+    const objArr = await readDroppedFiles(e, currentDirectory);
 
     // --- this will update and sort global currDir --- //
 
@@ -64,6 +70,17 @@ const DropZone = ({
       }
       return 0;
     });
+
+    // this may never be needed here ...
+    let folders = [];
+    let files = [];
+    for (let i = 0; i < currentDirectory.items.length; i++) {
+      if (currentDirectory.items[i].type === "folder")
+        folders.push(currentDirectory.items[i]);
+      else files.push(currentDirectory.items[i]);
+    }
+    const updateitems = folders.concat(files);
+    currentDirectory.items = updateitems;
 
     /* parse through tree using pathname from current directory. 
     then add size to each node in branch */
@@ -92,10 +109,14 @@ const DropZone = ({
     return (
       <div
         style={{
-          textAlign: "center",
-          marginTop: "60px",
-          color: "dimgrey",
-          fontSize: "22px",
+          marginTop: "10px",
+          width: "100%",
+          height: "70vh",
+          display: "flex",
+          paddingTop: "50px",
+          justifyContent: "center",
+          color: "dimgray",
+          transition: ".2s",
         }}
       >
         Loading...
@@ -105,14 +126,36 @@ const DropZone = ({
 
   return (
     <>
-      {dragOver ? (
+      {dragOver || currentDirectory.items.length === 0 ? (
         <div
           className={"dropzone dragging"}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragExit={() => setDragOver(false)}
         >
-          Drop files here to upload
+          <span style={{ padding: "10px" }}>
+            <b>Drop files here to upload</b>, or use the{" "}
+            <input
+              type="file"
+              multiple
+              onChange={(e) => setFiles(e)}
+              hidden
+              ref={inputRef}
+            />
+            <span onClick={() => inputRef.current.click()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons cursor-enabled"
+                style={{ width: "30px" }}
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+              </svg>{" "}
+            </span>
+            button.
+          </span>
         </div>
       ) : (
         <div className={"dropzone"} onDragOver={handleDragOver}>

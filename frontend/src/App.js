@@ -7,9 +7,11 @@ import Legal from "./pages/Terms";
 import { useEffect, useState } from "react";
 import axios from "./api/axios";
 import Student from "./pages/Student";
+import folderData from "./data/folderData";
 
 function App() {
   const [loading, setLoading] = useState(null);
+  const [explorerData, setExplorerData] = useState(folderData);
 
   // ------------ store user info from login/signup ---------- //
 
@@ -58,11 +60,13 @@ function App() {
   const [windowDimension, setWindowDimension] = useState({
     winWidth: window.innerWidth,
     winHeight: window.innerHeight,
+    mobileMode: null,
   });
   const detectSize = () => {
     setWindowDimension({
       winWidth: window.innerWidth,
       winHeight: window.innerHeight,
+      mobileMode: window.innerWidth < 800,
     });
   };
   useEffect(() => {
@@ -103,7 +107,15 @@ function App() {
           />
           <Route
             path="/student"
-            element={<Student data={data} windowDimension={windowDimension} />}
+            element={
+              <Student
+                data={data}
+                windowDimension={windowDimension}
+                owner={data}
+                explorerData={explorerData}
+                setExplorerData={setExplorerData}
+              />
+            }
           />
           <Route path="/terms" element={<Legal />} />
         </Routes>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const StudentSearch = ({
   currentDirectory,
@@ -9,12 +9,44 @@ const StudentSearch = ({
   handleDownload,
   setPinSelected,
   pinSelected,
+  setFiles,
+  handleSetScale,
+  setSearchResults,
+  owner,
+  data,
+  setOwner,
+  setExplorerData,
 }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
+  const inputRef = useRef();
 
-  // download file func here
+  const handleExit = () => {
+    setOwner(null);
+    setExplorerData(null);
+  };
+
+  // this will populate the a temp arr of results
+  const searchFromCurrentDirectory = (node, arr, search) => {
+    let temp = [];
+    const lowerString1 = search.toLowerCase().trim(" ");
+    for (let i = 0; i < currentDirectory.items.length; i++) {
+      const lowerString2 = currentDirectory.items[i].name
+        .toLowerCase()
+        .trim(" ");
+      if (lowerString2.includes(lowerString1)) {
+        temp.push(node.items[i]);
+      }
+    }
+    return temp;
+  };
+
+  // this will populate searchResults
+  const searchHelper = async (e) => {
+    e.preventDefault();
+    setSearchResults(searchFromCurrentDirectory(currentDirectory, [], search));
+  };
 
   return (
     <div className="sub-navbar" style={currentFile ? { marginTop: "0px" } : {}}>
@@ -33,7 +65,7 @@ const StudentSearch = ({
             : {}
         }
       >
-        <form id="search_form">
+        <form id="search_form" onSubmit={searchHelper}>
           <button
             type="submit"
             id="search_button"
@@ -76,7 +108,7 @@ const StudentSearch = ({
               type="text"
               name="searchbar"
               placeholder={
-                currentFile ? "Search" : `Search from /${currentDirectory.name}`
+                currentFile ? "Search" : `Search /${currentDirectory.name}`
               }
               id="search_bar"
               value={search}
@@ -109,6 +141,7 @@ const StudentSearch = ({
               className={
                 selected === "saved" ? "selected" : "selection-content"
               }
+              onClick={() => handleSetScale(100)}
             >
               {/* zoom in */}
               <svg
@@ -127,6 +160,7 @@ const StudentSearch = ({
               className={
                 selected === "friends" ? "selected" : "selection-content"
               }
+              onClick={() => handleSetScale(-100)}
             >
               {/* zoom out */}
               <svg
@@ -158,7 +192,7 @@ const StudentSearch = ({
               </svg>
             </div>
           </div>
-        ) : (
+        ) : owner.user === data.user ? (
           <div className="selection">
             <div
               className={
@@ -166,15 +200,24 @@ const StudentSearch = ({
               }
             >
               {/* Upload */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-              </svg>
+              <input
+                type="file"
+                multiple
+                onChange={(e) => setFiles(e)}
+                hidden
+                ref={inputRef}
+              />
+              <div onClick={() => inputRef.current.click()}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-icons cursor-enabled"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                  <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                </svg>
+              </div>
             </div>
 
             <div
@@ -220,6 +263,57 @@ const StudentSearch = ({
                 viewBox="0 0 16 16"
               >
                 <path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+              </svg>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="selection"
+            style={{
+              justifyContent: "space-between",
+              textAlign: "left",
+              paddingTop: "4px",
+              paddingLeft: "15px",
+            }}
+          >
+            {/* put owner info here */}
+            {/* <div className="box-username">
+              @{owner.user}
+              <br />
+              {owner.firstName} {owner.lastName}
+            </div> */}
+
+            <div className="user-grid">
+              <div
+                className="box-icon"
+                style={{ paddingTop: "2px", height: "45px" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                </svg>
+              </div>
+
+              <div className="box-username">
+                @{owner.user} <br />
+                {owner.firstName} {owner.lastName}
+              </div>
+            </div>
+
+            <div
+              className="header-icons cursor-enabled"
+              style={{ paddingTop: "5px", width: "30px" }}
+              onClick={() => handleExit()}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
               </svg>
             </div>
           </div>

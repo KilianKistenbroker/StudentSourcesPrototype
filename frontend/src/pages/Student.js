@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DirectoryTree from "../components/DirectoryTree";
 import folderData from "../data/folderData";
 import useTreeTraversal from "../hooks/useTreeTraversal";
@@ -7,29 +8,89 @@ import FolderContent from "../components/FolderContent";
 import FileContent from "../components/FileContent";
 import { saveAs } from "file-saver";
 import explorer from "../data/folderData";
+import Comments from "../components/Comments";
+import CommentBox from "../components/CommentBox";
+import commentsData from "../data/commentsData";
+import Notes from "../components/Notes";
+import Info from "../components/Info";
 
-const Student = ({ windowDimension }) => {
+const Student = ({
+  data,
+  windowDimension,
+  owner,
+  setOwner,
+  explorerData,
+  setExplorerData,
+}) => {
+  const navigate = useNavigate();
+
   // ----------- move to app.js later (maybe) ------------ //
-  const [explorerData, setExplorerData] = useState(folderData);
-  const [currentDirectory, setCurrentDirectory] = useState(folderData);
+  // const [explorerData, setExplorerData] = useState(folderData);
+  const [currentDirectory, setCurrentDirectory] = useState(explorerData);
   const [showingRightPanel, setShowingRightPanel] = useState(true);
   const [currentFile, setCurrentFile] = useState(null);
   const [loading, setLoading] = useState(null);
 
   const [pinSelected, setPinSelected] = useState(false);
   const [format, setFormat] = useState("list");
+  const [textURL, setTextURL] = useState("");
+
+  const [notesData, setNotesData] = useState("");
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState(commentsData);
+  const [files, setFiles] = useState(null);
+  const [scale, setScale] = useState(800);
+
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSetScale = (num) => {
+    const temp = scale + num;
+    if (temp < 600) setScale(600);
+    else if (temp > 1500) {
+      setScale(1500);
+    } else {
+      setScale(temp);
+    }
+  };
 
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (name, type) => {
     const finalTree = insertNode(
       explorerData,
       currentDirectory,
+      handleSetCurrentDirectory,
       setCurrentDirectory,
       setExplorerData,
       name,
       type
     );
   };
+
+  useEffect(() => {
+    if (!data.isLoggedIn) {
+      data.currentPoint = "login";
+      navigate("/login");
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    setPinSelected(false);
+    setCurrentFile(null);
+    setSearchResults([]);
+  }, [currentDirectory]);
+
+  useEffect(() => {
+    const element = document.documentElement;
+
+    if (windowDimension.winWidth < 800 && showingRightPanel) {
+      element.style.height = "100%";
+      element.style.overflow = "hidden";
+    } else {
+      element.style.height = "";
+      element.style.overflow = "";
+    }
+  }, [showingRightPanel, windowDimension.mobileMode]);
 
   // ---------------------------------------------- //
 
@@ -42,23 +103,13 @@ const Student = ({ windowDimension }) => {
     } else {
       parsingArr = pathname;
     }
-    console.log(parsingArr);
-
     parsingArr.shift(); // remove the first one
-
-    console.log(parsingArr);
-
     if (parsingArr.length === 0) {
       return node;
     }
-
-    console.log(node.items.length);
-
     for (let i = 0; i < node.items.length; i++) {
       if (node.items[i].name === parsingArr[0]) {
         const myNodeRef = parseTree(node.items[i], parsingArr, 0);
-        console.log(myNodeRef);
-        console.log(currentDirectory);
         return myNodeRef;
       }
     }
@@ -69,8 +120,6 @@ const Student = ({ windowDimension }) => {
     setCurrentDirectory(temp);
   }
 
-  const [textURL, setTextURL] = useState("");
-
   const handleDownload = () => {
     if (currentFile.type === "txt") {
       const updatedContent = textURL;
@@ -78,10 +127,24 @@ const Student = ({ windowDimension }) => {
         type: "text/plain;charset=utf-8",
       });
 
-      saveAs(blob, currentFile.name + "." + currentFile.type);
+      saveAs(blob, currentFile.name);
+    } else if (currentFile.type === "url") {
+      const fileURL = currentFile.dataUrl;
+      const fileURLParts = fileURL.split(",");
+      const byteString = window.atob(fileURLParts[1]);
+
+      console.log(byteString);
+
+      const urlFileContent = `[InternetShortcut]\n${byteString}\n`;
+      const blob = new Blob([urlFileContent], {
+        type: "application/internet-shortcut",
+      });
+
+      saveAs(blob, currentFile.name);
     } else if (
       [["jpeg", "jpg", "gif", "png", "pdf"].includes(currentFile.type)]
     ) {
+      console.log(currentFile);
       const imgURL = currentFile.dataUrl;
       const imgDataUrlParts = imgURL.split(",");
       const byteString = window.atob(imgDataUrlParts[1]);
@@ -94,7 +157,50 @@ const Student = ({ windowDimension }) => {
       }
 
       const blob = new Blob([ab], { type: mimeString });
-      saveAs(blob, currentFile.name + "." + currentFile.type);
+      saveAs(blob, currentFile.name);
+    }
+  };
+
+  function formatDate(date) {
+    const day = date.getDate().toString().padStart(2, "0");
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const month = monthNames[monthIndex];
+
+    return `${day} ${month} ${year}`;
+  }
+
+  const addComment = () => {
+    //TODO: Instead of manipulating local data, use api's
+    if (comment.trim(" ").length === 0) return;
+    else {
+      const commentsCopy = comments.slice();
+      console.log(commentsCopy.length);
+      commentsCopy.push({
+        // id: commentsCopy.slice(-1).id + 1,
+        commenterImage: "http://placekitten.com/50/50", // replace with avatar from db
+        username: data.user,
+        commentText: comment,
+        date: formatDate(new Date()),
+      });
+      setComments(commentsCopy);
+      setComment("");
     }
   };
 
@@ -113,6 +219,13 @@ const Student = ({ windowDimension }) => {
         handleDownload={handleDownload}
         setPinSelected={setPinSelected}
         pinSelected={pinSelected}
+        setFiles={setFiles}
+        handleSetScale={handleSetScale}
+        setSearchResults={setSearchResults}
+        owner={owner}
+        data={data}
+        setOwner={setOwner}
+        setExplorerData={setExplorerData}
       />
 
       <span
@@ -139,21 +252,23 @@ const Student = ({ windowDimension }) => {
         <div
           className={
             windowDimension.winWidth > 1200
+              ? "left-panel-title max-panel-width2"
+              : windowDimension.winWidth > 800
+              ? "left-panel-title medium-panel-width2"
+              : "left-panel-title min-left-panel"
+          }
+        >
+          EXPLORER
+        </div>
+        <div
+          className={
+            windowDimension.winWidth > 1200
               ? "left-panel-grid max-panel-width"
               : windowDimension.winWidth > 800
               ? "left-panel-grid medium-panel-width"
               : "left-panel-grid  min-left-panel"
           }
         >
-          <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "left-panel-title max-panel-width"
-                : "left-panel-title medium-panel-width"
-            }
-          >
-            EXPLORER
-          </div>
           <div
             className="header-tab"
             style={{ marginTop: "67.5px", direction: "ltr" }}
@@ -172,7 +287,10 @@ const Student = ({ windowDimension }) => {
             </span>
           </div>
 
-          <div className="left-panel-tree">
+          <div
+            className="left-panel-tree"
+            style={owner.user !== data.user ? { height: "90%" } : {}}
+          >
             <DirectoryTree
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
@@ -180,36 +298,90 @@ const Student = ({ windowDimension }) => {
               currentDirectory={currentDirectory}
               windowDimension={windowDimension}
               setCurrentFile={setCurrentFile}
+              currentFile={currentFile}
+              owner={owner}
+              data={data}
             />
             {/* spacing */}
-            <div style={{ height: "20px", width: "20px" }}> </div>
+            <div
+              style={
+                owner.user === data.user
+                  ? { height: "20px", width: "20px" }
+                  : { height: "150px", width: "20px" }
+              }
+            >
+              {" "}
+            </div>
           </div>
-          <div className="header-tab" style={{ direction: "ltr" }}>
-            Ask Chatbot
-            {/* more options button */}
-            <span style={{ float: "right" }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-              </svg>
-            </span>
-          </div>
-          <div className="left-panel-chatbot">
-            {/* add CHATBOT components here */}
-          </div>
+
+          {owner.user === data.user && (
+            <div className="header-tab" style={{ direction: "ltr" }}>
+              Ask Chatbot
+              {/* more options button */}
+              <span style={{ float: "right" }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-icons cursor-enabled"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                </svg>
+              </span>
+            </div>
+          )}
+          {owner.user === data.user && (
+            <div className="left-panel-chatbot">
+              {/* add CHATBOT components here */}
+            </div>
+          )}
+        </div>
+        {owner.user === data.user && (
           <div
             className={
               windowDimension.winWidth > 1200
                 ? "left-panel-textbox max-panel-width"
-                : "left-panel-textbox medium-panel-width"
+                : windowDimension.winWidth > 800
+                ? "left-panel-textbox medium-panel-width"
+                : "left-panel-textbox min-left-panel"
             }
           >
             {/* add INPUT FIELD for CHATBOT here */}
             chatbot input field
+          </div>
+        )}
+
+        <div
+          className={
+            windowDimension.winWidth > 1200 && showingRightPanel
+              ? "right-panel-title max-panel-width2"
+              : showingRightPanel
+              ? "right-panel-title medium-panel-width2"
+              : "right-panel-title min-right-panel"
+          }
+        >
+          <div
+            style={{
+              width: "300px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {currentFile
+              ? currentFile.name.toUpperCase()
+              : currentDirectory.name.toUpperCase()}
+          </div>
+
+          {/* collapse right panel button */}
+          <div onClick={() => setShowingRightPanel(false)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="header-icons cursor-enabled"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z" />
+            </svg>
           </div>
         </div>
 
@@ -222,37 +394,6 @@ const Student = ({ windowDimension }) => {
               : "right-panel-grid min-right-panel"
           }
         >
-          <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "right-panel-title max-panel-width"
-                : "right-panel-title medium-panel-width"
-            }
-          >
-            <div
-              style={{
-                width: "300px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {currentFile
-                ? currentFile.name.toUpperCase()
-                : currentDirectory.name.toUpperCase()}
-            </div>
-
-            {/* collapse right panel button */}
-            <div onClick={() => setShowingRightPanel(false)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0zM11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z" />
-              </svg>
-            </div>
-          </div>
           <div className="header-tab" style={{ marginTop: "67.5px" }}>
             Info
             {/* more options button */}
@@ -267,26 +408,40 @@ const Student = ({ windowDimension }) => {
               </svg>
             </span>
           </div>
-          <div className="right-panel-info">
+          <div
+            className="right-panel-info"
+            style={owner.user !== data.user ? { height: "19.5%" } : {}}
+          >
             {/* add INFO components here */}
+            <Info
+              currentDirectory={currentDirectory}
+              currentFile={currentFile}
+            />
           </div>
-          <div className="header-tab">
-            Notes
-            {/* more options button */}
-            <span style={{ float: "right" }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-              </svg>
-            </span>
-          </div>
-          <div className="right-panel-notes">
-            {/* add NOTES components here */}
-          </div>
+
+          {owner.user === data.user && (
+            <div className="header-tab">
+              Notes
+              {/* more options button */}
+              <span style={{ float: "right" }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-icons cursor-enabled"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                </svg>
+              </span>
+            </div>
+          )}
+          {owner.user === data.user && (
+            <div className="right-panel-notes">
+              {/* add NOTES components here */}
+              <Notes notesData={notesData} setNotesData={setNotesData} />
+            </div>
+          )}
+
           <div className="header-tab">
             Comments
             {/* more options button */}
@@ -301,19 +456,30 @@ const Student = ({ windowDimension }) => {
               </svg>
             </span>
           </div>
-          <div className="right-panel-coments">
-            {/* add COMMENTS components here */}
-          </div>
           <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "right-panel-textbox max-panel-width"
-                : "right-panel-textbox medium-panel-width"
-            }
+            className="right-panel-coments"
+            style={owner.user !== data.user ? { height: "58%" } : {}}
           >
-            {/* add INPUT FIELD for COMMENTS here */}
-            comments input field
+            {/* add COMMENTS components here */}
+            <Comments commentsData={comments} data={data} />
           </div>
+        </div>
+
+        <div
+          className={
+            windowDimension.winWidth > 1200 && showingRightPanel
+              ? "right-panel-textbox max-panel-width"
+              : showingRightPanel
+              ? "right-panel-textbox medium-panel-width"
+              : "right-panel-textbox min-right-panel"
+          }
+        >
+          {/* add INPUT FIELD for COMMENTS here */}
+          <CommentBox
+            comment={comment}
+            setComment={setComment}
+            addComment={addComment}
+          />
         </div>
 
         <div
@@ -341,6 +507,7 @@ const Student = ({ windowDimension }) => {
               showingRightPanel={showingRightPanel}
               textURL={textURL}
               setTextURL={setTextURL}
+              scale={scale}
             />
           ) : (
             <FolderContent
@@ -355,6 +522,12 @@ const Student = ({ windowDimension }) => {
               loading={loading}
               setLoading={setLoading}
               pinSelected={pinSelected}
+              files={files}
+              setFiles={setFiles}
+              searchResults={searchResults}
+              setSearchResults={setSearchResults}
+              owner={owner}
+              data={data}
             />
           )}
         </div>

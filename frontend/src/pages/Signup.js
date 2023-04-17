@@ -48,9 +48,9 @@ const Signup = ({ data, windowDimension }) => {
   // these are used for displaying msg's
   const [errMsg, setErrMsg] = useState("");
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   userRef.current.focus();
+  // }, []);
 
   useEffect(() => {
     const res = user_regex_l.test(user);

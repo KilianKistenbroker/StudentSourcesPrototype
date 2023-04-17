@@ -31,8 +31,8 @@ const TinyFooter = ({ windowDimension, showingRightPanel }) => {
       {/* trashbin */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        // className="header-icons"
-        style={{ width: "30px", height: "30px", color: "grey" }}
+        className="header-icons"
+        style={{ width: "30px", height: "30px", marginTop: "5px" }}
         fill="currentColor"
         viewBox="0 0 16 16"
       >

@@ -5,6 +5,8 @@ import FriendsAll from "../components/FriendsAll";
 import FriendsPending from "../components/FriendsPending";
 import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
+import dummyFolder from "../data/dummyFolder";
+import Student from "./Student";
 
 const Sources = ({ data, windowDimension }) => {
   const navigate = useNavigate();
@@ -31,6 +33,9 @@ const Sources = ({ data, windowDimension }) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
 
+  const [explorerData, setExplorerData] = useState(null);
+  const [owner, setOwner] = useState(null);
+
   // -------- call essential getters here on re-render ----------
   useEffect(() => {
     if (!data.isLoggedIn) {
@@ -43,6 +48,12 @@ const Sources = ({ data, windowDimension }) => {
     getPending();
     getSaved();
   }, []);
+
+  const getUsersPage = (user) => {
+    // fetch users folder from efs
+    setOwner(user);
+    setExplorerData(dummyFolder);
+  };
 
   const getFriends = async (e) => {
     const res = await axios.get(`/findFriends/${data.id}`);
@@ -255,6 +266,18 @@ and also call request to update lists */
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
+  if (explorerData && owner) {
+    return (
+      <Student
+        data={data}
+        windowDimension={windowDimension}
+        owner={owner}
+        setOwner={setOwner}
+        explorerData={explorerData}
+        setExplorerData={setExplorerData}
+      />
+    );
+  }
 
   return (
     <div className="page">
@@ -441,6 +464,7 @@ and also call request to update lists */
               insertSaved={insertSaved}
               removeSaved={removeSaved}
               pendingList={pendingList}
+              getUsersPage={getUsersPage}
             />
           )}
 

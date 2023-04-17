@@ -16,11 +16,14 @@ const readEntries = async (entry, parent, path) => {
 
     return new Promise(async (resolve) => {
       entry.file(async (file) => {
+        // const dataUrl = "";
+
+        /* IMPORTANT: must replace this will file streaming. */
         const dataUrl = await readFileContent(file);
         const newItem = {
-          name: nameAndType[0],
+          name: nameAndType[0] + "." + nameAndType[nameAndType.length - 1],
           pathname: currentPath,
-          type: nameAndType[1],
+          type: nameAndType[nameAndType.length - 1],
           size: file.size,
           isPinned: false,
           visibility: "private",
@@ -28,7 +31,9 @@ const readEntries = async (entry, parent, path) => {
           items: [],
         };
         parent.items.push(newItem);
-        parent.size += newItem.size; // Add the item's size to the parent folder's size
+
+        // Add the item's size to the parent folder's size
+        parent.size += newItem.size;
         resolve();
       });
     });
@@ -80,9 +85,22 @@ const readDroppedFiles = async (items, currentDirectory) => {
     items: [],
   };
 
-  for (const item of items) {
-    const entry = item.webkitGetAsEntry();
-    if (entry) {
+  if (items.dataTransfer) {
+    for (const item of items.dataTransfer.items) {
+      const entry = item.webkitGetAsEntry();
+      if (entry) {
+        await readEntries(entry, rootFolder, relPath);
+      }
+    }
+  } else {
+    // for files only
+
+    for (const file of items.target.files) {
+      const entry = {
+        isFile: true,
+        name: file.name,
+        file: (callback) => callback(file),
+      };
       await readEntries(entry, rootFolder, relPath);
     }
   }
