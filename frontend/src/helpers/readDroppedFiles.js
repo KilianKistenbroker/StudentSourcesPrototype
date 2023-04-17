@@ -26,7 +26,7 @@ const readEntries = async (entry, parent, path) => {
           type: nameAndType[nameAndType.length - 1],
           size: file.size,
           isPinned: false,
-          visibility: "private",
+          visibility: "Private",
           dataUrl: dataUrl,
           items: [],
         };
@@ -41,10 +41,10 @@ const readEntries = async (entry, parent, path) => {
     const newFolder = {
       name: entry.name,
       pathname: currentPath,
-      type: "folder",
+      type: "Folder",
       size: 0,
       isPinned: false,
-      visibility: "private",
+      visibility: "Private",
       dataUrl: "",
       items: [],
     };
@@ -81,7 +81,7 @@ const readDroppedFiles = async (items, currentDirectory) => {
 
   const rootFolder = {
     name: "root",
-    type: "folder",
+    type: "Folder",
     items: [],
   };
 

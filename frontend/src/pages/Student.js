@@ -76,7 +76,7 @@ const Student = ({
 
   useEffect(() => {
     setPinSelected(false);
-    setCurrentFile(null);
+    // setCurrentFile(null);
     setSearchResults([]);
   }, [currentDirectory]);
 

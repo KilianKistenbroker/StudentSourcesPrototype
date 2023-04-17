@@ -74,7 +74,7 @@ const FolderContent = ({
                     className="main-panel-filename cursor-enabled"
                     style={{ width: "100%" }}
                     onClick={
-                      loadData.type === "folder"
+                      loadData.type === "Folder"
                         ? () =>
                             setCurrentDirectory(
                               explorerData,

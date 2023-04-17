@@ -27,7 +27,7 @@ const DirectoryTree = ({
   });
 
   useEffect(() => {
-    if (showInput.type === "folder") {
+    if (showInput.type === "Folder") {
       setValidInput(input.length > 0);
     } else {
       try {
@@ -64,6 +64,14 @@ const DirectoryTree = ({
   };
 
   const handleSetExpand = (e) => {
+    // transitioning out of current file
+    if (currentFile) {
+      setCurrentFile(null);
+      if (explorer.pathname !== currentDirectory.pathname)
+        setCurrentDirectory(explorer);
+      return;
+    }
+
     // set curr dir
     if (currentDirectory.pathname !== explorer.pathname) {
       if (specialExpand) {
@@ -117,7 +125,7 @@ const DirectoryTree = ({
     return <div>Loading...</div>;
   }
 
-  if (explorer.type === "folder") {
+  if (explorer.type === "Folder") {
     return (
       <div>
         <div
@@ -194,7 +202,7 @@ const DirectoryTree = ({
 
           <div style={{ whiteSpace: "nowrap" }}>
             {owner.user === data.user && (
-              <button onClick={(e) => handleNewFolder(e, "folder")}>
+              <button onClick={(e) => handleNewFolder(e, "Folder")}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="tree-icon"
@@ -226,7 +234,7 @@ const DirectoryTree = ({
         <div style={{ display: expand ? "block" : "none", paddingLeft: 15 }}>
           {showInput.visible && (
             <div className="inputContainer">
-              <span> {showInput.type === "folder" ? "📁" : "📄"} </span>
+              <span> {showInput.type === "Folder" ? "📁" : "📄"} </span>
 
               <input
                 style={{ fontSize: "14px" }}
@@ -234,7 +242,7 @@ const DirectoryTree = ({
                 onKeyDown={onAddFolder}
                 onBlur={() => handleSetInputFalse()}
                 className="inputContainer__input"
-                placeholder={showInput.type !== "folder" ? "example.txt" : ""}
+                placeholder={showInput.type !== "Folder" ? "example.txt" : ""}
                 onChange={(e) => setInput(e.target.value.trim(" "))}
                 autoFocus
               />

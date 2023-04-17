@@ -27,7 +27,7 @@ const useTreeTraversal = () => {
         type,
         size: 0,
         isPinned: false,
-        visibility: false,
+        visibility: "Private", // <-default
         dataUrl: dataUrl,
         items: [],
       });
@@ -48,34 +48,27 @@ const useTreeTraversal = () => {
       let folders = [];
       let files = [];
       for (let i = 0; i < currentDirectory.items.length; i++) {
-        if (currentDirectory.items[i].type === "folder")
+        if (currentDirectory.items[i].type === "Folder")
           folders.push(currentDirectory.items[i]);
         else files.push(currentDirectory.items[i]);
       }
       const updateitems = folders.concat(files);
       currentDirectory.items = updateitems;
 
-      // remove unneccessary URL data here before parsing with stringify
+      // remove unneccessary data here before parsing with stringify
       const tempObject = {
         name: currentDirectory.name,
         pathname: currentDirectory.pathname,
-        type: "folder",
+        type: currentDirectory.type,
         size: 0,
         isPinned: false,
-        visibility: "public",
+        visibility: currentDirectory.visibility,
         dataUrl: "",
         items: currentDirectory.items,
       };
 
       setCurrentDirectory(tempObject);
     }
-
-    // const tempCurrDir = JSON.parse(JSON.stringify(currentDirectory));
-
-    // const tempExplorer = JSON.parse(JSON.stringify(explorerData));
-
-    // handleSetCurrentDirectory(explorerData, currentDirectory.pathname, -1);
-    // setExplorerData(tempExplorer);
   }
 
   const deleteNode = () => {};

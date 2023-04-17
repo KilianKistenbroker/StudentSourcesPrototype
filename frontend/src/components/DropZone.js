@@ -75,7 +75,7 @@ const DropZone = ({
     let folders = [];
     let files = [];
     for (let i = 0; i < currentDirectory.items.length; i++) {
-      if (currentDirectory.items[i].type === "folder")
+      if (currentDirectory.items[i].type === "Folder")
         folders.push(currentDirectory.items[i]);
       else files.push(currentDirectory.items[i]);
     }
