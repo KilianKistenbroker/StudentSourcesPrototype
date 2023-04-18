@@ -15,6 +15,8 @@ const FileContent = ({
   scale,
   owner,
   data,
+  // pdfController,
+  // setPdfController,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [videoURL, setVideoURL] = useState(null);
@@ -40,7 +42,7 @@ const FileContent = ({
         console.log(err);
         setTextURL("");
       }
-    } else if (["mp4, mov"].includes(currentFile.type)) {
+    } else if (["mp4", "mov"].includes(currentFile.type)) {
       try {
         // convert to streaming data from backend.
 
@@ -137,6 +139,7 @@ const FileContent = ({
     return match ? match[1] : null;
   };
 
+  // update to load a parameter of pages that updates with a scroll listener
   const renderAllPages = (scale = 1) => {
     const pages = [];
     for (let i = 1; i <= numPages; i++) {
@@ -192,8 +195,13 @@ const FileContent = ({
 
             // load more when user scrolls near bottom of page
             setNumPages(() => loadPages(numPages));
+            // setPdfController({
+            //   currentPage: 1,
+            //   pageLimit: numPages,
+            // });
           }}
         >
+          {/* {<Page pageNumber={pdfController.currentPage} scale={3} />} */}
           {renderAllPages(3)}
         </Document>
       ) : "mp4" === currentFile.type || "mov" === currentFile.type ? (
@@ -248,6 +256,9 @@ const FileContent = ({
         showingRightPanel={showingRightPanel}
         owner={owner}
         data={data}
+        // pdfController={pdfController}
+        // currentFile={currentFile}
+        // setPdfController={setPdfController}
       />
     </div>
   );

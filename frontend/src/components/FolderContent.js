@@ -29,6 +29,7 @@ const FolderContent = ({
             ? "main-panel-content max-margin"
             : "main-panel-content medium-margin"
         }
+        style={{ marginTop: "150px" }}
       >
         {/* place search results here */}
         {searchResults.length > 0 && (

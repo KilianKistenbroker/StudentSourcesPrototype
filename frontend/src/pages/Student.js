@@ -42,6 +42,10 @@ const Student = ({
   const [scale, setScale] = useState(800);
 
   const [searchResults, setSearchResults] = useState([]);
+  // const [pdfController, setPdfController] = useState({
+  //   currentPage: 0,
+  //   pageLimit: 0,
+  // });
 
   const handleSetScale = (num) => {
     const temp = scale + num;
@@ -514,6 +518,8 @@ const Student = ({
               scale={scale}
               owner={owner}
               data={data}
+              // pdfController={pdfController}
+              // setPdfController={setPdfController}
             />
           ) : (
             <FolderContent
