@@ -141,7 +141,7 @@ const StudentSearch = ({
               className={
                 selected === "saved" ? "selected" : "selection-content"
               }
-              onClick={() => handleSetScale(100)}
+              onClick={() => handleSetScale(1, currentFile.type)}
             >
               {/* zoom in */}
               <svg
@@ -160,7 +160,7 @@ const StudentSearch = ({
               className={
                 selected === "friends" ? "selected" : "selection-content"
               }
-              onClick={() => handleSetScale(-100)}
+              onClick={() => handleSetScale(-1, currentFile.type)}
             >
               {/* zoom out */}
               <svg

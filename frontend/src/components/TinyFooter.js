@@ -3,21 +3,23 @@ const TinyFooter = ({
   showingRightPanel,
   owner,
   data,
-  // pdfController,
-  // currentFile,
-  // setPdfController,
+  pdfController,
+  currentFile,
+  setPdfController,
+  setLoadingPDF,
 }) => {
-  // const handlePageManager = (num) => {
-  //   const temp = pdfController.currentPage + 1;
-  //   if (temp > pdfController.pageLimit || temp < 0) {
-  //     return;
-  //   } else {
-  //     setPdfController({
-  //       currentPage: temp,
-  //       pageLimit: pdfController.pageLimit,
-  //     });
-  //   }
-  // };
+  const handlePageManager = (num) => {
+    setLoadingPDF(true);
+    const temp = pdfController.currentPage + num;
+    if (temp > pdfController.pageLimit || temp < 0) {
+      return;
+    } else {
+      setPdfController({
+        currentPage: temp,
+        pageLimit: pdfController.pageLimit,
+      });
+    }
+  };
 
   return (
     <div
@@ -48,11 +50,11 @@ const TinyFooter = ({
           {"<"} Back
         </div>
       ) : (
-        <div></div>
+        <div> </div>
       )}
 
       {/* if viewing a pdf */}
-      {/* {currentFile && currentFile.type === "pdf" ? (
+      {currentFile && currentFile.type === "pdf" ? (
         <div className="page-manager">
           <div onClick={() => handlePageManager(-1)}>
             <svg
@@ -84,9 +86,7 @@ const TinyFooter = ({
         </div>
       ) : (
         <div></div>
-      )} */}
-
-      <div></div>
+      )}
 
       {/* trashbin */}
       {owner.user === data.user ? (

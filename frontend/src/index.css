@@ -544,7 +544,7 @@ button {
     position: fixed;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     transition: .2s;
     
@@ -1289,6 +1289,7 @@ padding: 6px 10px;
 
     display: grid;
     grid-template-columns: repeat(3, auto);
+    z-index: 1;
     /* justify-content: center; */
 }
 .page-manager {
@@ -1488,8 +1489,8 @@ padding: 6px 10px;
   /* ---------- for displaying pdf's --------  */
 
  .react-pdf__Page__canvas {
-    width: 100% !important;
-    height: 100% !important;
+    /* width: 100% !important;
+    height: 100% !important; */
 }
 
   .react-pdf__Document {
@@ -1500,11 +1501,11 @@ padding: 6px 10px;
   }
   
   .react-pdf__Page {
-    border-bottom:1px solid lightgrey ;
     margin: 0 auto;
     height: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
     margin-bottom: 10px;
+    
   }
   
   .react-pdf__Page__annotations {
@@ -1512,14 +1513,23 @@ padding: 6px 10px;
   } 
   
   .annotationLayer {
-    display: none;
+    /* display: none; */
   }
 
   /* temporarily disable text highlighting until i figure out how to scale properly */
 .react-pdf__Page__textContent {
-    display: none;
+    /* display: none; */
 }
 .textLayer > span{
+}
+
+/* try to match width & height of page being rendered */
+.loadingScreen {
+    width: 100vh;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    z-index: 1;
 }
 
 /* ------------------- Comments ------------------- */

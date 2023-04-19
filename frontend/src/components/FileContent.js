@@ -15,8 +15,11 @@ const FileContent = ({
   scale,
   owner,
   data,
-  // pdfController,
-  // setPdfController,
+  pdfController,
+  setPdfController,
+  setScale,
+  loadingPDF,
+  setLoadingPDF,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [videoURL, setVideoURL] = useState(null);
@@ -123,8 +126,21 @@ const FileContent = ({
         console.log(err);
         setTextURL("");
       }
+    } else if (currentFile.type === "pdf") {
+      setLoadingPDF(true);
+      setScale({
+        render: windowDimension.winWidth / 1050,
+        width: 1500,
+        height: scale.height,
+      });
+      setTextURL("");
     }
   }, [currentFile]);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setLoadingPDF(false);
+  }
 
   const getYoutubeVideoId = (url) => {
     const regex =
@@ -166,8 +182,14 @@ const FileContent = ({
   return (
     <div
       className={"main-panel-content"}
-      style={{ maxWidth: `${scale}px`, height: "600px" }}
+      style={{ maxWidth: `${scale.width}px`, height: `${scale.height}px` }}
     >
+      {loadingPDF && (
+        <div className="loadingScreen">
+          {/* blank loading screen is blank */}
+        </div>
+      )}
+
       {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
         <img
           src={currentFile.dataUrl}
@@ -192,17 +214,29 @@ const FileContent = ({
           file={currentFile.dataUrl}
           onLoadSuccess={({ numPages }) => {
             console.log(`PDF loaded with ${numPages} pages.`);
-
+            onDocumentLoadSuccess(numPages);
             // load more when user scrolls near bottom of page
-            setNumPages(() => loadPages(numPages));
-            // setPdfController({
-            //   currentPage: 1,
-            //   pageLimit: numPages,
-            // });
+            // setNumPages(() => loadPages(numPages));
+            setPdfController({
+              currentPage: 1,
+              pageLimit: numPages,
+            });
           }}
         >
-          {/* {<Page pageNumber={pdfController.currentPage} scale={3} />} */}
-          {renderAllPages(3)}
+          {/* how to ensure this does not flicker */}
+          {
+            // this works although it is kinda hacky
+            <Page
+              pageNumber={pdfController.currentPage}
+              scale={scale.render}
+              onLoadSuccess={() =>
+                setTimeout(() => {
+                  setLoadingPDF(false);
+                }, 100)
+              }
+            />
+          }
+          {/* {renderAllPages(3)} */}
         </Document>
       ) : "mp4" === currentFile.type || "mov" === currentFile.type ? (
         <video
@@ -256,9 +290,10 @@ const FileContent = ({
         showingRightPanel={showingRightPanel}
         owner={owner}
         data={data}
-        // pdfController={pdfController}
-        // currentFile={currentFile}
-        // setPdfController={setPdfController}
+        pdfController={pdfController}
+        currentFile={currentFile}
+        setPdfController={setPdfController}
+        setLoadingPDF={setLoadingPDF}
       />
     </div>
   );

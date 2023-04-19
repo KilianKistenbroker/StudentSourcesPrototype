@@ -39,21 +39,67 @@ const Student = ({
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(commentsData);
   const [files, setFiles] = useState(null);
-  const [scale, setScale] = useState(800);
+  const [loadingPDF, setLoadingPDF] = useState(null);
+  const [scale, setScale] = useState({
+    render: 1,
+    width: 800,
+    height: 500,
+  });
 
   const [searchResults, setSearchResults] = useState([]);
-  // const [pdfController, setPdfController] = useState({
-  //   currentPage: 0,
-  //   pageLimit: 0,
-  // });
+  const [pdfController, setPdfController] = useState({
+    currentPage: 0,
+    pageLimit: 0,
+  });
 
-  const handleSetScale = (num) => {
-    const temp = scale + num;
-    if (temp < 600) setScale(600);
-    else if (temp > 1500) {
-      setScale(1500);
+  const handleSetScale = (multiplier, state) => {
+    if (state === "pdf") {
+      const weight = 0.1;
+      const temp = scale.render + weight * multiplier;
+      if (temp < 0.5)
+        setScale({
+          render: 0.5,
+          width: scale.width,
+          height: scale.height,
+        });
+      else if (temp > 3) {
+        setScale({
+          render: 3,
+          width: scale.width,
+          height: scale.height,
+        });
+      } else {
+        setScale({
+          render: temp,
+          width: scale.width,
+          height: scale.height,
+        });
+      }
     } else {
-      setScale(temp);
+      const weight1 = 100;
+      const weight2 = 62.5;
+      const temp1 = scale.width + weight1 * multiplier;
+      const temp2 = scale.height + weight2 * multiplier;
+
+      if (temp1 < 600)
+        setScale({
+          render: scale.render,
+          width: 600,
+          height: 375,
+        });
+      else if (temp1 > 1500) {
+        setScale({
+          render: scale.render,
+          width: 1500,
+          height: 937.5,
+        });
+      } else {
+        setScale({
+          render: scale.render,
+          width: temp1,
+          height: temp2,
+        });
+      }
     }
   };
 
@@ -240,7 +286,7 @@ const Student = ({
         style={{
           right: "0",
           position: "fixed",
-          zIndex: "1",
+          zIndex: "2",
           marginRight: "10px",
           marginTop: "90px",
         }}
@@ -518,8 +564,11 @@ const Student = ({
               scale={scale}
               owner={owner}
               data={data}
-              // pdfController={pdfController}
-              // setPdfController={setPdfController}
+              pdfController={pdfController}
+              setPdfController={setPdfController}
+              setScale={setScale}
+              loadingPDF={loadingPDF}
+              setLoadingPDF={setLoadingPDF}
             />
           ) : (
             <FolderContent
