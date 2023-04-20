@@ -7,8 +7,9 @@ import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
 import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
+import Message from "../components/Message";
 
-const Sources = ({ data, windowDimension }) => {
+const Sources = ({ data, windowDimension, message, setMessage }) => {
   const navigate = useNavigate();
 
   // store these in local browser to remember after refresh
@@ -88,12 +89,7 @@ and also call request to update lists */
     let str2 = search.toLowerCase();
     str2 = str2.replace(/ +/g, "");
 
-    // clear results if query is empty
     if (str2.length === 0) {
-      setLoadUsers([]);
-
-      // get all users if query is all
-    } else if (str2 === "all") {
       const res = await axios.get("/users");
       setLoadUsers(res.data);
       console.log(res.data);
@@ -275,6 +271,8 @@ and also call request to update lists */
         setOwner={setOwner}
         explorerData={explorerData}
         setExplorerData={setExplorerData}
+        message={message}
+        setMessage={setMessage}
       />
     );
   }
@@ -336,6 +334,26 @@ and also call request to update lists */
                   id="search_bar"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
+                  // ------------- TO BE IMPLEMENTED ~ Searing for Folders ----------- //
+
+                  onFocus={
+                    selected === "folders"
+                      ? () =>
+                          setMessage({
+                            title: "Searching for Folders",
+                            body: "This feature shall provide users the ability to search for publicly available folders across the SS database.",
+                          })
+                      : () => {}
+                  }
+                  onBlur={
+                    selected === "folders"
+                      ? () =>
+                          setMessage({
+                            title: null,
+                            body: null,
+                          })
+                      : () => {}
+                  }
                 />
               )}
             </form>
@@ -453,6 +471,8 @@ and also call request to update lists */
                  */}
 
         <div className="sources-results">
+          <Message message={message} setMessage={setMessage} />
+
           {selected === "users" && (
             <Users
               data={data}

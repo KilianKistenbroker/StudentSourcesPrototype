@@ -13,6 +13,7 @@ import CommentBox from "../components/CommentBox";
 import commentsData from "../data/commentsData";
 import Notes from "../components/Notes";
 import Info from "../components/Info";
+import Message from "../components/Message";
 
 const Student = ({
   data,
@@ -21,6 +22,8 @@ const Student = ({
   setOwner,
   explorerData,
   setExplorerData,
+  message,
+  setMessage,
 }) => {
   const navigate = useNavigate();
 
@@ -39,7 +42,7 @@ const Student = ({
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(commentsData);
   const [files, setFiles] = useState(null);
-  const [loadingPDF, setLoadingPDF] = useState(null);
+  // const [loadingPDF, setLoadingPDF] = useState(null);
   const [scale, setScale] = useState({
     render: 1,
     width: 800,
@@ -51,6 +54,45 @@ const Student = ({
     currentPage: 0,
     pageLimit: 0,
   });
+
+  const { insertNode } = useTreeTraversal();
+  const handleInsertNode = (name, type) => {
+    const finalTree = insertNode(
+      explorerData,
+      currentDirectory,
+      handleSetCurrentDirectory,
+      setCurrentDirectory,
+      setExplorerData,
+      name,
+      type
+    );
+  };
+
+  useEffect(() => {
+    if (!data.isLoggedIn) {
+      data.currentPoint = "login";
+      navigate("/login");
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    setPinSelected(false);
+    // setCurrentFile(null);
+    setSearchResults([]);
+  }, [currentDirectory]);
+
+  useEffect(() => {
+    const element = document.documentElement;
+
+    if (windowDimension.winWidth < 800 && showingRightPanel) {
+      element.style.height = "100%";
+      element.style.overflow = "hidden";
+    } else {
+      element.style.height = "";
+      element.style.overflow = "";
+    }
+  }, [showingRightPanel, windowDimension.mobileMode]);
 
   const handleSetScale = (multiplier, state) => {
     if (state === "pdf") {
@@ -101,46 +143,9 @@ const Student = ({
         });
       }
     }
+    console.log("scale");
+    console.log(scale);
   };
-
-  const { insertNode } = useTreeTraversal();
-  const handleInsertNode = (name, type) => {
-    const finalTree = insertNode(
-      explorerData,
-      currentDirectory,
-      handleSetCurrentDirectory,
-      setCurrentDirectory,
-      setExplorerData,
-      name,
-      type
-    );
-  };
-
-  useEffect(() => {
-    if (!data.isLoggedIn) {
-      data.currentPoint = "login";
-      navigate("/login");
-      return;
-    }
-  }, []);
-
-  useEffect(() => {
-    setPinSelected(false);
-    // setCurrentFile(null);
-    setSearchResults([]);
-  }, [currentDirectory]);
-
-  useEffect(() => {
-    const element = document.documentElement;
-
-    if (windowDimension.winWidth < 800 && showingRightPanel) {
-      element.style.height = "100%";
-      element.style.overflow = "hidden";
-    } else {
-      element.style.height = "";
-      element.style.overflow = "";
-    }
-  }, [showingRightPanel, windowDimension.mobileMode]);
 
   // ---------------------------------------------- //
 
@@ -552,6 +557,9 @@ const Student = ({
         >
           {/* add MAIN CONTENT components here */}
 
+          {/* Add msg here */}
+          <Message message={message} setMessage={setMessage} />
+
           {/* if a file is selected, then load file here */}
           {currentFile ? (
             <FileContent
@@ -567,8 +575,6 @@ const Student = ({
               pdfController={pdfController}
               setPdfController={setPdfController}
               setScale={setScale}
-              loadingPDF={loadingPDF}
-              setLoadingPDF={setLoadingPDF}
             />
           ) : (
             <FolderContent

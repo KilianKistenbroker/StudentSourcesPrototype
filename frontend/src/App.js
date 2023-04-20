@@ -12,6 +12,10 @@ import folderData from "./data/folderData";
 function App() {
   const [loading, setLoading] = useState(null);
   const [explorerData, setExplorerData] = useState(folderData);
+  const [message, setMessage] = useState({
+    title: "",
+    body: "",
+  });
 
   // ------------ store user info from login/signup ---------- //
 
@@ -95,15 +99,36 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Signup data={data} windowDimension={windowDimension} />}
+            element={
+              <Signup
+                data={data}
+                windowDimension={windowDimension}
+                message={message}
+                setMessage={setMessage}
+              />
+            }
           />
           <Route
             path="/login"
-            element={<Login data={data} windowDimension={windowDimension} />}
+            element={
+              <Login
+                data={data}
+                windowDimension={windowDimension}
+                message={message}
+                setMessage={setMessage}
+              />
+            }
           />
           <Route
             path="/sources"
-            element={<Sources data={data} windowDimension={windowDimension} />}
+            element={
+              <Sources
+                data={data}
+                windowDimension={windowDimension}
+                message={message}
+                setMessage={setMessage}
+              />
+            }
           />
           <Route
             path="/student"
@@ -114,6 +139,8 @@ function App() {
                 owner={data}
                 explorerData={explorerData}
                 setExplorerData={setExplorerData}
+                message={message}
+                setMessage={setMessage}
               />
             }
           />

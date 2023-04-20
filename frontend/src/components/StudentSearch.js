@@ -27,25 +27,31 @@ const StudentSearch = ({
     setExplorerData(null);
   };
 
-  // this will populate the a temp arr of results
   const searchFromCurrentDirectory = (node, arr, search) => {
-    let temp = [];
+    let temp = arr;
     const lowerString1 = search.toLowerCase().trim(" ");
-    for (let i = 0; i < currentDirectory.items.length; i++) {
-      const lowerString2 = currentDirectory.items[i].name
-        .toLowerCase()
-        .trim(" ");
+    for (let i = 0; i < node.items.length; i++) {
+      const lowerString2 = node.items[i].name.toLowerCase().trim(" ");
       if (lowerString2.includes(lowerString1)) {
         temp.push(node.items[i]);
       }
+      temp = searchFromCurrentDirectory(node.items[i], temp, search);
     }
+
     return temp;
   };
 
   // this will populate searchResults
   const searchHelper = async (e) => {
     e.preventDefault();
-    setSearchResults(searchFromCurrentDirectory(currentDirectory, [], search));
+
+    if (search.length === 0) {
+      setSearchResults([]);
+    } else {
+      setSearchResults(
+        searchFromCurrentDirectory(currentDirectory, [], search)
+      );
+    }
   };
 
   return (

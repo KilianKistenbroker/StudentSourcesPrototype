@@ -6,12 +6,12 @@ const TinyFooter = ({
   pdfController,
   currentFile,
   setPdfController,
-  setLoadingPDF,
+  // setLoadingPDF,
 }) => {
   const handlePageManager = (num) => {
-    setLoadingPDF(true);
+    // setLoadingPDF(true);
     const temp = pdfController.currentPage + num;
-    if (temp > pdfController.pageLimit || temp < 0) {
+    if (temp > pdfController.pageLimit || temp < 1) {
       return;
     } else {
       setPdfController({

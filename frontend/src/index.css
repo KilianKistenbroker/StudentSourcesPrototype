@@ -863,7 +863,7 @@ padding: 6px 10px;
 }
 
 .sources-results {
-    margin-top: 300px;
+    margin-top: 280px;
     margin-bottom: 200px;
     display: grid;
     justify-content:center;
@@ -1228,10 +1228,11 @@ padding: 6px 10px;
 .right-panel-notes {
     /* direction: rtl; */
     text-align: left;
+    /* width: 100%; */
 
     min-height: 255px;
     height: 30%;
-    padding: 10px;
+    padding-left: 10px;
 
     border: 1px solid #ededed;
     border-top: none;
@@ -1249,7 +1250,7 @@ padding: 6px 10px;
     height: 30.25%;
     /* padding: 10px; */
     margin-bottom: 150px;
-    overflow: scroll;
+    /* overflow: scroll; */
     
     background-color: #fafafa;
 }
@@ -1498,14 +1499,16 @@ padding: 6px 10px;
     justify-content: center;
     flex-direction: column;
     margin-bottom: 100px;
+    overflow: hidden;
   }
   
   .react-pdf__Page {
     margin: 0 auto;
     height: auto;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #f6f6f6;
     
+    margin-bottom: 10px;
   }
   
   .react-pdf__Page__annotations {
@@ -1524,12 +1527,12 @@ padding: 6px 10px;
 }
 
 /* try to match width & height of page being rendered */
-.loadingScreen {
-    width: 100vh;
-    height: 100vh;
-    background-color: white;
+.pdfPlaceholder {
+    width: 50%;
+    height:200%;
+    /* background-color: white; */
     position: absolute;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 /* ------------------- Comments ------------------- */
@@ -1554,7 +1557,7 @@ padding: 6px 10px;
     list-style:none;
     display: flex;
     flex-direction: column;
-    /* overflow: scroll; */
+    /* overflow: auto; */
     bottom: 0;
 }
 .commentList li {
@@ -1645,8 +1648,12 @@ padding: 6px 10px;
     border-radius: 5px;
     font: 18px system-ui;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    margin-bottom: 45px;
+    /* overflow: hidden; */
+    /* margin-bottom: 45px; */
+    /* overflow-x: scroll; */
+    max-width: 800px;
+    margin: auto;
+    /* margin-top: 150px; */
 }
 
 .exit {
