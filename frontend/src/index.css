@@ -937,7 +937,7 @@ padding: 6px 10px;
 .box-star:hover {
     color: rgba(128,128,128, .8);
     transition: .1s;
-    /* cursor: pointer; */
+    cursor: pointer;
 }
 
 .box-friend {
@@ -1059,7 +1059,7 @@ padding: 6px 10px;
 }
 
 .left-panel-grid {
-    height: 100vh;
+    /* height: 100vh; */
     position: fixed;
     overflow-y: auto;  
     border: 1px solid #ededed;
@@ -1069,7 +1069,13 @@ padding: 6px 10px;
     direction:rtl;
     z-index: 2;
     background-color: #f6f6f6;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+
+    bottom: 0px;
+    margin-top: 67.5px;
+    margin-bottom: 80px;
+    top: 70px;
+
 }
 
 .main-panel-grid {
@@ -1079,19 +1085,25 @@ padding: 6px 10px;
 .right-panel-grid {
     /* starting scroll at bottom in order to show comments first */
 
-    height: 100vh;
+    /* height: 100vh; */
     position: fixed;
-    overflow-y: auto;
+    display: block;
+    overflow-y: scroll;
     right: 0;
 
-    border: 1px solid #ededed;
-    border-top: none;
+    border-left: 1px solid #ededed;
+    /* border-top: none;
     border-bottom: none;
-    border-right: none;
+    border-right: none; */
     z-index: 2;
 
+    bottom: 0px;
+    margin-top: 67.5px;
+    margin-bottom: 80px;
+    top: 70px;
+
     background-color: #f6f6f6;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .header-tab {
@@ -1123,14 +1135,14 @@ padding: 6px 10px;
     z-index: 3;
     top: 70px;
     left: 0px;
-    border-bottom: 1px solid #ededed;
-    border-top: 1px solid #ededed;
+    border: 1px solid #ededed;
+    border-left: none;
 }
 
 .left-panel-tree {
     direction:ltr;
     min-height: 350px;
-    height: 38.75%;
+    height: 50%;
     background-color: #fafafa;
 
     border: 1px solid #ededed;
@@ -1148,9 +1160,9 @@ padding: 6px 10px;
 .left-panel-chatbot {
     direction:ltr;
     min-height: 350px;
-    height: 38.5%;
+    height: 50%;
     padding: 10px;
-    margin-bottom: 150px;
+    /* margin-bottom: 150px; */
     overflow:scroll;
     background-color: #fafafa;
 }
@@ -1186,8 +1198,8 @@ padding: 6px 10px;
     z-index: 3;
     top: 70px;
     right: 0px;
-    border-bottom: 1px solid #ededed;
-    border-top: 1px solid #ededed;
+    border: 1px solid #ededed;
+    border-right: none;
 }
 
 .right-panel-info {
@@ -1200,8 +1212,8 @@ padding: 6px 10px;
     flex-direction: column;
     /* justify-content: center; */
 
-    min-height: 150px;
-    height: 14.5%;
+    min-height: 100px;
+    height: 20%;
     padding: 10px;
 
     border: 1px solid #ededed;
@@ -1230,8 +1242,8 @@ padding: 6px 10px;
     text-align: left;
     /* width: 100%; */
 
-    min-height: 255px;
-    height: 30%;
+    min-height: 230px;
+    height: 40%;
     padding-left: 10px;
 
     border: 1px solid #ededed;
@@ -1246,10 +1258,10 @@ padding: 6px 10px;
     /* direction: rtl; */
     text-align: left;
 
-    min-height: 255px;
-    height: 30.25%;
+    min-height: 230px;
+    height: 40%;
     /* padding: 10px; */
-    margin-bottom: 150px;
+    /* margin-bottom: 150px; */
     /* overflow: scroll; */
     
     background-color: #fafafa;
@@ -1653,6 +1665,7 @@ padding: 6px 10px;
     /* overflow-x: scroll; */
     max-width: 800px;
     margin: auto;
+    z-index: 1;
     /* margin-top: 150px; */
 }
 

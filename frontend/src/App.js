@@ -94,7 +94,12 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar data={data} windowDimension={windowDimension} />
+        <Navbar
+          data={data}
+          windowDimension={windowDimension}
+          message={message}
+          setMessage={setMessage}
+        />
 
         <Routes>
           <Route

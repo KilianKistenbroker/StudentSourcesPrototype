@@ -6,7 +6,8 @@ const TinyFooter = ({
   pdfController,
   currentFile,
   setPdfController,
-  // setLoadingPDF,
+  message,
+  setMessage,
 }) => {
   const handlePageManager = (num) => {
     // setLoadingPDF(true);
@@ -91,8 +92,14 @@ const TinyFooter = ({
       {/* trashbin */}
       {owner.user === data.user ? (
         <svg
+          onClick={() =>
+            setMessage({
+              title: "Trash bin",
+              body: "This feature shall allow the user to view items from their trash bin, after which they can either restore or permanently delete those items.",
+            })
+          }
           xmlns="http://www.w3.org/2000/svg"
-          className="header-icons"
+          className="header-icons cursor-enabled"
           style={{
             width: "30px",
             height: "30px",

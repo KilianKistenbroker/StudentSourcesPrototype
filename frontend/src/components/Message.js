@@ -7,7 +7,7 @@ const Message = ({ message, setMessage }) => {
       var element = document.getElementById("message");
       element.scrollIntoView({
         behavior: "smooth",
-        block: "start",
+        block: "end",
         inline: "nearest",
       });
     }

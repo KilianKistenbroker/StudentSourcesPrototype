@@ -285,6 +285,8 @@ const Student = ({
         data={data}
         setOwner={setOwner}
         setExplorerData={setExplorerData}
+        message={message}
+        setMessage={setMessage}
       />
 
       <span
@@ -311,9 +313,9 @@ const Student = ({
         <div
           className={
             windowDimension.winWidth > 1200
-              ? "left-panel-title max-panel-width2"
+              ? "left-panel-title max-panel-width"
               : windowDimension.winWidth > 800
-              ? "left-panel-title medium-panel-width2"
+              ? "left-panel-title medium-panel-width"
               : "left-panel-title min-left-panel"
           }
         >
@@ -328,13 +330,18 @@ const Student = ({
               : "left-panel-grid  min-left-panel"
           }
         >
-          <div
-            className="header-tab"
-            style={{ marginTop: "67.5px", direction: "ltr" }}
-          >
+          <div className="header-tab" style={{ direction: "ltr" }}>
             Files
             {/* more options button */}
-            <span style={{ float: "right" }}>
+            <span
+              style={{ float: "right" }}
+              onClick={() =>
+                setMessage({
+                  title: "More Options for Files",
+                  body: "This feature shall provide more options for the user to either expand or collapse their directory tree.",
+                })
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"
@@ -377,7 +384,15 @@ const Student = ({
             <div className="header-tab" style={{ direction: "ltr" }}>
               Ask Chatbot
               {/* more options button */}
-              <span style={{ float: "right" }}>
+              <span
+                style={{ float: "right" }}
+                onClick={() =>
+                  setMessage({
+                    title: "More Options for Chatbot",
+                    body: "This feature shall provide more options for the user to copy a conversation to clipboard, read an entire file (as opposed to a single page of a document), and clear conversation.",
+                  })
+                }
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="header-icons cursor-enabled"
@@ -413,9 +428,9 @@ const Student = ({
         <div
           className={
             windowDimension.winWidth > 1200 && showingRightPanel
-              ? "right-panel-title max-panel-width2"
+              ? "right-panel-title max-panel-width"
               : showingRightPanel
-              ? "right-panel-title medium-panel-width2"
+              ? "right-panel-title medium-panel-width"
               : "right-panel-title min-right-panel"
           }
         >
@@ -453,10 +468,10 @@ const Student = ({
               : "right-panel-grid min-right-panel"
           }
         >
-          <div className="header-tab" style={{ marginTop: "67.5px" }}>
+          <div className="header-tab">
             Info
             {/* more options button */}
-            <span style={{ float: "right" }}>
+            {/* <span style={{ float: "right" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"
@@ -465,7 +480,7 @@ const Student = ({
               >
                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
               </svg>
-            </span>
+            </span> */}
           </div>
           <div
             className="right-panel-info"
@@ -556,9 +571,11 @@ const Student = ({
           }
         >
           {/* add MAIN CONTENT components here */}
-
-          {/* Add msg here */}
-          <Message message={message} setMessage={setMessage} />
+          {currentFile && (
+            <div style={{ marginTop: "100px" }}>
+              <Message message={message} setMessage={setMessage} />
+            </div>
+          )}
 
           {/* if a file is selected, then load file here */}
           {currentFile ? (
@@ -575,6 +592,8 @@ const Student = ({
               pdfController={pdfController}
               setPdfController={setPdfController}
               setScale={setScale}
+              message={message}
+              setMessage={setMessage}
             />
           ) : (
             <FolderContent
@@ -595,6 +614,8 @@ const Student = ({
               setSearchResults={setSearchResults}
               owner={owner}
               data={data}
+              message={message}
+              setMessage={setMessage}
             />
           )}
         </div>

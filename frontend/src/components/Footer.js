@@ -72,7 +72,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-content">
-          <h2>Developer</h2> <br />
+          <h2>Contacts</h2> <br />
           About us <br />
         </div>
       </div>

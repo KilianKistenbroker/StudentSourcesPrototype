@@ -1,19 +1,19 @@
-#cloud:
-#  aws:
-#    credentials:
-#      access-key:
-#      secret-key:
-#    region:
-#      static: us-west-1
-#    stack:
-#      auto: false
-#
-#application:
-#  bucket:
-#    name: remote-storage-demo
-#
-#server:
-#  tomcat:
-#    max-swallow-size: -1
-#    max-http-form-post-size: -1
-#
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAT4BBIDX6GGBM77UI
+      secret-key: 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
+    region:
+      static: us-west-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: prototypebucket-1
+
+server:
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: -1
+

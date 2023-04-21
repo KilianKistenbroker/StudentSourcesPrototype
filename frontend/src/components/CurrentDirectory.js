@@ -10,6 +10,8 @@ const CurrentDirectory = ({
   pinSelected,
   owner,
   data,
+  message,
+  setMessage,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -109,9 +111,18 @@ const CurrentDirectory = ({
           </div>
         )}
 
+        {/* visibility */}
         {owner.user === data.user && (
           <div style={{ display: "flex", width: "70px", marginLeft: "5px" }}>
-            <div className="box-star">
+            <div
+              className="box-star"
+              onClick={() =>
+                setMessage({
+                  title: "Visibility and Permissions",
+                  body: "This feature shall open a pop up to allow the user to configure the visibility and permissions of a file or folder.",
+                })
+              }
+            >
               {loadData.visibility === "Private" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +142,15 @@ const CurrentDirectory = ({
                 </svg>
               )}
             </div>
-            <div className="box-star">
+            <div
+              className="box-star"
+              onClick={() =>
+                setMessage({
+                  title: "More Options for Folders/Files",
+                  body: "This feature shall provide more options to download or share the selected folder or file.",
+                })
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"
@@ -145,6 +164,8 @@ const CurrentDirectory = ({
         )}
       </div>
     ));
+
+    // pin is selected
   } else {
     return currentDirectory.items
       .filter(function (loadData) {
@@ -192,7 +213,16 @@ const CurrentDirectory = ({
           </div>
 
           <div style={{ display: "flex", width: "70px", marginLeft: "5px" }}>
-            <div className="box-star">
+            {/* visibility */}
+            <div
+              className="box-star cursor-enabled"
+              onClick={() =>
+                setMessage({
+                  title: "Visibility and Permissions",
+                  body: "This feature shall open a pop up to allow the user to configure the visibility and permissions of a file or folder.",
+                })
+              }
+            >
               {loadData.visibility === "Private" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +242,15 @@ const CurrentDirectory = ({
                 </svg>
               )}
             </div>
-            <div className="box-star">
+            <div
+              className="box-star"
+              onClick={() =>
+                setMessage({
+                  title: "More Options for Folders/Files",
+                  body: "This feature shall provide more options to download or share the selected folder or file.",
+                })
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"

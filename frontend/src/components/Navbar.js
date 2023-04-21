@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/Light-Version.png";
 
-export default function Navbar({ data, windowDimension }) {
+export default function Navbar({ data, windowDimension, message, setMessage }) {
   const [topRightNav, setTopRightNave] = useState("Login");
   const navigate = useNavigate();
 
@@ -49,6 +49,12 @@ export default function Navbar({ data, windowDimension }) {
     if (window.location.pathname === "/" + destination) {
       window.location.reload();
     }
+
+    // temp location for reseting message
+    setMessage({
+      title: null,
+      body: null,
+    });
   };
 
   if (data.isLoggedIn) {

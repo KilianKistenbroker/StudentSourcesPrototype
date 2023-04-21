@@ -16,6 +16,8 @@ const StudentSearch = ({
   data,
   setOwner,
   setExplorerData,
+  message,
+  setMessage,
 }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
@@ -259,6 +261,12 @@ const StudentSearch = ({
               className={
                 selected === "friends" ? "selected" : "selection-content"
               }
+              onClick={() =>
+                setMessage({
+                  title: "Format",
+                  body: "This feature shall allow the user to swap between list and grid layout.",
+                })
+              }
             >
               {/* Format */}
               <svg
@@ -282,13 +290,6 @@ const StudentSearch = ({
               paddingLeft: "15px",
             }}
           >
-            {/* put owner info here */}
-            {/* <div className="box-username">
-              @{owner.user}
-              <br />
-              {owner.firstName} {owner.lastName}
-            </div> */}
-
             <div className="user-grid">
               <div
                 className="box-icon"

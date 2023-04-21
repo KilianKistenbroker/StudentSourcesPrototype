@@ -1,5 +1,6 @@
 import CurrentDirectory from "./CurrentDirectory";
 import DropZone from "./DropZone";
+import Message from "./Message";
 import TinyFooter from "./TinyFooter";
 
 const FolderContent = ({
@@ -20,9 +21,14 @@ const FolderContent = ({
   setSearchResults,
   owner,
   data,
+  message,
+  setMessage,
 }) => {
   return (
     <div style={{ marginTop: "150px" }}>
+      {/* Add msg here */}
+      <Message message={message} setMessage={setMessage} />
+
       {/* place search results here */}
       {searchResults.length > 0 && (
         <div className="search-results">
@@ -150,6 +156,8 @@ const FolderContent = ({
           pinSelected={pinSelected}
           owner={owner}
           data={data}
+          message={message}
+          setMessage={setMessage}
         />
       </div>
       {owner.user === data.user && (
@@ -170,6 +178,8 @@ const FolderContent = ({
         showingRightPanel={showingRightPanel}
         owner={owner}
         data={data}
+        message={message}
+        setMessage={setMessage}
       />
     </div>
   );
