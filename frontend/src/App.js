@@ -3,11 +3,13 @@ import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sources from "./pages/Sources";
-import Legal from "./pages/Terms";
+import Terms from "./pages/Terms";
 import { useEffect, useState } from "react";
 import axios from "./api/axios";
 import Student from "./pages/Student";
 import folderData from "./data/folderData";
+import LearnMore from "./pages/LearnMore";
+import Credits from "./pages/Credits";
 
 function App() {
   const [loading, setLoading] = useState(null);
@@ -22,7 +24,6 @@ function App() {
   const [data, setData] = useState({
     user: "",
     password: "",
-    currentPoint: "",
     isLoggedIn: false,
     id: -1,
   });
@@ -104,6 +105,10 @@ function App() {
         <Routes>
           <Route
             path="/"
+            element={<LearnMore windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/sign-up"
             element={
               <Signup
                 data={data}
@@ -149,7 +154,14 @@ function App() {
               />
             }
           />
-          <Route path="/terms" element={<Legal />} />
+          <Route
+            path="/terms"
+            element={<Terms windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/credits"
+            element={<Credits windowDimension={windowDimension} />}
+          />
         </Routes>
       </Router>
     </div>

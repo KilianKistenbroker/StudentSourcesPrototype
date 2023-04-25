@@ -62,14 +62,10 @@ const DropZone = ({
       let fa = a.name.toLowerCase(),
         fb = b.name.toLowerCase();
 
-      if (fa < fb) {
-        return -1;
-      }
-      if (fa > fb) {
-        return 1;
-      }
-      return 0;
+      return fa.localeCompare(fb, undefined, { numeric: true });
     });
+
+    console.log(currentDirectory.items);
 
     // this may never be needed here ...
     let folders = [];

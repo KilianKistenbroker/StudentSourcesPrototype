@@ -152,7 +152,7 @@ a, a:visited {
 
 a:hover {
     color: rgba(51,102,204, .8);
-    transition: .1s;
+    /* transition: .1s; */
     cursor: pointer;
 }
 
@@ -171,6 +171,7 @@ textarea {
     border-style: solid;
     resize: none;
     outline: none;
+    position: relative;
 }
 
 button:hover {
@@ -486,7 +487,7 @@ button {
     border-bottom: 1px solid #ededed;
     position: fixed;
     align-items: center;
-    z-index: 3;
+    z-index: 4;
     width: 100%;
 }
 
@@ -502,13 +503,99 @@ button {
     display: flex;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     width: 100%;
     /* min-width: 300px; */
     /* justify-content: center; */
     font: 20px sans-serif;
     color: lightgrey;
+}
+
+.displaying {
+height: 272px;
+}
+
+.hiding {
+height: 10px;
+left:-9999px;
+top:-9999px
+}
+
+.notifications {
+    right: 50px;
+}
+
+.user-account {
+    right: 10px;
+}
+
+.header-more-options {
+    position: absolute;
+    right: 30px;
+    text-align: left;
+    border: 1px solid #ededed;
+    
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: dimgray;
+    line-height: 30px;
+    transition: .15s;
+    font-size: 15px;
+    overflow: hidden;
+    margin-top: -7px;
+    z-index: 1;
+}
+
+/* .user-panel:before {
+    border-top: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+    top: 0%;
+    right: 0%;
+    margin-right: 10px;
+    margin-top: -8px; */
+
+    /* reused code */
+    /* position: absolute;
+    width: 20px;
+    height: 20px;
+    content: '';
+    transform: rotate(45deg);
+    background: white;
+} */
+
+
+.option {
+    /* padding: 10px; */
+    padding-left: 30px;
+    text-align: left;
+    border-radius: 2px;
+}
+
+.option:hover {
+    
+    cursor: pointer;
+    transition: .1s;
+    color: #aaa;
+    background: #f6f6f6;
+}
+
+.user-panel {
+    position: absolute;
+    padding: 0;
+    top: 70px;
+    border: 1px solid #ededed;
+    width: 250px;
+    
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: dimgray;
+    line-height: 54px;
+    transition: .25s;
+    font-size: 18px;
+    overflow: hidden;
 }
 
 .divider {
@@ -533,7 +620,7 @@ button {
 }
 
 .sub-navbar {
-    background: white;
+    background: #fafafa;
     margin-top: 60px;
     padding-top: 20px;
     padding-left: 10px;
@@ -547,8 +634,7 @@ button {
     z-index: 2;
     width: 100%;
     transition: .2s;
-    
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    border-bottom: 2px solid #ededed;
 }
 
 .selected {
@@ -566,7 +652,7 @@ button {
     width: 100%; 
     height: 55px;
     text-align: center;
-    border-bottom: 1px solid #ededed;
+    /* border-bottom: 1px solid #ededed; */
     color: dimgray;
     border-radius: 2px;
     font: 15px system-ui;
@@ -634,7 +720,7 @@ button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    margin-right: 20px;
+    margin-right: 10px;
     padding: 10px;
     border: 1px solid rgb(211,211,211);
     border-bottom: none;
@@ -643,10 +729,9 @@ button {
     color: gray;
     font-size: 14px;
     border-radius: 25px;
-    transition: .1s;
     justify-self: right;
 }
-
+/* 
 #signup {
     font-family: 'Nunito', sans-serif;
     font-weight: bolder;
@@ -655,7 +740,7 @@ button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    margin-right: 20px;
+    margin-right: 10px;
     padding: 10px;
     border: 1px solid rgb(211,211,211);
     background: whitesmoke;
@@ -664,39 +749,41 @@ button {
     color: gray;
     font-size: 14px;
     border-radius: 25px;
-    transition: .1s;
     justify-self: right;
-}
+} */
 
 
 #user-nav {
-    font-family: 'Nunito', sans-serif;
-    font-weight: bolder;
-    color: whitesmoke;
-    width: 40px;
-    height: 40px;
+    /* font-family: 'Nunito', sans-serif;
+    font-weight: bolder; */
+    /* color: whitesmoke; */
+    width: 25px;
+    height: 25px;
     display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    margin-right: 20px;
-    padding: 10px;
-    border: 1px solid rgb(211,211,211);
-    background: whitesmoke;
+    /* text-align: center;
+    text-decoration: none; */
+    /* margin-right: 10px; */
+    /* padding: 3px; */
+    /* border: 1px solid rgb(211,211,211); */
+    /* background: whitesmoke;
     border-bottom: none;
-    border-top: none;
-    color: rgb(128,128,128);
-    font-size: 14px;
+    border-top: none; */
+    /* color: rgb(128,128,128); */
+    /* font-size: 14px; */
     border-radius: 25px;
-    transition: .1s;
-    justify-self: right;
+    border: none;
+    /* justify-self: right; */
+    /* transform: translate(0px, 2px); */
 }
 
 #user-nav-icon {
-    height: 30px;
-    width: 30px;
-    transform: translate(-5.5px, -5.5px);
+ width: 25px;
+ height: 30px;
+ margin-right: 20px;
+ /* margin-top: 10px; */
+ /* transform: translate(0px, 5px);  */
+    /* transform: translate(-5.5px, -5.5px); */
     color: rgb(128,128,128);
-    transition: .1s;
 }
 
 .logo {
@@ -801,6 +888,7 @@ button {
 .placeholder {
     margin-top: 200px;
     width: 250px;
+    
 }
 
 /* change name to match this application */
@@ -863,7 +951,7 @@ padding: 6px 10px;
 }
 
 .sources-results {
-    margin-top: 280px;
+    margin-top: 100px;
     margin-bottom: 200px;
     display: grid;
     justify-content:center;
@@ -1069,7 +1157,7 @@ padding: 6px 10px;
     direction:rtl;
     z-index: 2;
     background-color: #f6f6f6;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     bottom: 0px;
     margin-top: 67.5px;
@@ -1080,6 +1168,23 @@ padding: 6px 10px;
 
 .main-panel-grid {
     padding: 10px;
+}
+
+.light-mode-reader {
+
+}
+
+.dark-mode-reader {
+
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ededed;
 }
 
 .right-panel-grid {
@@ -1103,7 +1208,7 @@ padding: 6px 10px;
     top: 70px;
 
     background-color: #f6f6f6;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header-tab {
@@ -1128,7 +1233,7 @@ padding: 6px 10px;
     padding-top: 22px;
     text-align: left;
     background-color: #f6f6f6;
-    color: dimgray;
+    color: #202020;
 
     font: 18px system-ui;
     font-weight: bolder;
@@ -1142,7 +1247,7 @@ padding: 6px 10px;
 .left-panel-tree {
     direction:ltr;
     min-height: 350px;
-    height: 50%;
+    height: 46.75%;
     background-color: #fafafa;
 
     border: 1px solid #ededed;
@@ -1186,7 +1291,7 @@ padding: 6px 10px;
 .right-panel-title {
     font: 18px system-ui;
     font-weight: bolder;
-    color: dimgray;
+    color: #202020;
     position: fixed;
     background-color: #f6f6f6;
     height: 67.5px;
@@ -1213,7 +1318,7 @@ padding: 6px 10px;
     /* justify-content: center; */
 
     min-height: 100px;
-    height: 20%;
+    height: 18%;
     padding: 10px;
 
     border: 1px solid #ededed;
@@ -1243,7 +1348,7 @@ padding: 6px 10px;
     /* width: 100%; */
 
     min-height: 230px;
-    height: 40%;
+    height: 37.75%;
     padding-left: 10px;
 
     border: 1px solid #ededed;
@@ -1259,7 +1364,7 @@ padding: 6px 10px;
     text-align: left;
 
     min-height: 230px;
-    height: 40%;
+    height: 37.75%;
     /* padding: 10px; */
     /* margin-bottom: 150px; */
     /* overflow: scroll; */
@@ -1292,13 +1397,9 @@ padding: 6px 10px;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: white;
+    background-color: #fafafa;
+    border-top: 2px solid #ededed ;
     text-align: right;
-
-    border: 1px solid #ededed;
-    border-bottom: none;
-    border-right: none;
-    border-left: none;
 
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -1311,6 +1412,7 @@ padding: 6px 10px;
     gap: 10px;
     width: 200px;
     justify-self: center;
+    justify-content: center;
 }
 
 .main-searchbar-container {
@@ -1510,17 +1612,13 @@ padding: 6px 10px;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: 100px;
-    overflow: hidden;
+    overflow-x: scroll;
   }
   
   .react-pdf__Page {
     margin: 0 auto;
     height: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid #f6f6f6;
-    
-    margin-bottom: 10px;
+    margin-bottom: 18.5%;
   }
   
   .react-pdf__Page__annotations {
@@ -1541,10 +1639,11 @@ padding: 6px 10px;
 /* try to match width & height of page being rendered */
 .pdfPlaceholder {
     width: 50%;
-    height:200%;
+    height:10%;
+    top: 100vh;
     /* background-color: white; */
     position: absolute;
-    /* z-index: 1; */
+    z-index: 0;
 }
 
 /* ------------------- Comments ------------------- */
@@ -1666,6 +1765,7 @@ padding: 6px 10px;
     max-width: 800px;
     margin: auto;
     z-index: 1;
+    position: relative;
     /* margin-top: 150px; */
 }
 
@@ -1676,4 +1776,81 @@ padding: 6px 10px;
 }
 .exit:hover {
     color: #ff9999;
+}
+
+/* ------------------ learn more -----------------------  */
+
+.learn-more-container {
+    margin: 0 auto;
+    margin-top: 60px;
+    width: 100%;
+    max-width: 1000px;
+    min-width: 200px;
+    padding: 10px;
+    padding-bottom: 0;
+    color: #202020;
+}
+
+.learn-more-grid-item {
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 50px;
+}
+
+.learn-more-description {
+    max-width: 500px;
+    padding-top: 50px;
+}
+
+.learn-more-title {
+    font-weight: bolder;
+    margin-bottom: 20px;
+    /* text-align: center; */
+    font-size: xx-large;
+}
+
+.learn-more-body {
+    /* text-align: center; */
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.learn-more-img-container {
+    max-width: 400px;
+    max-height: 355px;
+    overflow: hidden;
+}
+
+.learn-more-img {
+    /* temp img placement */
+    text-align: center; 
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
+
+.sign-up-button {
+    margin: auto;
+    margin-bottom: 100px;
+    width: fit-content;
+    
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+    background-color: #202020;
+    color: whitesmoke;
+    transition: .1s;
+    font-size: 22px;
+}
+
+.sign-up-button:hover {
+    background-color: #3d3d3d;
+    cursor: pointer;
+}
+
+/* -------------- credits -------------  */
+.credit-list {
+    margin-top: 150px;
 }

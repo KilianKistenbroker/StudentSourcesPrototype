@@ -84,13 +84,6 @@ const Signup = ({ data, windowDimension }) => {
     setErrMsg("");
   }, [user, password, firstName, lastName, email]);
 
-  const customLink = (e) => {
-    e.preventDefault();
-    if (data.currentPoint === "login") data.currentPoint = "";
-    else data.currentPoint = "login";
-    navigate("/" + data.currentPoint);
-  };
-
   const handleHiddenPassword = () => {
     setShowingPassword(!showingPassword);
   };
@@ -226,7 +219,7 @@ const Signup = ({ data, windowDimension }) => {
               <h1>
                 Create an account
                 <span className="tiny">
-                  <Link id="" to={"/login"} onClick={customLink}>
+                  <Link to={"/login"} id="">
                     or login
                   </Link>
                 </span>
@@ -565,7 +558,7 @@ const Signup = ({ data, windowDimension }) => {
             </div>
           </div>
 
-          <Footer />
+          <Footer windowDimension={windowDimension} />
         </div>
       ) : (
         <div className="page">
@@ -626,7 +619,7 @@ const Signup = ({ data, windowDimension }) => {
               <h1>
                 Create an account
                 <span className="tiny">
-                  <Link id="" to={"/login"} onClick={customLink}>
+                  <Link to={"/login"} id="">
                     or login
                   </Link>
                 </span>
@@ -940,7 +933,7 @@ const Signup = ({ data, windowDimension }) => {
               </div>
             </div>
           </div>
-          <Footer />
+          <Footer windowDimension={windowDimension} />
         </div>
       )}
     </>

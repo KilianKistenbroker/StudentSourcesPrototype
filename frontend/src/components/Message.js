@@ -22,12 +22,14 @@ const Message = ({ message, setMessage }) => {
             padding: "10px",
             borderTopLeftRadius: "5px",
             borderTopRightRadius: "5px",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, auto)",
           }}
         >
           <b style={{ color: "#fafafa", paddingLeft: "5px" }}>
             To be implemented ~ {message.title}
           </b>
-          <span style={{ float: "right" }}>
+          <span style={{ justifySelf: "right" }}>
             <div
               className="header-icons cursor-enabled exit"
               onClick={() =>

@@ -16,10 +16,15 @@ const readEntries = async (entry, parent, path) => {
 
     return new Promise(async (resolve) => {
       entry.file(async (file) => {
-        // const dataUrl = "";
+        let dataUrl = "";
 
         /* IMPORTANT: must replace this will file streaming. */
-        const dataUrl = await readFileContent(file);
+        if (
+          ["pdf", "txt", "url"].includes(nameAndType[nameAndType.length - 1])
+        ) {
+          dataUrl = await readFileContent(file);
+        }
+
         const newItem = {
           name: nameAndType[0] + "." + nameAndType[nameAndType.length - 1],
           pathname: currentPath,

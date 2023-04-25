@@ -8,6 +8,7 @@ const TinyFooter = ({
   setPdfController,
   message,
   setMessage,
+  showingLeftPanel,
 }) => {
   const handlePageManager = (num) => {
     // setLoadingPDF(true);
@@ -30,29 +31,34 @@ const TinyFooter = ({
           : "tiny-footer medium-margin"
       }
       style={
-        windowDimension.winWidth > 800 && !showingRightPanel
-          ? { marginRight: "0" }
-          : windowDimension.winWidth < 800 || !showingRightPanel
+        windowDimension.winWidth < 800 ||
+        (!showingRightPanel && !showingLeftPanel)
           ? { margin: "0px" }
+          : windowDimension.winWidth > 800 && !showingRightPanel
+          ? { marginRight: "0" }
+          : windowDimension.winWidth > 800 && !showingLeftPanel
+          ? { marginLeft: "0" }
           : {}
       }
     >
-      {windowDimension.winWidth < 800 ? (
+      {/* {windowDimension.winWidth < 800 || !showingLeftPanel ? (
         <div
           style={{
-            color: "dimgrey",
+            color: "#3d3d3d",
             fontSize: "18px",
             fontWeight: "bolder",
-            paddingLeft: "20px",
+            paddingLeft: "10px",
             justifySelf: "left",
+            width: "100px",
+            textAlign: "left",
           }}
         >
           {" "}
           {"<"} Back
         </div>
-      ) : (
-        <div> </div>
-      )}
+      ) : ( */}
+      <div> </div>
+      {/*  )} */}
 
       {/* if viewing a pdf */}
       {currentFile && currentFile.type === "pdf" ? (
@@ -90,7 +96,7 @@ const TinyFooter = ({
       )}
 
       {/* trashbin */}
-      {owner.user === data.user ? (
+      {owner.user === data.user && !currentFile ? (
         <svg
           onClick={() =>
             setMessage({
@@ -105,6 +111,7 @@ const TinyFooter = ({
             height: "30px",
             marginTop: "5px",
             justifySelf: "right",
+            width: "100px",
           }}
           fill="currentColor"
           viewBox="0 0 16 16"

@@ -23,7 +23,12 @@ const FolderContent = ({
   data,
   message,
   setMessage,
+  showingLeftPanel,
 }) => {
+  const handleSetCurrentFile = async (file) => {
+    await setCurrentFile(file);
+  };
+
   return (
     <div style={{ marginTop: "150px" }}>
       {/* Add msg here */}
@@ -38,12 +43,14 @@ const FolderContent = ({
               padding: "10px",
               borderTopLeftRadius: "5px",
               borderTopRightRadius: "5px",
+              display: "grid",
+              gridTemplateColumns: "repeat(2, auto)",
             }}
           >
             <b style={{ color: "#fafafa", paddingLeft: "5px" }}>
               Search Results ~
             </b>
-            <span style={{ float: "right" }}>
+            <span style={{ justifySelf: "right" }}>
               <div
                 className="header-icons cursor-enabled exit"
                 onClick={() => setSearchResults([])}
@@ -81,7 +88,9 @@ const FolderContent = ({
                             -1
                           )
                       : // change below func to display file contents
-                        () => setCurrentFile(loadData)
+                        () => {
+                          handleSetCurrentFile(loadData);
+                        }
                   }
                 >
                   <b>Location:</b> {loadData.pathname}
@@ -110,7 +119,7 @@ const FolderContent = ({
               padding: "5px",
               fontSize: "16px",
               overflow: "hidden",
-              color: "dimgray",
+              color: "#202020",
               fontWeight: "bolder",
             }}
           >
@@ -124,7 +133,7 @@ const FolderContent = ({
                 padding: "5px",
                 fontSize: "16px",
                 overflow: "hidden",
-                color: "dimgray",
+                color: "#202020",
                 fontWeight: "bolder",
               }}
             >
@@ -138,7 +147,7 @@ const FolderContent = ({
                 padding: "5px",
                 fontSize: "16px",
                 overflow: "hidden",
-                color: "dimgray",
+                color: "#202020",
                 fontWeight: "bolder",
               }}
             >
@@ -180,6 +189,7 @@ const FolderContent = ({
         data={data}
         message={message}
         setMessage={setMessage}
+        showingLeftPanel={showingLeftPanel}
       />
     </div>
   );

@@ -1,30 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Footer = () => {
-  // ***************** REUSED CODE *****************
-  const [windowDimension, setWindowDimension] = useState({
-    winWidth: window.innerWidth,
-    winHeight: window.innerHeight,
-  });
-
-  const detectSize = () => {
-    setWindowDimension({
-      winWidth: window.innerWidth,
-      winHeight: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    // reset focus
-    document.activeElement.blur();
-
-    window.addEventListener("resize", detectSize);
-
-    return () => {
-      window.removeEventListener("resize", detectSize);
-    };
-  }, [windowDimension]);
-  // ****************** REUSED CODE *****************
+const Footer = ({ windowDimension }) => {
+  const navigate = useNavigate();
 
   return (
     <div className="footer">
@@ -37,11 +15,11 @@ const Footer = () => {
       >
         <div className="footer-content">
           <h2>Features</h2> <br />
-          <div className="sentence_spacing">
-            Solutions <br />
-          </div>
-          <div className="sentence_spacing">
-            Security <br />
+          <div
+            className="sentence_spacing cursor-enabled"
+            onClick={() => navigate("/")}
+          >
+            Learn More <br />
           </div>
           <div className="sentence_spacing">
             Plans <br />
@@ -50,13 +28,19 @@ const Footer = () => {
         <div className="footer-content">
           <h2>Support</h2> <br />
           <div className="sentence_spacing">
-            Privacy & Terms <br />
-          </div>
-          <div className="sentence_spacing">
             Help center <br />
           </div>
-          <div className="sentence_spacing">
-            API usage <br />
+          <div
+            className="sentence_spacing cursor-enabled"
+            onClick={() => navigate("/credits")}
+          >
+            References <br />
+          </div>
+          <div
+            className="sentence_spacing cursor-enabled"
+            onClick={() => navigate("/terms")}
+          >
+            Terms <br />
           </div>
         </div>
         <div className="footer-content">

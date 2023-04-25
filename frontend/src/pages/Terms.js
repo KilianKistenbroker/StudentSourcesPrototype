@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 
-const Terms = () => {
+const Terms = ({ windowDimension }) => {
   return (
     <div className="page">
       <div className="legal">
@@ -127,7 +127,7 @@ const Terms = () => {
         <p className="legal-body">©2002-2023 LawDepot.com®</p>
         <br />
       </div>
-      <Footer />
+      <Footer windowDimension={windowDimension} />
     </div>
   );
 };

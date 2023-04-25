@@ -433,33 +433,40 @@ and also call request to update lists */
                                 display another sub-nav depending on the 
                                 top selection state
                             */}
-
-            {selected === "friends" ? (
-              <div className="selection nested">
-                <div
-                  className={
-                    friends === "all" ? "nested-selected" : "nested-content"
-                  }
-                  onClick={() => handleSetFriends("all")}
-                >
-                  All
-                </div>
-
-                <div
-                  className={
-                    friends === "pending" ? "nested-selected" : "nested-content"
-                  }
-                  onClick={() => handleSetFriends("pending")}
-                >
-                  Pending
-                </div>
-              </div>
-            ) : (
-              <div></div>
-            )}
           </div>
 
           <div></div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "190px",
+            justifySelf: "center",
+            width: "100%",
+            maxWidth: "800px",
+          }}
+        >
+          {selected === "friends" && (
+            <div className="selection nested" style={{ marginBottom: "-50px" }}>
+              <div
+                className={
+                  friends === "all" ? "nested-selected" : "nested-content"
+                }
+                onClick={() => handleSetFriends("all")}
+              >
+                All
+              </div>
+
+              <div
+                className={
+                  friends === "pending" ? "nested-selected" : "nested-content"
+                }
+                onClick={() => handleSetFriends("pending")}
+              >
+                Pending
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 

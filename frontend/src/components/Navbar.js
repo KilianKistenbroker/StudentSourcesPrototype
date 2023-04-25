@@ -4,42 +4,31 @@ import { useState, useEffect } from "react";
 import logo from "../logos/Light-Version.png";
 
 export default function Navbar({ data, windowDimension, message, setMessage }) {
-  const [topRightNav, setTopRightNave] = useState("Login");
+  const [topRightNav, setTopRightNave] = useState("");
+  // const [showUserPanel, setShowUserPanel] = useState(false);
+  // const [showNotifications, setShowNotifications] = useState(false);
+  const [display, setDisplay] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data.currentPoint === "login") {
+    if (window.location.pathname === "/login") {
       setTopRightNave("Sign up");
     } else {
       setTopRightNave("Login");
     }
-  }, [data.currentPoint]);
-
-  const goToSignUp = (e) => {
-    e.preventDefault();
-
-    data.currentPoint = "";
-    navigate("/" + data.currentPoint);
-  };
+  }, [window.location.pathname]);
 
   const testLogout = (e) => {
     e.preventDefault();
-    data.currentPoint = "login";
+    setDisplay("");
+    setMessage({
+      title: null,
+      body: null,
+    });
     data.isLoggedIn = false;
     localStorage.clear();
     navigate("/login");
-  };
-
-  const swapName = (e) => {
-    e.preventDefault();
-
-    if (data.currentPoint === "login") {
-      data.currentPoint = "";
-    } else {
-      data.currentPoint = "login";
-    }
-
-    navigate("/" + data.currentPoint);
   };
 
   const handleNav = (destination) => {
@@ -57,8 +46,16 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
     });
   };
 
-  if (data.isLoggedIn) {
-  }
+  const handleSetFocus = (state) => {
+    console.log(state);
+    const element = document.getElementById(state);
+    if (state == "userpanel") {
+      setDisplay("userpanel");
+    } else {
+      setDisplay("notifications");
+    }
+    element.focus();
+  };
 
   return (
     <>
@@ -71,6 +68,71 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
               : "navbar navbar-mobile navbar-3by1"
           }
         >
+          {display === "userpanel" ? (
+            <button
+              id="userpanel"
+              className="user-panel displaying user-account"
+              onFocus={() => console.log("focused user")}
+              onBlur={() => setDisplay("")}
+            >
+              <ul>
+                <div
+                  className="option"
+                  onClick={() => {
+                    setMessage({
+                      title: "Account",
+                      body: "This feature shall allow the user the options to view, update, or delete their account.",
+                    });
+                    setDisplay("");
+                  }}
+                >
+                  Account
+                </div>
+                <div
+                  className="option"
+                  onClick={() => {
+                    setMessage({
+                      title: "Inbox",
+                      body: "This feature shall allow the user to view, delete, and send direct messages.",
+                    });
+                    setDisplay("");
+                  }}
+                >
+                  Inbox
+                </div>
+                <div
+                  className="option"
+                  onClick={() => {
+                    setMessage({
+                      title: "Settings",
+                      body: "This feature shall provide accessibilty options for configuring the general layout and theme of the website.",
+                    });
+                    setDisplay("");
+                  }}
+                >
+                  Settings
+                </div>
+                <div
+                  className="option"
+                  onClick={() => {
+                    setMessage({
+                      title: "Help",
+                      body: "This feature shall provide simplified instructions on how to navigate the basic features of the website.",
+                    });
+                    setDisplay("");
+                  }}
+                >
+                  Help
+                </div>
+                <div className="option" onClick={testLogout}>
+                  Logout
+                </div>
+              </ul>
+            </button>
+          ) : (
+            <button id="userpanel" className="user-panel hiding"></button>
+          )}
+
           {windowDimension.winWidth > 500 ? (
             <Link
               onClick={() => window.location.reload()}
@@ -81,6 +143,19 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
             </Link>
           ) : (
             <div style={{ height: "50px" }}></div>
+          )}
+
+          {display === "notifications" ? (
+            <button
+              id="notifications"
+              className="user-panel displaying notifications"
+              onFocus={() => console.log("focused notifications")}
+              onBlur={() => setDisplay("")}
+            >
+              ~ TO BE IMPLEMENTED ~
+            </button>
+          ) : (
+            <button id="notifications" className="user-panel hiding"></button>
           )}
 
           <div
@@ -128,37 +203,63 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
             </Link>
           </div>
 
-          <Link
-            id="user-nav"
-            to="/"
-            className="top-right-nav"
-            onClick={testLogout}
+          <div
+            style={{
+              justifySelf: "right",
+              minWidth: "90px",
+              marginTop: "10px",
+            }}
           >
-            {
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="user-nav-icon"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-              </svg>
-            }
-          </Link>
+            <Link
+              style={{ marginRight: "20px" }}
+              onClick={() => {
+                handleSetFocus("notifications");
+              }}
+            >
+              {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-icons cursor-enabled"
+                  style={{ marginTop: "8px" }}
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                </svg>
+              }
+            </Link>
+
+            <Link
+              onClick={() => {
+                handleSetFocus("userpanel");
+              }}
+              style={{ float: "right" }}
+            >
+              {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="user-nav-icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                  <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                </svg>
+              }
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="navbar navbar-desktop navbar-2by1">
-          <Link id="logo-link" to={"/"} onClick={goToSignUp}>
+          <Link id="logo-link" to={"/sign-up"}>
             <img src={logo} className="logo" alt="" />
           </Link>
 
           <div></div>
 
           <Link
-            id={topRightNav === "Login" ? "login" : "signup"}
-            to={"/" + data.currentPoint}
-            onClick={swapName}
+            to={topRightNav === "Login" ? "/login" : "/sign-up"}
+            id={"login"}
             className="top-right-nav"
           >
             {topRightNav}

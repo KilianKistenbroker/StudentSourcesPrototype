@@ -16,8 +16,9 @@ const StudentSearch = ({
   data,
   setOwner,
   setExplorerData,
-  message,
   setMessage,
+  setCurrentDirectory,
+  showingLeftPanel,
 }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
@@ -43,6 +44,39 @@ const StudentSearch = ({
     return temp;
   };
 
+  const handleSort = () => {
+    currentDirectory.items.sort((a, b) => {
+      let fa = a.name.toLowerCase(),
+        fb = b.name.toLowerCase();
+
+      return fa.localeCompare(fb, undefined, { numeric: true });
+    });
+
+    let folders = [];
+    let files = [];
+    for (let i = 0; i < currentDirectory.items.length; i++) {
+      if (currentDirectory.items[i].type === "Folder")
+        folders.push(currentDirectory.items[i]);
+      else files.push(currentDirectory.items[i]);
+    }
+    const updateitems = folders.concat(files);
+    currentDirectory.items = updateitems;
+
+    // remove unneccessary data here before parsing with stringify
+    const tempObject = {
+      name: currentDirectory.name,
+      pathname: currentDirectory.pathname,
+      type: currentDirectory.type,
+      size: 0,
+      isPinned: false,
+      visibility: currentDirectory.visibility,
+      dataUrl: "",
+      items: currentDirectory.items,
+    };
+
+    setCurrentDirectory(tempObject);
+  };
+
   // this will populate searchResults
   const searchHelper = async (e) => {
     e.preventDefault();
@@ -57,7 +91,16 @@ const StudentSearch = ({
   };
 
   return (
-    <div className="sub-navbar" style={currentFile ? { marginTop: "0px" } : {}}>
+    <div
+      className="sub-navbar"
+      style={
+        currentFile
+          ? {
+              marginTop: "0px",
+            }
+          : {}
+      }
+    >
       <div></div>
       <div
         className={
@@ -66,10 +109,13 @@ const StudentSearch = ({
             : "main-pain-searchbar medium-margin"
         }
         style={
-          windowDimension.winWidth < 800
-            ? { marginLeft: "0px", marginRight: "30px" }
+          windowDimension.winWidth < 800 ||
+          (!showingRightPanel && !showingLeftPanel)
+            ? { marginLeft: "30px", marginRight: "30px" }
             : !showingRightPanel
             ? { marginRight: "30px" }
+            : !showingLeftPanel
+            ? { marginLeft: "30px" }
             : {}
         }
       >
@@ -261,12 +307,13 @@ const StudentSearch = ({
               className={
                 selected === "friends" ? "selected" : "selection-content"
               }
-              onClick={() =>
+              onClick={() => {
                 setMessage({
                   title: "Format",
-                  body: "This feature shall allow the user to swap between list and grid layout.",
-                })
-              }
+                  body: "This feature shall allow the user to swap between list and grid layout and sort alphanumerically.",
+                });
+                handleSort();
+              }}
             >
               {/* Format */}
               <svg

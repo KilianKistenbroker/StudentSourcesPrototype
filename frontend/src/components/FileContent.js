@@ -21,6 +21,7 @@ const FileContent = ({
   setScale,
   message,
   setMessage,
+  showingLeftPanel,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [videoURL, setVideoURL] = useState(null);
@@ -164,6 +165,7 @@ const FileContent = ({
       className={"main-panel-content"}
       style={{ maxWidth: `${scale.width}px` }}
     >
+      <div className="background"></div>
       <div className="" style={{ height: `${scale.height}px` }}>
         {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
           <img
@@ -178,17 +180,13 @@ const FileContent = ({
               width: "100%",
               height: "100%",
               marginBottom: "100px",
-              borderLeft: "none",
-              borderRight: "none",
-              borderBottom: "none",
-              borderTop: ".25px solid #f6f6f6",
+              border: "none",
               borderRadius: "2px",
               color: "dimgray",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
             value={textURL}
             onChange={(e) => setTextURL(e.target.value)}
-          ></textarea>
+          />
         ) : "pdf" === currentFile.type ? (
           <Document
             file={currentFile.dataUrl}
@@ -272,6 +270,7 @@ const FileContent = ({
         currentFile={currentFile}
         setPdfController={setPdfController}
         setMessage={setMessage}
+        showingLeftPanel={showingLeftPanel}
         // setLoadingPDF={setLoadingPDF}
       />
     </div>
