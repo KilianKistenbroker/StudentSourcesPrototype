@@ -20,7 +20,9 @@ const readEntries = async (entry, parent, path) => {
 
         /* IMPORTANT: must replace this will file streaming. */
         if (
-          ["pdf", "txt", "url"].includes(nameAndType[nameAndType.length - 1])
+          ["pdf", "txt", "url", "jpeg", "jpg", "gif", "png"].includes(
+            nameAndType[nameAndType.length - 1]
+          )
         ) {
           dataUrl = await readFileContent(file);
         }

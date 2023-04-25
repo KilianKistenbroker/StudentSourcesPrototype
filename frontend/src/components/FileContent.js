@@ -166,7 +166,13 @@ const FileContent = ({
       style={{ maxWidth: `${scale.width}px` }}
     >
       <div className="background"></div>
-      <div className="" style={{ height: `${scale.height}px` }}>
+      <div
+        className=""
+        style={{
+          height: `${scale.height}px`,
+          position: "relative",
+        }}
+      >
         {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
           <img
             src={currentFile.dataUrl}
