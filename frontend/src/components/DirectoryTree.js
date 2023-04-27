@@ -1,7 +1,18 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactComponent as TXT } from "../logos/icons/txt.svg";
+import { ReactComponent as FOLDER } from "../logos/icons/folder.svg";
+import { ReactComponent as JPG } from "../logos/icons/jpg.svg";
+import { ReactComponent as PNG } from "../logos/icons/png.svg";
+import { ReactComponent as GIF } from "../logos/icons/gif.svg";
+import { ReactComponent as MOV } from "../logos/icons/mov.svg";
+import { ReactComponent as MP3 } from "../logos/icons/mp3.svg";
+import { ReactComponent as MP4 } from "../logos/icons/mp4.svg";
+import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
+import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
+import { ReactComponent as URL } from "../logos/icons/url.svg";
 
 const DirectoryTree = ({
   handleInsertNode,
@@ -197,7 +208,10 @@ const DirectoryTree = ({
                 </svg>
               </div>
             )}{" "}
-            📁 {explorer.name}
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <FOLDER style={{ width: "16px", height: "16px" }} />{" "}
+            </div>{" "}
+            {explorer.name}
           </span>
 
           <div style={{ whiteSpace: "nowrap" }}>
@@ -307,15 +321,47 @@ const DirectoryTree = ({
                 }
           }
         >
-          {["jpeg", "jpg", "gif", "png"].includes(explorer.type)
-            ? "🖼️"
-            : "txt" === explorer.type
-            ? "📑"
-            : "pdf" === explorer.type
-            ? "📖"
-            : "mp4" === explorer.type
-            ? "📺"
-            : "💀"}
+          {["jpeg", "jpg"].includes(explorer.type) ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <JPG style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "gif" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <GIF style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "png" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <PNG style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "txt" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <TXT style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "pdf" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <PDF style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "mp4" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <MP4 style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "mp3" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <MP3 style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "mov" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <MOV style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : "url" === explorer.type ? (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <URL style={{ width: "16px", height: "16px" }} />
+            </div>
+          ) : (
+            <div style={{ float: "left", marginRight: "10px" }}>
+              <UNKNOWN style={{ width: "16px", height: "16px" }} />
+            </div>
+          )}
           {explorer.name}
         </div>
       </div>

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin("*")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -102,7 +102,7 @@ public class UserController {
         /*   This is still a strict search. we will expand on this to
         return a margin of close results */
 
-        String newQuery = query.replace(" ", "");
+        String newQuery = query.trim();
         List<User> result = userRepository.searchUsersByUsername(newQuery);
         for (int i = 0; i < result.size(); i++) {
             result.get(i).setPassword("");

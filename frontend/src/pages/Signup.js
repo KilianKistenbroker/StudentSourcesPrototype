@@ -97,7 +97,8 @@ const Signup = ({ data, windowDimension }) => {
     let convertEmail = email.toLowerCase();
 
     if (!checkbox) {
-      setCheckboxFocus(true);
+      var element = document.getElementById("checkboxnote");
+      element.focus();
       return;
     }
 

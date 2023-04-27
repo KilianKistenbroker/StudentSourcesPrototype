@@ -115,7 +115,7 @@ const FolderContent = ({
             className=""
             style={{
               margin: "0px",
-              width: "180px",
+              width: "210px",
               padding: "5px",
               fontSize: "16px",
               overflow: "hidden",

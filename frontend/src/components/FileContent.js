@@ -181,7 +181,11 @@ const FileContent = ({
         ) : "txt" === currentFile.type ? (
           <textarea
             autoFocus
-            onBlur={() => handleSaveChanges()}
+            spellCheck={false}
+            onBlur={
+              data.user === owner.user ? () => handleSaveChanges() : () => {}
+            }
+            readOnly={data.user !== owner.user}
             style={{
               width: "100%",
               height: "100%",
