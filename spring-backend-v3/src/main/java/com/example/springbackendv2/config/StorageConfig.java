@@ -23,6 +23,13 @@ public class StorageConfig {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+//    @Value("${aws.access_key_id}")
+//    private String accessKey;
+//    @Value("${aws.secret_access_key}")
+//    private String accessSecret;
+//    @Value("${aws.s3.region}")
+//    private String region;
+
 
     @Bean
     public MultipartResolver multipartResolver() {

@@ -41,8 +41,8 @@ const DropZone = ({
     setLoading(true);
     setDragOver(false);
 
-    console.log("transfering this data");
-    console.log(e);
+    // console.log("transfering this data");
+    // console.log(e);
 
     const objArr = await readDroppedFiles(e, currentDirectory);
 
@@ -65,8 +65,6 @@ const DropZone = ({
       return fa.localeCompare(fb, undefined, { numeric: true });
     });
 
-    console.log(currentDirectory.items);
-
     // this may never be needed here ...
     let folders = [];
     let files = [];
@@ -82,9 +80,10 @@ const DropZone = ({
     then add size to each node in branch */
 
     let parsingArr = currentDirectory.pathname.split("/");
+    const res = updateParentSize(explorerData, parsingArr, size);
 
-    console.log("from update parents");
-    console.log(updateParentSize(explorerData, parsingArr, size));
+    // console.log("from update parents");
+    // console.log(res);
 
     setLoading(false);
 

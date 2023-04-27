@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAT4BBIDX6GGBM77UI
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: us-west-1
     stack:
@@ -10,7 +10,7 @@ cloud:
 
 application:
   bucket:
-    name: prototypebucket-1
+    name:
 
 server:
   tomcat:
