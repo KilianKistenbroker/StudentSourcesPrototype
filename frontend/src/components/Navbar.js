@@ -12,7 +12,10 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (window.location.pathname === "/login") {
+    if (
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/"
+    ) {
       setTopRightNave("Sign up");
     } else {
       setTopRightNave("Login");
@@ -78,7 +81,16 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
               <ul>
                 <div
                   className="option"
-                  onClick={() => {
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    setMessage({
+                      title: "Account",
+                      body: "This feature shall allow the user the options to view, update, or delete their account.",
+                    });
+                    setDisplay("");
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
                     setMessage({
                       title: "Account",
                       body: "This feature shall allow the user the options to view, update, or delete their account.",
@@ -90,7 +102,16 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                 </div>
                 <div
                   className="option"
-                  onClick={() => {
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    setMessage({
+                      title: "Inbox",
+                      body: "This feature shall allow the user to view, delete, and send direct messages.",
+                    });
+                    setDisplay("");
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
                     setMessage({
                       title: "Inbox",
                       body: "This feature shall allow the user to view, delete, and send direct messages.",
@@ -102,29 +123,9 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                 </div>
                 <div
                   className="option"
-                  onClick={() => {
-                    setMessage({
-                      title: "Settings",
-                      body: "This feature shall provide accessibilty options for configuring the general layout and theme of the website.",
-                    });
-                    setDisplay("");
-                  }}
+                  onTouchEnd={testLogout}
+                  onClick={testLogout}
                 >
-                  Settings
-                </div>
-                <div
-                  className="option"
-                  onClick={() => {
-                    setMessage({
-                      title: "Help",
-                      body: "This feature shall provide simplified instructions on how to navigate the basic features of the website.",
-                    });
-                    setDisplay("");
-                  }}
-                >
-                  Help
-                </div>
-                <div className="option" onClick={testLogout}>
                   Logout
                 </div>
               </ul>
@@ -135,9 +136,9 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
 
           {windowDimension.winWidth > 500 ? (
             <Link
-              onClick={() => window.location.reload()}
+              onClick={() => handleNav("student")}
               id="logo-link"
-              to={"/sources"}
+              to={"/student"}
             >
               <img src={logo} className="logo" alt="" />
             </Link>
@@ -168,11 +169,11 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
             <Link
               to="/student"
               onClick={() => handleNav("student")}
-              style={
-                window.location.pathname === "/student"
-                  ? { color: "dimgrey" }
-                  : { color: "lightgrey" }
-              }
+              // style={
+              //   window.location.pathname === "/student"
+              //     ? { color: "dimgrey" }
+              //     : { color: "lightgrey" }
+              // }
               className={
                 window.location.pathname === "/student"
                   ? "root selected-root"
@@ -188,11 +189,11 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
             <Link
               to="/sources"
               onClick={() => handleNav("sources")}
-              style={
-                window.location.pathname === "/sources"
-                  ? { color: "dimgrey" }
-                  : { color: "lightgrey" }
-              }
+              // style={
+              //   window.location.pathname === "/sources"
+              //     ? { color: "dimgrey" }
+              //     : { color: "lightgrey" }
+              // }
               className={
                 window.location.pathname === "/sources"
                   ? "root selected-root"
@@ -251,7 +252,7 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
         </div>
       ) : (
         <div className="navbar navbar-desktop navbar-2by1">
-          <Link id="logo-link" to={"/sign-up"}>
+          <Link id="logo-link" onClick={() => handleNav("")} to={"/"}>
             <img src={logo} className="logo" alt="" />
           </Link>
 

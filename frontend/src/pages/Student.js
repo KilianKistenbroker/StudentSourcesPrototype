@@ -427,6 +427,14 @@ const Student = ({
                   <ul>
                     <div
                       className="cursor-enabled"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        setMessage({
+                          title: "Collapse",
+                          body: "This feature shall provide an option to collapse their entire directory tree, for the purpose simplifying the directory tree.",
+                        });
+                        setDisplay("");
+                      }}
                       onClick={() => {
                         setMessage({
                           title: "Collapse",
@@ -439,6 +447,14 @@ const Student = ({
                     </div>
                     <div
                       className="cursor-enabled"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        setMessage({
+                          title: "Expand",
+                          body: "This feature shall provide an option to expand their entire directory tree, for the purpose of file hunting.",
+                        });
+                        setDisplay("");
+                      }}
                       onClick={() => {
                         setMessage({
                           title: "Expand",
@@ -519,6 +535,13 @@ const Student = ({
                     <ul>
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Disable Chatbot",
+                            body: "This feature shall provide an option to disable their chatbot, as a way to ensure that users do not accidently send requests to OpenAI's API services.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Disable Chatbot",
@@ -532,6 +555,13 @@ const Student = ({
 
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Download Conversation",
+                            body: "This feature shall provide an option to download the conversation between the user and the chatbot.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Download Conversation",
@@ -544,6 +574,13 @@ const Student = ({
                       </div>
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Regenerate Response",
+                            body: "Using OpenAI's API services, this feature shall provide an option to regenerate the previous response.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Regenerate Response",
@@ -556,6 +593,13 @@ const Student = ({
                       </div>
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Read Current File",
+                            body: "Using OpenAI's API services, this feature shall provide an option to store the current file in context, so that users can ask questions about the file without having to provide context every time.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Read Current File",
@@ -569,6 +613,13 @@ const Student = ({
 
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Clear Conversation",
+                            body: "This feature shall provide an option to clear the entire conversation, as way to clean up storage space.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Clear Conversation",
@@ -729,6 +780,13 @@ const Student = ({
                     <ul>
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Download Notes",
+                            body: "This feature shall provide the option to download notes as a text file to the users local machine.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Download Notes",
@@ -741,6 +799,13 @@ const Student = ({
                       </div>
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setMessage({
+                            title: "Copy",
+                            body: "This feature shall provide the option to copy notes to clipboard for the purpose of pasting it somewhere else.",
+                          });
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setMessage({
                             title: "Copy",
@@ -754,6 +819,10 @@ const Student = ({
 
                       <div
                         className="cursor-enabled"
+                        onTouchEnd={() => {
+                          setNotesData("");
+                          setDisplay("");
+                        }}
                         onClick={() => {
                           setNotesData("");
                           setDisplay("");
@@ -810,6 +879,13 @@ const Student = ({
                   <ul>
                     <div
                       className="cursor-enabled"
+                      onTouchEnd={() => {
+                        setMessage({
+                          title: "Disable Comments",
+                          body: "This feature shall provide the option to disable comments, such that other users cannot view or send comments.",
+                        });
+                        setDisplay("");
+                      }}
                       onClick={() => {
                         setMessage({
                           title: "Disable Comments",
@@ -822,6 +898,10 @@ const Student = ({
                     </div>
                     <div
                       className="cursor-enabled"
+                      onTouchEnd={() => {
+                        setComments([]);
+                        setDisplay("");
+                      }}
                       onClick={() => {
                         setComments([]);
                         setDisplay("");

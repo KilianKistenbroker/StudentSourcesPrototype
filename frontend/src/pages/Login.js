@@ -48,15 +48,22 @@ const Login = ({ data, windowDimension }) => {
 
     setErrMsg("");
 
+    var element;
+
     if (!validName) {
-      setUserFocus(true);
+      element = document.getElementById("username");
+      element.focus();
+      return;
+    } else if (!validPassword) {
+      element = document.getElementById("password");
+      element.focus();
       return;
     }
 
-    if (!validPassword) {
-      setPasswordFocus(true);
-      return;
-    }
+    // if (!validName || !validPassword) {
+    //   setErrMsg("Invalid entry.");
+    //   return;
+    // }
 
     try {
       const res = await axios.get(`/login/${user}/${password}`);
@@ -150,11 +157,9 @@ const Login = ({ data, windowDimension }) => {
             <div className="content">
               <h1>
                 Login
-                <span className="tiny">
-                  <Link to={"/sign-up"} id="">
-                    or create an account
-                  </Link>
-                </span>
+                <Link className="tiny link" to={"/sign-up"} id="">
+                  or create an account
+                </Link>
               </h1>
 
               <form onSubmit={handleSubmit}>
@@ -175,7 +180,7 @@ const Login = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={user.trim(" ")}
                   onChange={(e) => setUser(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validName ? "false" : "true"}
                   aria-describedby="uidnote"
                   onFocus={() => setUserFocus(true)}
@@ -205,7 +210,7 @@ const Login = ({ data, windowDimension }) => {
                   autoComplete="new-password"
                   value={password.trim(" ")}
                   onChange={(e) => setPassword(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validPassword ? "false" : "true"}
                   aria-describedby="pwdnote"
                   onFocus={() => setPasswordFocus(true)}
@@ -216,7 +221,7 @@ const Login = ({ data, windowDimension }) => {
 
                 <button
                   style={{ marginTop: "37px" }}
-                  disabled={!validName || !validPassword ? true : false}
+                  // disabled={!validName || !validPassword ? true : false}
                 >
                   Continue
                 </button>
@@ -331,11 +336,9 @@ const Login = ({ data, windowDimension }) => {
             <div className="content-mobile">
               <h1>
                 Login
-                <span className="tiny">
-                  <Link to={"/sign-up"} id="">
-                    or create an account
-                  </Link>
-                </span>
+                <Link className="tiny link" to={"/sign-up"} id="">
+                  or create an account
+                </Link>
               </h1>
 
               <form onSubmit={handleSubmit}>
@@ -356,7 +359,7 @@ const Login = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={user.trim(" ")}
                   onChange={(e) => setUser(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validName ? "false" : "true"}
                   aria-describedby="uidnote"
                   onFocus={() => setUserFocus(true)}
@@ -387,7 +390,7 @@ const Login = ({ data, windowDimension }) => {
                   autoComplete="new-password"
                   value={password.trim(" ")}
                   onChange={(e) => setPassword(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validPassword ? "false" : "true"}
                   aria-describedby="pwdnote"
                   onFocus={() => setPasswordFocus(true)}
@@ -398,7 +401,7 @@ const Login = ({ data, windowDimension }) => {
 
                 <button
                   style={{ marginTop: "37px" }}
-                  disabled={!validName || !validPassword ? true : false}
+                  // disabled={!validName || !validPassword ? true : false}
                 >
                   Continue
                 </button>

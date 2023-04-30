@@ -95,24 +95,46 @@ const Signup = ({ data, windowDimension }) => {
 
     // convert email to lowercase here
     let convertEmail = email.toLowerCase();
+    var element;
 
-    if (!checkbox) {
-      var element = document.getElementById("checkboxnote");
+    if (!validFirstName) {
+      element = document.getElementById("firstname");
+      element.focus();
+      return;
+    } else if (!validLastName) {
+      element = document.getElementById("lastname");
+      element.focus();
+      return;
+    } else if (!validEmail) {
+      element = document.getElementById("email");
+      element.focus();
+      return;
+    } else if (!validName) {
+      element = document.getElementById("username");
+      element.focus();
+      return;
+    } else if (!validPassword) {
+      element = document.getElementById("password");
+      element.focus();
+      return;
+    } else if (!checkbox) {
+      element = document.getElementById("checkboxnote");
       element.focus();
       return;
     }
 
     // double check here in case they overwrote my html
-    if (
-      !validFirstName ||
-      !validLastName ||
-      !validEmail ||
-      !validName ||
-      !validPassword
-    ) {
-      setErrMsg("Invalid entry.");
-      return;
-    }
+    // if (
+    //   !validFirstName ||
+    //   !validLastName ||
+    //   !validEmail ||
+    //   !validName ||
+    //   !validPassword ||
+    //   !checkbox
+    // ) {
+    //   setErrMsg("Invalid entry.");
+    //   return;
+    // }
 
     try {
       const response = await axios.post(user_endpoint, {
@@ -216,14 +238,12 @@ const Signup = ({ data, windowDimension }) => {
               </div>
             </div>
 
-            <div className="content">
+            <div className="content" id="createaccount">
               <h1>
                 Create an account
-                <span className="tiny">
-                  <Link to={"/login"} id="">
-                    or login
-                  </Link>
-                </span>
+                <Link className="tiny link" to={"/login"} id="">
+                  or login
+                </Link>
               </h1>
 
               <form onSubmit={handleSubmit}>
@@ -243,7 +263,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={firstName.trim(" ")}
                   onChange={(e) => setFirstName(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validFirstName ? "false" : "true"}
                   aria-describedby="firstnamenote"
                   onFocus={() => setFirstNameFocus(true)}
@@ -266,7 +286,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={lastName.trim(" ")}
                   onChange={(e) => setLastName(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validLastName ? "false" : "true"}
                   aria-describedby="lastnamenote"
                   onFocus={() => setLastNameFocus(true)}
@@ -291,7 +311,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={email.trim(" ")}
                   onChange={(e) => setEmail(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validEmail ? "false" : "true"}
                   aria-describedby="emailnote"
                   onFocus={() => setEmailFocus(true)}
@@ -315,7 +335,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={user.trim(" ")}
                   onChange={(e) => setUser(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validName ? "false" : "true"}
                   aria-describedby="uidnote"
                   onFocus={() => setUserFocus(true)}
@@ -346,7 +366,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="new-password"
                   value={password.trim(" ")}
                   onChange={(e) => setPassword(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validPassword ? "false" : "true"}
                   aria-describedby="pwdnote"
                   onFocus={() => setPasswordFocus(true)}
@@ -356,17 +376,17 @@ const Signup = ({ data, windowDimension }) => {
                 {/* SUBMIT BUTTON */}
 
                 <label className="check" htmlFor="">
-                  <span>
-                    <input
-                      id="checkboxnote"
-                      className="checkbox"
-                      type="checkbox"
-                      onChange={(e) => setCheckbox(e.target.checked)}
-                      onFocus={() => setCheckboxFocus(true)}
-                      onBlur={() => setCheckboxFocus(false)}
-                    />
+                  <input
+                    id="checkboxnote"
+                    className="checkbox"
+                    type="checkbox"
+                    onChange={(e) => setCheckbox(e.target.checked)}
+                    onFocus={() => setCheckboxFocus(true)}
+                    onBlur={() => setCheckboxFocus(false)}
+                  />
+                  <span style={{ paddingTop: "5px" }}>
                     I agree to and acknowledge the{" "}
-                    <Link target="_blank" id="" to={"terms"}>
+                    <Link className="link" target="_blank" id="" to={"terms"}>
                       {" "}
                       Terms and Conditions
                     </Link>
@@ -375,15 +395,15 @@ const Signup = ({ data, windowDimension }) => {
 
                 <button
                   style={{ marginTop: "37px" }}
-                  disabled={
-                    !validName ||
-                    !validPassword ||
-                    !validFirstName ||
-                    !validLastName ||
-                    !validEmail
-                      ? true
-                      : false
-                  }
+                  // disabled={
+                  //   !validName ||
+                  //   !validPassword ||
+                  //   !validFirstName ||
+                  //   !validLastName ||
+                  //   !validEmail
+                  //     ? true
+                  //     : false
+                  // }
                 >
                   Continue
                 </button>
@@ -619,11 +639,9 @@ const Signup = ({ data, windowDimension }) => {
             <div className="content-mobile">
               <h1>
                 Create an account
-                <span className="tiny">
-                  <Link to={"/login"} id="">
-                    or login
-                  </Link>
-                </span>
+                <Link className="tiny link" to={"/login"} id="">
+                  or login
+                </Link>
               </h1>
 
               <form onSubmit={handleSubmit}>
@@ -643,7 +661,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={firstName.trim(" ")}
                   onChange={(e) => setFirstName(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validFirstName ? "false" : "true"}
                   aria-describedby="firstnamenote"
                   onFocus={() => setFirstNameFocus(true)}
@@ -666,7 +684,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={lastName.trim(" ")}
                   onChange={(e) => setLastName(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validLastName ? "false" : "true"}
                   aria-describedby="lastnamenote"
                   onFocus={() => setLastNameFocus(true)}
@@ -691,7 +709,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={email.trim(" ")}
                   onChange={(e) => setEmail(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validEmail ? "false" : "true"}
                   aria-describedby="emailnote"
                   onFocus={() => setEmailFocus(true)}
@@ -715,7 +733,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="off"
                   value={user.trim(" ")}
                   onChange={(e) => setUser(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validName ? "false" : "true"}
                   aria-describedby="uidnote"
                   onFocus={() => setUserFocus(true)}
@@ -746,7 +764,7 @@ const Signup = ({ data, windowDimension }) => {
                   autoComplete="new-password"
                   value={password.trim(" ")}
                   onChange={(e) => setPassword(e.target.value.trim(" "))}
-                  required
+                  // required
                   aria-invalid={validPassword ? "false" : "true"}
                   aria-describedby="pwdnote"
                   onFocus={() => setPasswordFocus(true)}
@@ -756,17 +774,17 @@ const Signup = ({ data, windowDimension }) => {
                 {/* SUBMIT BUTTON */}
 
                 <label className="check" htmlFor="">
-                  <span>
-                    <input
-                      id="checkboxnote"
-                      className="checkbox"
-                      type="checkbox"
-                      onChange={(e) => setCheckbox(e.target.checked)}
-                      onFocus={() => setCheckboxFocus(true)}
-                      onBlur={() => setCheckboxFocus(false)}
-                    />
+                  <input
+                    id="checkboxnote"
+                    className="checkbox"
+                    type="checkbox"
+                    onChange={(e) => setCheckbox(e.target.checked)}
+                    onFocus={() => setCheckboxFocus(true)}
+                    onBlur={() => setCheckboxFocus(false)}
+                  />
+                  <span style={{ paddingTop: "5px" }}>
                     I agree to and acknowledge the{" "}
-                    <Link target="_blank" id="" to={"terms"}>
+                    <Link className="link" target="_blank" id="" to={"terms"}>
                       {" "}
                       Terms and Conditions
                     </Link>
@@ -775,15 +793,15 @@ const Signup = ({ data, windowDimension }) => {
 
                 <button
                   style={{ marginTop: "37px" }}
-                  disabled={
-                    !validName ||
-                    !validPassword ||
-                    !validFirstName ||
-                    !validLastName ||
-                    !validEmail
-                      ? true
-                      : false
-                  }
+                  // disabled={
+                  //   !validName ||
+                  //   !validPassword ||
+                  //   !validFirstName ||
+                  //   !validLastName ||
+                  //   !validEmail
+                  //     ? true
+                  //     : false
+                  // }
                 >
                   Continue
                 </button>

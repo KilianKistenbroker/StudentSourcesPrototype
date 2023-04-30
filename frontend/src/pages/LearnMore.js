@@ -31,9 +31,7 @@ const LearnMore = ({ windowDimension }) => {
         {/* content 2 */}
         <div className="learn-more-grid-item">
           <div className="learn-more-description">
-            <div className="learn-more-title" style={{ textAlign: "right" }}>
-              Organize
-            </div>
+            <div className="learn-more-title">Organize</div>
             <div className="learn-more-body">
               <b>Organization</b> is intuitive with a simple and familiar
               filesystem design. Students will have access to a directory tree
@@ -73,9 +71,7 @@ const LearnMore = ({ windowDimension }) => {
           style={{ paddingBottom: "100px" }}
         >
           <div className="learn-more-description">
-            <div className="learn-more-title" style={{ textAlign: "right" }}>
-              Streamline
-            </div>
+            <div className="learn-more-title">Streamline</div>
             <div className="learn-more-body">
               <b>Streamlining</b> is achieved with the aid of OpenAI's API
               services. We provide a seamless interface that allows our users to
@@ -92,7 +88,13 @@ const LearnMore = ({ windowDimension }) => {
           </div>
         </div>
 
-        <div className="sign-up-button" onClick={() => navigate("/sign-up")}>
+        <div
+          className="sign-up-button"
+          onClick={() => {
+            navigate("/sign-up");
+            window.scrollTo(0, 0);
+          }}
+        >
           Sign up for free
         </div>
       </div>

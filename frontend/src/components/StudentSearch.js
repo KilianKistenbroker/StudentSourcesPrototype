@@ -309,14 +309,24 @@ const StudentSearch = ({
               }
               onClick={() => {
                 setMessage({
-                  title: "Format",
+                  title: "Select",
                   body: "This feature shall allow the user to swap between list and grid layout and sort alphanumerically.",
                 });
                 handleSort();
               }}
             >
-              {/* Format */}
+              {/* Select */}
               <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                className="header-icons cursor-enabled"
+                style={{ marginTop: "5px" }}
+                viewBox="0 0 16 16"
+              >
+                <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z" />
+                <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+              </svg>
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="header-icons cursor-enabled"
                 style={{ marginTop: "5px" }}
@@ -324,7 +334,7 @@ const StudentSearch = ({
                 viewBox="0 0 16 16"
               >
                 <path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-              </svg>
+              </svg> */}
             </div>
           </div>
         ) : (

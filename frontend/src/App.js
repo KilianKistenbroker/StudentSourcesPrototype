@@ -10,6 +10,7 @@ import Student from "./pages/Student";
 import folderData from "./data/folderData";
 import LearnMore from "./pages/LearnMore";
 import Credits from "./pages/Credits";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   const [loading, setLoading] = useState(null);
@@ -43,6 +44,7 @@ function App() {
   const handleAuthenticate = async () => {
     let tempData = {};
     setData((tempData = JSON.parse(localStorage.getItem("data"))));
+
     try {
       const res = await axios.get(
         `/authenticate/${tempData.password}/${tempData.id}`
@@ -161,6 +163,10 @@ function App() {
           <Route
             path="/credits"
             element={<Credits windowDimension={windowDimension} />}
+          />
+          <Route
+            path="/about-us"
+            element={<AboutUs windowDimension={windowDimension} />}
           />
         </Routes>
       </Router>

@@ -111,7 +111,6 @@ const TinyFooter = ({
             height: "30px",
             marginTop: "5px",
             justifySelf: "right",
-            width: "100px",
           }}
           fill="currentColor"
           viewBox="0 0 16 16"
