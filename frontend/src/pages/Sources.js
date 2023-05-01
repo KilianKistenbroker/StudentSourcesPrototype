@@ -7,7 +7,8 @@ import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
 import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
-import Message from "../components/Message";
+import Message from "../components/Window";
+import Window from "../components/Window";
 
 const Sources = ({ data, windowDimension, message, setMessage }) => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
   useEffect(() => {
     if (!data.isLoggedIn) {
       data.currentPoint = "login";
+      window.scrollTo(0, 0);
       navigate("/login");
       return;
     }
@@ -323,6 +325,7 @@ and also call request to update lists */
                   id="search_bar"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
+                  autoComplete="off"
                 />
               ) : (
                 <input
@@ -334,6 +337,7 @@ and also call request to update lists */
                   id="search_bar"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
+                  autoComplete="off"
                   // ------------- TO BE IMPLEMENTED ~ Searing for Folders ----------- //
 
                   onFocus={
@@ -478,7 +482,7 @@ and also call request to update lists */
                  */}
 
         <div className="sources-results">
-          <Message message={message} setMessage={setMessage} />
+          <Window message={message} setMessage={setMessage} />
 
           {selected === "users" && (
             <Users

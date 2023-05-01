@@ -31,12 +31,14 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
     });
     data.isLoggedIn = false;
     localStorage.clear();
+    window.scrollTo(0, 0);
     navigate("/login");
   };
 
   const handleNav = (destination) => {
     console.log("current pathname: ");
     console.log(window.location.pathname);
+    window.scrollTo(0, 0);
 
     if (window.location.pathname === "/" + destination) {
       window.location.reload();
@@ -85,7 +87,7 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                     e.preventDefault();
                     setMessage({
                       title: "Account",
-                      body: "This feature shall allow the user the options to view, update, or delete their account.",
+                      body: null,
                     });
                     setDisplay("");
                   }}
@@ -93,7 +95,7 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                     e.preventDefault();
                     setMessage({
                       title: "Account",
-                      body: "This feature shall allow the user the options to view, update, or delete their account.",
+                      body: null,
                     });
                     setDisplay("");
                   }}
@@ -136,7 +138,9 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
 
           {windowDimension.winWidth > 500 ? (
             <Link
-              onClick={() => handleNav("student")}
+              onClick={() => {
+                handleNav("student");
+              }}
               id="logo-link"
               to={"/student"}
             >
@@ -168,7 +172,9 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
           >
             <Link
               to="/student"
-              onClick={() => handleNav("student")}
+              onClick={() => {
+                handleNav("student");
+              }}
               // style={
               //   window.location.pathname === "/student"
               //     ? { color: "dimgrey" }
@@ -188,7 +194,9 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
             {/* if current point is student then this will bring user back to root of sources page*/}
             <Link
               to="/sources"
-              onClick={() => handleNav("sources")}
+              onClick={() => {
+                handleNav("sources");
+              }}
               // style={
               //   window.location.pathname === "/sources"
               //     ? { color: "dimgrey" }
@@ -252,7 +260,13 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
         </div>
       ) : (
         <div className="navbar navbar-desktop navbar-2by1">
-          <Link id="logo-link" onClick={() => handleNav("")} to={"/"}>
+          <Link
+            id="logo-link"
+            onClick={() => {
+              handleNav("");
+            }}
+            to={"/"}
+          >
             <img src={logo} className="logo" alt="" />
           </Link>
 
@@ -260,6 +274,7 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
 
           <Link
             to={topRightNav === "Login" ? "/login" : "/sign-up"}
+            onClick={() => window.scrollTo(0, 0)}
             id={"login"}
             className="top-right-nav"
           >

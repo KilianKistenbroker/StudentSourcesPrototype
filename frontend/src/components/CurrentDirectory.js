@@ -165,11 +165,12 @@ const CurrentDirectory = ({
             style={{
               display: "flex",
               // width: "70px",
-              marginLeft: "5px",
+              marginLeft: "10px",
             }}
           >
             <div
               className="box-star"
+              style={{ marginLeft: "10px" }}
               onClick={() =>
                 setMessage({
                   title: "Visibility and Permissions",
@@ -198,6 +199,7 @@ const CurrentDirectory = ({
             </div>
             <div
               className="box-star"
+              style={{ marginLeft: "10px" }}
               onClick={() =>
                 setMessage({
                   title: "More Options for Folders/Files",

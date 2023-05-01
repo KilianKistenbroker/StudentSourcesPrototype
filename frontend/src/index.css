@@ -402,32 +402,32 @@ button {
 }
 
 .display-hide {
-    position: absolute;
+    position: relative;
     margin-left: 5px;
     border: none;
     color: lightgrey;
     background-color: transparent;
     width: 50px;
     height: 25px;
-    translate: 0px -4px;
+    /* translate: 0px 4px; */
     border-radius: 2px;
 }
 
 .display-show {
-    position: absolute;
+    position: relative;
     margin-left: 5px;
     border: none;
     color: lightgrey;
-    background-color: transparent;
-    text-decoration: line-through;
+    /* background-color: transparent; */
     width: 50px;
-    height: 25px;
-    translate: 0px -4px;
+    height: 20px;
+    /* padding: 10px; */
+    translate: 0px 0px;
     border-radius: 2px;
 }
 
 .display-hide:hover, .display-show:hover {
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
     color: gray;
     cursor: pointer;
     transition: .1s;
@@ -482,6 +482,10 @@ button {
 .sentence_spacing {
     /* margin-bottom: 10px; */
     line-height: 40px;
+}
+
+.message_spacing {
+    margin-bottom: 10px; 
 }
 
 /* ******************** Navbar ******************** */
@@ -817,7 +821,7 @@ top:-9999px
     background: #202020;
     color: whitesmoke;
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
     margin-top: auto;
 }
 
@@ -1764,18 +1768,29 @@ padding: 6px 10px;
 }
 
 .search-results {
+    transition: .25s;
     background-color:#fafafa;
     border-radius: 5px;
     font: 18px system-ui;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* overflow: hidden; */
-    /* margin-bottom: 45px; */
-    /* overflow-x: scroll; */
     max-width: 800px;
+    min-width: 325px;
     margin: auto;
     z-index: 1;
     position: relative;
-    /* margin-top: 150px; */
+}
+
+.show-message {
+    height: 210px;
+    margin-bottom: 50px;
+}
+.show-window {
+    height: 420px;
+    margin-bottom: 50px;
+}
+.hide-window {
+    height: 0;
+    margin-bottom: 0px;
 }
 
 .exit {

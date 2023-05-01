@@ -83,10 +83,13 @@ const StudentSearch = ({
 
     if (search.length === 0) {
       setSearchResults([]);
+      setMessage({ title: null, body: null });
     } else {
       setSearchResults(
         searchFromCurrentDirectory(currentDirectory, [], search)
       );
+      // used to call use affect in window component
+      setMessage({ title: "search", body: null });
     }
   };
 
@@ -148,27 +151,17 @@ const StudentSearch = ({
             )}
           </button>
 
-          {selected === "saved" || selected === "friends" ? (
-            <input
-              type="text"
-              name="searchbar"
-              placeholder="Filter"
-              id="search_bar"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            />
-          ) : (
-            <input
-              type="text"
-              name="searchbar"
-              placeholder={
-                currentFile ? "Search" : `Search /${currentDirectory.name}`
-              }
-              id="search_bar"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          )}
+          <input
+            type="text"
+            name="searchbar"
+            placeholder={
+              currentFile ? "Search" : `Search /${currentDirectory.name}`
+            }
+            id="search_bar"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            autoComplete="off"
+          />
         </form>
 
         {currentFile ? (

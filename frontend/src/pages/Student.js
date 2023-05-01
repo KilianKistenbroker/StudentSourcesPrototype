@@ -13,7 +13,8 @@ import CommentBox from "../components/CommentBox";
 import commentsData from "../data/commentsData";
 import Notes from "../components/Notes";
 import Info from "../components/Info";
-import Message from "../components/Message";
+import Message from "../components/Window";
+import Window from "../components/Window";
 
 const Student = ({
   data,
@@ -73,6 +74,7 @@ const Student = ({
   useEffect(() => {
     if (!data.isLoggedIn) {
       data.currentPoint = "login";
+      window.scrollTo(0, 0);
       navigate("/login");
       return;
     }
@@ -85,8 +87,9 @@ const Student = ({
   useEffect(() => {
     setPinSelected(false);
     // setCurrentFile(null);
+    setMessage({ title: null, body: null });
     setSearchResults([]);
-  }, [currentDirectory]);
+  }, [currentDirectory, currentFile]);
 
   // this was for mobile to freeze scroll but it does not work...
   // useEffect(() => {
@@ -981,11 +984,6 @@ const Student = ({
           }
         >
           {/* add MAIN CONTENT components here */}
-          {currentFile && (
-            <div style={{ marginTop: "100px" }}>
-              <Message message={message} setMessage={setMessage} />
-            </div>
-          )}
 
           {/* if a file is selected, then load file here */}
           {currentFile ? (
