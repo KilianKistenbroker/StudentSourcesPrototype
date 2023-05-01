@@ -87,32 +87,10 @@ const Student = ({
   useEffect(() => {
     setPinSelected(false);
     // setCurrentFile(null);
-    setMessage({ title: null, body: null });
+    if (message.body !== "hold") setMessage({ title: null, body: null });
+    else setMessage({ title: message.title, body: null });
     setSearchResults([]);
   }, [currentDirectory, currentFile]);
-
-  // this was for mobile to freeze scroll but it does not work...
-  // useEffect(() => {
-  //   const element = document.documentElement;
-
-  //   if (windowDimension.winWidth < 800 && showingRightPanel) {
-  //     element.style.height = "100%";
-  //     element.style.overflow = "hidden";
-  //   } else {
-  //     element.style.height = "";
-  //     element.style.overflow = "";
-  //   }
-  // }, [showingRightPanel, windowDimension.mobileMode]);
-
-  // const handleSetPanel = (state) => {
-  //   const element1 = document.getElementById(state);
-  //   const element2 = document.getElementById("minipanel");
-
-  //   if (state === "notestab") {
-  //     console.log("first");
-  //     element2.style.top = elDistanceToTop;
-  //   }
-  // };
 
   const handleSetScale = (multiplier, state) => {
     if (state === "pdf") {

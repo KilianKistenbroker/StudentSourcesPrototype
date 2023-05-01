@@ -51,6 +51,39 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
     });
   };
 
+  const handleSetWindow = (state) => {
+    if (state === "Account") {
+      if (window.location.pathname !== "/student") {
+        navigate("/student");
+        setMessage({
+          title: "Account",
+          body: "hold",
+        });
+        setDisplay("");
+      } else {
+        setMessage({
+          title: "Account",
+          body: null,
+        });
+      }
+    } else {
+      if (window.location.pathname !== "/student") {
+        navigate("/student");
+        setMessage({
+          title: "Inbox",
+          body: "hold",
+        });
+      } else {
+        setMessage({
+          title: "Inbox",
+          body: null,
+        });
+      }
+    }
+
+    setDisplay("");
+  };
+
   const handleSetFocus = (state) => {
     console.log(state);
     const element = document.getElementById(state);
@@ -85,19 +118,11 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                   className="option"
                   onTouchEnd={(e) => {
                     e.preventDefault();
-                    setMessage({
-                      title: "Account",
-                      body: null,
-                    });
-                    setDisplay("");
+                    handleSetWindow("Account");
                   }}
                   onClick={(e) => {
                     e.preventDefault();
-                    setMessage({
-                      title: "Account",
-                      body: null,
-                    });
-                    setDisplay("");
+                    handleSetWindow("Account");
                   }}
                 >
                   Account
@@ -106,19 +131,11 @@ export default function Navbar({ data, windowDimension, message, setMessage }) {
                   className="option"
                   onTouchEnd={(e) => {
                     e.preventDefault();
-                    setMessage({
-                      title: "Inbox",
-                      body: "This feature shall allow the user to view, delete, and send direct messages.",
-                    });
-                    setDisplay("");
+                    handleSetWindow("Inbox");
                   }}
                   onClick={(e) => {
                     e.preventDefault();
-                    setMessage({
-                      title: "Inbox",
-                      body: "This feature shall allow the user to view, delete, and send direct messages.",
-                    });
-                    setDisplay("");
+                    handleSetWindow("Inbox");
                   }}
                 >
                   Inbox

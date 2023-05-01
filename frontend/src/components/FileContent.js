@@ -166,7 +166,7 @@ const FileContent = ({
       className={"main-panel-content"}
       style={{ maxWidth: `${scale.width}px` }}
     >
-      <Window message={message} setMessage={setMessage} />
+      <Window data={data} message={message} setMessage={setMessage} />
 
       <div className="background"></div>
       <div

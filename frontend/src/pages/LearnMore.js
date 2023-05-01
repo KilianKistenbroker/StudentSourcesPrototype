@@ -58,8 +58,8 @@ const LearnMore = ({ windowDimension }) => {
               <b>Collaboration</b> is implemented in a way that democratizes the
               learning process. Professors and students are free to share their
               notes, with options to{" "}
-              <b> view, download, or post public questions</b> on various
-              provided resources.
+              <b> view, download, or post public questions</b> on provided
+              resources.
             </div>
           </div>
         </div>
