@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Account from "./Account";
+import Inbox from "./Inbox";
 
 const Window = ({
   data,
@@ -161,6 +162,7 @@ const Window = ({
           style={{ padding: "20px", height: "375.5px", overflowY: "scroll" }}
         >
           {/* add INBOX component here */}
+          <Inbox data={data} />
         </div>
       </div>
     );

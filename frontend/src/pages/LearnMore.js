@@ -33,12 +33,11 @@ const LearnMore = ({ windowDimension }) => {
           <div className="learn-more-description">
             <div className="learn-more-title">Organize</div>
             <div className="learn-more-body">
-              <b>Organization</b> is intuitive with a simple and familiar
-              filesystem design. Students will have access to a directory tree
-              and viewing panel, where they can
+              <b>Organization</b> is structured within a filesystem design
+              pattern. Users will have access to a directory tree and viewing
+              panel, where they can
               <b> upload, download, and organize</b> their lecture notes to and
-              from our cloud storage in a way that feels familiar to a
-              traditional filesystem.
+              from our cloud storage.
             </div>
           </div>
 
@@ -56,11 +55,11 @@ const LearnMore = ({ windowDimension }) => {
           <div className="learn-more-description">
             <div className="learn-more-title">Collaborate</div>
             <div className="learn-more-body">
-              <b>Collaboration</b> is implemented in a manner that helps
-              democratize the learning process. Professors and students are free
-              to share their notes and lecture material, in such a way that
-              users can <b> view, download, or post public questions</b> on
-              provided notes and lecture materials.
+              <b>Collaboration</b> is implemented in a way that democratizes the
+              learning process. Professors and students are free to share their
+              notes, with options to{" "}
+              <b> view, download, or post public questions</b> on various
+              provided resources.
             </div>
           </div>
         </div>
@@ -73,13 +72,12 @@ const LearnMore = ({ windowDimension }) => {
           <div className="learn-more-description">
             <div className="learn-more-title">Streamline</div>
             <div className="learn-more-body">
-              <b>Streamlining</b> is achieved with the aid of OpenAI's API
-              services. We provide a seamless interface that allows our users to
-              <i> Ask Chatbot;</i> a service providing the ability for
-              gpt-3.5-turbo to
-              <b> read and respond to files directly.</b> Whenever a student may
-              feel confused over a concept, our chatbot can help to deliver a
-              quick and reliable answer.
+              <b>Streamlining</b> is achieved with the aid of OpenAI's newest
+              GPT model. We provide a seamless interface by providing the option
+              for GPT-4.0 to
+              <b> read and respond to files directly.</b> Whenever students are
+              struggling over concepts, our chatbot can help to deliver quick
+              and reliable guidance.
             </div>
           </div>
 

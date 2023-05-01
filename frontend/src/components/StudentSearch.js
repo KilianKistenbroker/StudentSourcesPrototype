@@ -301,11 +301,11 @@ const StudentSearch = ({
                 selected === "friends" ? "selected" : "selection-content"
               }
               onClick={() => {
+                // handleSort();
                 setMessage({
                   title: "Select",
-                  body: "This feature shall allow the user to swap between list and grid layout and sort alphanumerically.",
+                  body: "This feature shall toggle multi-selection mode for deleting, moving, sharing, downloading in bulk and also sort alphanumerically.",
                 });
-                handleSort();
               }}
             >
               {/* Select */}
