@@ -63,7 +63,12 @@ const TinyFooter = ({
       {/* if viewing a pdf */}
       {currentFile && currentFile.type === "pdf" ? (
         <div className="page-manager">
-          <div onClick={() => handlePageManager(-1)}>
+          <div
+            onClick={() => {
+              handlePageManager(-1);
+              window.scrollTo(0, 0);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="header-icons cursor-enabled"
@@ -79,7 +84,12 @@ const TinyFooter = ({
             {pdfController.currentPage} / {pdfController.pageLimit}
           </div>
 
-          <div onClick={() => handlePageManager(1)}>
+          <div
+            onClick={() => {
+              handlePageManager(1);
+              window.scrollTo(0, 0);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="header-icons cursor-enabled"

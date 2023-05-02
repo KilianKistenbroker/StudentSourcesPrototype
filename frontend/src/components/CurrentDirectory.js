@@ -66,6 +66,8 @@ const CurrentDirectory = ({
     console.log(pinnedItems);
   };
 
+  // ------------------ pin is not selected ----------------- //
+
   if (!pinSelected) {
     return currentDirectory.items.map((loadData, index) => (
       <div
@@ -79,6 +81,7 @@ const CurrentDirectory = ({
       >
         {/* file type and file name */}
         <div
+          draggable
           className="main-panel-filename cursor-enabled"
           style={owner.user !== data.user ? { width: "100%" } : {}}
           onClick={
@@ -125,6 +128,7 @@ const CurrentDirectory = ({
               paddingTop: "10px",
               overflow: "hidden",
               textOverflow: "ellipsis",
+              userSelect: "none",
             }}
           >
             {loadData.name}
@@ -221,7 +225,7 @@ const CurrentDirectory = ({
       </div>
     ));
 
-    // pin is selected
+    // -------------------- pin is selected ------------------ //
   } else {
     return currentDirectory.items
       .filter(function (loadData) {
@@ -324,11 +328,11 @@ const CurrentDirectory = ({
             <div
               style={{
                 display: "flex",
-                // width: "70px",
-                marginLeft: "5px",
+                marginLeft: "10px",
               }}
             >
               <div
+                style={{ marginLeft: "10px" }}
                 className="box-star"
                 onClick={() =>
                   setMessage({
@@ -357,6 +361,7 @@ const CurrentDirectory = ({
                 )}
               </div>
               <div
+                style={{ marginLeft: "10px" }}
                 className="box-star"
                 onClick={() =>
                   setMessage({

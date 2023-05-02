@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAT7XIBPZB52ONWOU4
-      secret-key: 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
+      access-key: #AKIAT7XIBPZB52ONWOU4
+      secret-key: #/VKIsnftTolgdnpKkY3r6h5DjYFkkVnwGBybVau3
     region:
       static: us-west-1
     stack:
@@ -10,7 +10,7 @@ cloud:
 
 application:
   bucket:
-    name: studentsources
+    name: #studentsources
 
 server:
   tomcat:

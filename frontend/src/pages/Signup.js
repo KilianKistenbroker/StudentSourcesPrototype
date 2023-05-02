@@ -15,7 +15,7 @@ const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
 const user_endpoint = "/user";
 
-const Signup = ({ data, windowDimension }) => {
+const Signup = ({ data, windowDimension, setSplashMsg }) => {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -162,13 +162,24 @@ const Signup = ({ data, windowDimension }) => {
         console.log(response);
 
         data.user = user;
-        data.isLoggedIn = true;
-        data.id = response.data;
+        data.firstName = firstName;
+        data.lastName = lastName;
+        data.email = convertEmail;
         data.password = password;
+        data.id = response.data;
+
+        // data.isLoggedIn = true;
+
+        console.log(data);
 
         localStorage.setItem("data", JSON.stringify(data));
         window.scrollTo(0, 0);
         navigate("/student");
+
+        setSplashMsg({
+          message: `Welcome aboard!`,
+          isShowing: true,
+        });
         return;
       }
     } catch (err) {

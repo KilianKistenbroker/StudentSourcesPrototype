@@ -1,13 +1,16 @@
 const Info = ({ currentDirectory, currentFile }) => {
   function formatBytes() {
-    const bytes = JSON.parse(JSON.stringify(currentDirectory.size));
-    const megabytes = bytes / (1024 * 1024);
+    const bytes = currentDirectory.size;
+    const kilobytes = bytes / 1000;
+    const megabytes = bytes / (1000 * 1000);
 
     if (megabytes >= 1000) {
-      const gigabytes = bytes / (1024 * 1024 * 1024);
+      const gigabytes = bytes / (1000 * 1000 * 1000);
       return `${gigabytes.toFixed(2)} GB`;
-    } else {
+    } else if (kilobytes >= 1000) {
       return `${megabytes.toFixed(2)} MB`;
+    } else {
+      return `${kilobytes.toFixed(2)} KB`;
     }
   }
 

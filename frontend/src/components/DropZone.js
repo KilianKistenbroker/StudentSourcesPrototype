@@ -8,6 +8,8 @@ const DropZone = ({
   loading,
   files,
   setFiles,
+  setMessage,
+  setSplashMsg,
 }) => {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef();
@@ -48,12 +50,27 @@ const DropZone = ({
 
     // --- this will update and sort global currDir --- //
 
+    // check if size meets storage limit.
     let size = 0;
+    for (let i = 0; i < objArr.length; i++) {
+      size += objArr[i].size;
+    }
+
+    if (explorerData.size + size > 1e9) {
+      console.log("exceeded storage limit w/ : " + explorerData.size + size);
+      // set failed in main message
+      setLoading(false);
+      setMessage({
+        title: "Uh-oh!",
+        body: "Looks like this upload request exceeds the available storage space on this account. Try deleting files to free up space.",
+      });
+      return;
+    }
+
     for (let i = 0; i < objArr.length; i++) {
       if (currentDirectory.items.some((item) => item.name === objArr[i].name)) {
         // prompt skip or replace b/c merge is too hard to code :/
       } else {
-        size += objArr[i].size;
         currentDirectory.items.push(objArr[i]);
       }
     }
@@ -91,6 +108,13 @@ const DropZone = ({
     console.log(explorerData);
 
     // send req to backend to sync files in cloud
+
+    console.log("updated storage limit w/ : " + explorerData.size + size);
+    // set success in splash message
+    setSplashMsg({
+      message: "Upload successful!",
+      isShowing: true,
+    });
   };
 
   const handleDragOver = (e) => {

@@ -15,6 +15,12 @@ import AboutUs from "./pages/AboutUs";
 function App() {
   const [loading, setLoading] = useState(null);
   const [explorerData, setExplorerData] = useState(folderData);
+  // const [currentStorage, setCurrentStorage] = useState(0);
+  const [storageLimit, setStorageLimit] = useState(1e9);
+  const [splashMsg, setSplashMsg] = useState({
+    message: "",
+    isShowing: false,
+  });
   const [message, setMessage] = useState({
     title: "",
     body: "",
@@ -24,8 +30,11 @@ function App() {
 
   const [data, setData] = useState({
     user: "",
+    firstName: "",
+    lastName: "",
+    email: "",
     password: "",
-    isLoggedIn: false,
+    // isLoggedIn: false,
     id: -1,
   });
 
@@ -38,6 +47,19 @@ function App() {
       setLoading(true);
     }
   }, []);
+
+  // useEffect(() => {
+  //   setCurrentStorage(explorerData.size);
+  //   console.log("current storage");
+  //   console.log(explorerData.size);
+  // }, [explorerData]);
+
+  useEffect(() => {
+    if (splashMsg.isShowing) {
+      var element = document.getElementById("splash");
+      element.focus();
+    }
+  }, [splashMsg]);
 
   // ------------ authenticate localstorage ----------- //
 
@@ -84,7 +106,7 @@ function App() {
     };
   }, [windowDimension]);
 
-  // ------ check for server response ----------//
+  // ------ check for initial server response ----------//
 
   if (loading === null) {
     return <div className="App">Loading...</div>;
@@ -92,16 +114,44 @@ function App() {
     return <div className="App">No server response...</div>;
   }
 
-  // --------- manage routing here ----------- //
-
   return (
     <div className="App">
+      {/* ----------- splash message ------------ */}
+
+      {splashMsg.isShowing ? (
+        <button
+          className="splashMsg show-splash"
+          id="splash"
+          onBlur={() =>
+            setTimeout(() => {
+              setSplashMsg({
+                message: splashMsg.message,
+                isShowing: false,
+              });
+            }, 500)
+          }
+        >
+          {splashMsg.message}
+        </button>
+      ) : (
+        <button className="splashMsg hide-splash" id="splash">
+          {splashMsg.message}
+        </button>
+      )}
+
+      {/* ------------- router pages ------------ */}
+
       <Router>
         <Navbar
           data={data}
           windowDimension={windowDimension}
           message={message}
           setMessage={setMessage}
+          setSplashMsg={setSplashMsg}
+          // for displaying remaining storage on account
+          // currentStorage={currentStorage}
+          explorerData={explorerData}
+          storageLimit={storageLimit}
         />
 
         <Routes>
@@ -117,6 +167,7 @@ function App() {
                 windowDimension={windowDimension}
                 message={message}
                 setMessage={setMessage}
+                setSplashMsg={setSplashMsg}
               />
             }
           />
@@ -128,6 +179,7 @@ function App() {
                 windowDimension={windowDimension}
                 message={message}
                 setMessage={setMessage}
+                setSplashMsg={setSplashMsg}
               />
             }
           />
@@ -153,6 +205,7 @@ function App() {
                 setExplorerData={setExplorerData}
                 message={message}
                 setMessage={setMessage}
+                setSplashMsg={setSplashMsg}
               />
             }
           />

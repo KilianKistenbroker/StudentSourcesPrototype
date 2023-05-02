@@ -1,8 +1,12 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
-const Account = ({ data }) => {
+const Account = ({ data, splashMsg, setSplashMsg }) => {
+  const navigate = useNavigate();
+
   const user_regex_l = /\S{4,24}/;
 
   const password_regex_l = /\S{8,24}/;
@@ -13,15 +17,15 @@ const Account = ({ data }) => {
 
   const userRef = useRef();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(data.email);
   const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
 
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState(data.firstName);
   const [validFirstName, setValidFirstName] = useState(false);
   const [firstNameFocus, setFirstNameFocus] = useState(false);
 
-  const [lastName, setLastName] = useState("");
+  const [lastName, setLastName] = useState(data.lastName);
   const [validLastName, setValidLastName] = useState(false);
   const [lastNameFocus, setLastNameFocus] = useState(false);
 
@@ -67,6 +71,117 @@ const Account = ({ data }) => {
     setShowingPassword(!showingPassword);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log("submit was called");
+
+    // convert email to lowercase here
+    let convertEmail = email.toLowerCase();
+    var element;
+
+    if (!validFirstName) {
+      element = document.getElementById("firstname");
+      element.focus();
+      return;
+    } else if (!validLastName) {
+      element = document.getElementById("lastname");
+      element.focus();
+      return;
+    } else if (!validEmail) {
+      element = document.getElementById("email");
+      element.focus();
+      return;
+    } else if (!validName) {
+      element = document.getElementById("username");
+      element.focus();
+      return;
+    } else if (!validPassword) {
+      element = document.getElementById("password");
+      element.focus();
+      return;
+    }
+
+    // call axios
+    try {
+      const res = await axios.put(`/user/${data.id}`, {
+        email: convertEmail,
+        firstName,
+        lastName,
+        password,
+        user,
+      });
+
+      console.log(res);
+
+      if (res.data.id === -1) {
+        // setErrMsg("Invalid email or username.");
+        setSplashMsg({
+          message: "Username is already taken.",
+          isShowing: true,
+        });
+      } else if (res.data.id === -2) {
+        // setErrMsg("Invalid password.");
+        setSplashMsg({
+          message: "Email is already in use.",
+          isShowing: true,
+        });
+      } else if (res.data.id > 0) {
+        data.user = user;
+        data.firstName = firstName;
+        data.lastName = lastName;
+        data.email = convertEmail;
+        data.password = password;
+
+        console.log(data);
+
+        localStorage.setItem("data", JSON.stringify(data));
+
+        setSplashMsg({
+          message: "Update successful!",
+          isShowing: true,
+        });
+        return;
+      }
+    } catch (err) {
+      if (!err?.response) {
+        // setErrMsg("No server response.");
+        setSplashMsg({
+          message: "No server response.",
+          isShowing: true,
+        });
+      }
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    console.log("delete was called");
+
+    try {
+      const res = await axios.delete(`/user/${data.id}`);
+
+      // data.isLoggedIn = false;
+      data.id = -1;
+      localStorage.clear();
+      navigate("/login");
+
+      // display splash here
+      setSplashMsg({
+        message: "Your account was successfully deleted.",
+        isShowing: true,
+      });
+    } catch (err) {
+      if (!err?.response) {
+        // setErrMsg("No server response.");
+        setSplashMsg({
+          message: "No server response.",
+          isShowing: true,
+        });
+      }
+    }
+  };
+
   return (
     <form>
       <label htmlFor="firstname">
@@ -91,6 +206,21 @@ const Account = ({ data }) => {
         onBlur={() => setFirstNameFocus(false)}
       />
 
+      <div
+        id="firstnamenote"
+        className={firstNameFocus ? "account-instructions" : "offscreen"}
+      >
+        <div>
+          <span className={validFirstName ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span className={validFirstName ? "hide" : "invalid"}>
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Please enter your first name.
+        </div>
+      </div>
+
       <label htmlFor="lastname">
         Last Name
         <span className={validLastName ? "show_valid" : "hide"}>
@@ -112,6 +242,21 @@ const Account = ({ data }) => {
         onFocus={() => setLastNameFocus(true)}
         onBlur={() => setLastNameFocus(false)}
       />
+
+      <div
+        id="lastnamenote"
+        className={lastNameFocus ? "account-instructions" : "offscreen"}
+      >
+        <div>
+          <span className={validLastName ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span className={validLastName ? "hide" : "invalid"}>
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Please enter your last name.
+        </div>
+      </div>
 
       <label htmlFor="email">
         Email
@@ -136,6 +281,21 @@ const Account = ({ data }) => {
         onBlur={() => setEmailFocus(false)}
       />
 
+      <div
+        id="emailnote"
+        className={emailFocus ? "account-instructions" : "offscreen"}
+      >
+        <div>
+          <span className={validEmail ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span className={validEmail ? "hide" : "invalid"}>
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Please use valid email formatting.
+        </div>
+      </div>
+
       <label htmlFor="username">
         Username
         <span className={validName ? "show_valid" : "hide"}>
@@ -157,6 +317,21 @@ const Account = ({ data }) => {
         onFocus={() => setUserFocus(true)}
         onBlur={() => setUserFocus(false)}
       />
+
+      <div
+        id="uidnote"
+        className={userFocus ? "account-instructions" : "offscreen"}
+      >
+        <div>
+          <span className={user_regex_l.test(user) ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span className={user_regex_l.test(user) ? "hide" : "invalid"}>
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Username must contain 4 to 24 characters.
+        </div>
+      </div>
 
       <label htmlFor="password">
         <div style={{ float: "left" }}>Password :</div>
@@ -211,8 +386,61 @@ const Account = ({ data }) => {
         onBlur={() => setPasswordFocus(false)}
       />
 
-      <button style={{ marginTop: "35px" }}>Update Account</button>
-      <button style={{ marginTop: "35px" }}>Delete Account</button>
+      <div
+        id="pwdnote"
+        className={passwordFocus ? "account-instructions" : "offscreen"}
+      >
+        <div className="message_spacing">
+          <span className={password_regex_l.test(password) ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span
+            className={password_regex_l.test(password) ? "hide" : "invalid"}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Password must contain 8 to 24 characters.
+        </div>
+        <div className="message_spacing">
+          <span className={password_regex_sn.test(password) ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span
+            className={password_regex_sn.test(password) ? "hide" : "invalid"}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Password must contain at least 1 number.
+        </div>
+        <div className="">
+          <span className={password_regex_sl.test(password) ? "valid" : "hide"}>
+            <FontAwesomeIcon icon={faCheck} />
+          </span>
+          <span
+            className={password_regex_sl.test(password) ? "hide" : "invalid"}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+          Password must contain at least 1 letter.
+        </div>
+      </div>
+
+      <button
+        style={{ marginTop: "35px" }}
+        onClick={handleSubmit}
+        disabled={
+          user === data.user &&
+          firstName === data.firstName &&
+          lastName === data.lastName &&
+          email.toLowerCase() === data.email &&
+          password === data.password
+        }
+      >
+        Update Account
+      </button>
+      <button style={{ marginTop: "35px" }} onClick={handleDelete}>
+        Delete Account
+      </button>
     </form>
   );
 };

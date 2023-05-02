@@ -40,7 +40,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
 
   // -------- call essential getters here on re-render ----------
   useEffect(() => {
-    if (!data.isLoggedIn) {
+    if (!data.id > 0) {
       data.currentPoint = "login";
       window.scrollTo(0, 0);
       navigate("/login");

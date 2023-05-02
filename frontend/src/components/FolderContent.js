@@ -25,6 +25,8 @@ const FolderContent = ({
   message,
   setMessage,
   showingLeftPanel,
+  splashMsg,
+  setSplashMsg,
 }) => {
   const handleSetCurrentFile = async (file) => {
     await setCurrentFile(file);
@@ -114,6 +116,8 @@ const FolderContent = ({
           setCurrentDirectory={setCurrentDirectory}
           explorerData={explorerData}
           handleSetCurrentFile={handleSetCurrentFile}
+          splashMsg={splashMsg}
+          setSplashMsg={setSplashMsg}
         />
         {/* display header */}
         <div className="box" style={{ overflow: "hidden" }}>
@@ -186,6 +190,8 @@ const FolderContent = ({
           setLoading={setLoading}
           files={files}
           setFiles={setFiles}
+          setMessage={setMessage}
+          setSplashMsg={setSplashMsg}
         />
       )}
 

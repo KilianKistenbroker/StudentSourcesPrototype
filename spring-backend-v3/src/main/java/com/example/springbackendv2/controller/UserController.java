@@ -47,10 +47,26 @@ public class UserController {
 
     @PutMapping("/user/{id}")
     User updateUser(@RequestBody User newUser, @PathVariable Long id){
+
+
+        if (userRepository.checkUsername(newUser.getUser()) != null && !Objects.equals(userRepository.checkUsername(newUser.getUser()).getId(), id)) {
+            User res = new User();
+            res.setId(-1L);
+            return res;
+        }
+
+        else if (userRepository.checkEmail(newUser.getEmail()) != null && !Objects.equals(userRepository.checkEmail(newUser.getEmail()).getId(), id)) {
+            User res = new User();
+            res.setId(-2L);
+            return res;
+        }
+
         return userRepository.findById(id)
                 .map(user -> {
                     user.setUser(newUser.getUser());
                     user.setFirstName(newUser.getFirstName());
+                    user.setLastName(newUser.getLastName());
+                    user.setPassword(newUser.getPassword());
                     user.setEmail(newUser.getEmail());
 
                     return userRepository.save(user);
@@ -72,20 +88,23 @@ public class UserController {
 
 
     @GetMapping(value = "/login/{user}/{password}")
-    public Long findByName(@PathVariable("user") String user, @PathVariable("password") String password) {
+    public User findByName(@PathVariable("user") String user, @PathVariable("password") String password) {
         User res = userRepository.findUsers(user);
 
 //        USERNAME OR EMAIL DOES NOT EXIST
         if(res == null) {
-            return -1L;
+            res = new User();
+            res.setId(-1L);
+            return res;
         }
 
 //        PASSWORD DOES NOT MATCH
         else if (!Objects.equals(res.getPassword(), password)) {
-            System.out.println("this is being printed");
-            return -2L;
+//            System.out.println("this is being printed");
+            res.setId(-2L);
+            return res;
         } else {
-            return res.getId();
+            return res;
         }
     }
 
@@ -101,8 +120,8 @@ public class UserController {
     {
         /*   This is still a strict search. we will expand on this to
         return a margin of close results */
+        String newQuery = query.replace(" ", "");
 
-        String newQuery = query.trim();
         List<User> result = userRepository.searchUsersByUsername(newQuery);
         for (int i = 0; i < result.size(); i++) {
             result.get(i).setPassword("");

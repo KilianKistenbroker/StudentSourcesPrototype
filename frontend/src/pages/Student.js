@@ -25,6 +25,8 @@ const Student = ({
   setExplorerData,
   message,
   setMessage,
+  splashMsg,
+  setSplashMsg,
 }) => {
   const navigate = useNavigate();
 
@@ -72,7 +74,7 @@ const Student = ({
   };
 
   useEffect(() => {
-    if (!data.isLoggedIn) {
+    if (!data.id > 0) {
       data.currentPoint = "login";
       window.scrollTo(0, 0);
       navigate("/login");
@@ -90,6 +92,9 @@ const Student = ({
     if (message.body !== "hold") setMessage({ title: null, body: null });
     else setMessage({ title: message.title, body: null });
     setSearchResults([]);
+
+    console.log("cur dir size");
+    console.log(currentDirectory.size);
   }, [currentDirectory, currentFile]);
 
   const handleSetScale = (multiplier, state) => {
@@ -278,6 +283,12 @@ const Student = ({
 
   return (
     <div className="page">
+      {/* {splashMsg.isShowing ? (
+        <div className="splashMsg show-splash">{splashMsg.message}</div>
+      ) : (
+        <div className="splashMsg hide-splash">{splashMsg.message}</div>
+      )} */}
+
       <StudentSearch
         currentDirectory={currentDirectory}
         windowDimension={windowDimension}
@@ -721,20 +732,7 @@ const Student = ({
               : "right-panel-grid min-right-panel"
           }
         >
-          <div className="header-tab">
-            Info
-            {/* more options button */}
-            {/* <span style={{ float: "right" }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-              </svg>
-            </span> */}
-          </div>
+          <div className="header-tab">Info</div>
           <div
             className="right-panel-info"
             style={owner.user !== data.user ? { height: "19.25%" } : {}}
@@ -1004,6 +1002,8 @@ const Student = ({
               message={message}
               setMessage={setMessage}
               showingLeftPanel={showingLeftPanel}
+              splashMsg={splashMsg}
+              setSplashMsg={setSplashMsg}
             />
           )}
         </div>
