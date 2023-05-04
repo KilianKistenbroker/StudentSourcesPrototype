@@ -2024,7 +2024,7 @@ border-bottom: 1px solid lightgray;
     margin-right: 10px;
     width: 18px;
     height: 18px;
-    border: 2px solid dimgray;
+    border: 1px solid dimgray;
     float: left;
     border-radius: 100px;
     transition: .1s;
@@ -2033,5 +2033,6 @@ border-bottom: 1px solid lightgray;
     cursor: pointer;
 } */
 .visibility-selected {
-    background-color: #ffee90;
+    background-color: #ffd900;
+    border: 2px solid lightgray;
 }
