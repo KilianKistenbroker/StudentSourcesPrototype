@@ -23,7 +23,7 @@ const SavedAll = ({
       return handleFilter(filter, loadData);
     })
     .map((loadData, index) => (
-      <div className="box" key={index}>
+      <div className="box box-hover" key={index}>
         <div className="user-grid">
           <div className="box-icon">
             <svg
@@ -46,7 +46,7 @@ const SavedAll = ({
 
         {savedUserList.includes(loadData.id) ? (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => removeSaved(true, loadData.id)}
           >
             <svg
@@ -59,7 +59,7 @@ const SavedAll = ({
           </div>
         ) : (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => insertSaved(true, loadData.id)}
           >
             <svg

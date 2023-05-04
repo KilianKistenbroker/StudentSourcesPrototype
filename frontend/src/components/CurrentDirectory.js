@@ -23,6 +23,7 @@ const CurrentDirectory = ({
   data,
   message,
   setMessage,
+  setTempFile,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -71,7 +72,7 @@ const CurrentDirectory = ({
   if (!pinSelected) {
     return currentDirectory.items.map((loadData, index) => (
       <div
-        className="box"
+        className="box box-hover"
         style={{
           display: "grid",
           overflow: "hidden",
@@ -137,7 +138,7 @@ const CurrentDirectory = ({
         {/* pinned icon */}
         {owner.user === data.user && (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             style={{ justifySelf: "left" }}
             onClick={() => setPinned(loadData)}
           >
@@ -173,14 +174,15 @@ const CurrentDirectory = ({
             }}
           >
             <div
-              className="box-star"
+              className="box-star cursor-enabled"
               style={{ marginLeft: "10px" }}
-              onClick={() =>
+              onClick={() => {
+                setTempFile(loadData);
                 setMessage({
                   title: "Visibility and Permissions",
-                  body: "This feature shall open a pop up to allow the user to configure the visibility and permissions of a file or folder.",
-                })
-              }
+                  body: null,
+                });
+              }}
             >
               {loadData.visibility === "Private" ? (
                 <svg
@@ -202,7 +204,7 @@ const CurrentDirectory = ({
               )}
             </div>
             <div
-              className="box-star"
+              className="box-star cursor-enabled"
               style={{ marginLeft: "10px" }}
               onClick={() =>
                 setMessage({
@@ -233,7 +235,7 @@ const CurrentDirectory = ({
       })
       .map((loadData, index) => (
         <div
-          className="box"
+          className="box box-hover"
           style={{
             display: "grid",
             overflow: "hidden",
@@ -297,7 +299,7 @@ const CurrentDirectory = ({
           {/* pinned icon */}
           {owner.user === data.user && (
             <div
-              className="box-star"
+              className="box-star cursor-enabled"
               style={{ justifySelf: "left" }}
               onClick={() => setPinned(loadData)}
             >
@@ -333,13 +335,14 @@ const CurrentDirectory = ({
             >
               <div
                 style={{ marginLeft: "10px" }}
-                className="box-star"
-                onClick={() =>
+                className="box-star cursor-enabled"
+                onClick={() => {
+                  setTempFile(loadData);
                   setMessage({
                     title: "Visibility and Permissions",
-                    body: "This feature shall open a pop up to allow the user to configure the visibility and permissions of a file or folder.",
-                  })
-                }
+                    body: null,
+                  });
+                }}
               >
                 {loadData.visibility === "Private" ? (
                   <svg
@@ -362,7 +365,7 @@ const CurrentDirectory = ({
               </div>
               <div
                 style={{ marginLeft: "10px" }}
-                className="box-star"
+                className="box-star cursor-enabled"
                 onClick={() =>
                   setMessage({
                     title: "More Options for Folders/Files",

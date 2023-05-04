@@ -1,5 +1,3 @@
-import { hover } from "@testing-library/user-event/dist/hover";
-import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Footer = ({ windowDimension }) => {
@@ -54,7 +52,7 @@ const Footer = ({ windowDimension }) => {
           </div>
         </div>
         <div className="footer-content">
-          <h2>Learning</h2> <br />
+          <h2>SFSU Learning</h2> <br />
           <Link
             className="sentence_spacing footer-link cursor-enabled"
             target="_blank"

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 public class FriendsController {
     @Autowired
     private FriendsRepository friendsRepository;

@@ -239,7 +239,7 @@ export default function Navbar({
               onFocus={() => console.log("focused notifications")}
               onBlur={() => setDisplay("")}
             >
-              ~ TO BE IMPLEMENTED ~
+              ~ No new notifications ~
             </button>
           ) : (
             <button id="notifications" className="user-panel hiding"></button>
@@ -354,14 +354,35 @@ export default function Navbar({
 
           <div></div>
 
-          <Link
-            to={topRightNav === "Login" ? "/login" : "/sign-up"}
-            onClick={() => window.scrollTo(0, 0)}
-            id={"login"}
-            className="top-right-nav"
-          >
-            {topRightNav}
-          </Link>
+          {windowDimension.winWidth > 800 ? (
+            <div style={{ justifySelf: "right", width: "230px" }}>
+              <Link
+                to={"/sign-up"}
+                onClick={() => window.scrollTo(0, 0)}
+                id={"login"}
+                className="top-right-nav"
+              >
+                Sign up
+              </Link>
+              <Link
+                to={"/login"}
+                onClick={() => window.scrollTo(0, 0)}
+                id={"login"}
+                className="top-right-nav"
+              >
+                Login
+              </Link>
+            </div>
+          ) : (
+            <Link
+              to={topRightNav === "Login" ? "/login" : "/sign-up"}
+              onClick={() => window.scrollTo(0, 0)}
+              id={"login"}
+              className="top-right-nav"
+            >
+              {topRightNav}
+            </Link>
+          )}
         </div>
       )}{" "}
     </>

@@ -1,6 +1,6 @@
 const Info = ({ currentDirectory, currentFile }) => {
-  function formatBytes() {
-    const bytes = currentDirectory.size;
+  function formatBytes(size) {
+    const bytes = size;
     const kilobytes = bytes / 1000;
     const megabytes = bytes / (1000 * 1000);
 
@@ -24,7 +24,7 @@ const Info = ({ currentDirectory, currentFile }) => {
         <div>Type:</div>
         <div>{currentFile.type}</div>
         <div> Size:</div>
-        <div>{formatBytes()}</div>
+        <div>{formatBytes(currentFile.size)}</div>
         <div>Visibility:</div>
         <div>{currentFile.visibility}</div>
       </div>
@@ -39,7 +39,7 @@ const Info = ({ currentDirectory, currentFile }) => {
         <div>Type:</div>
         <div>{currentDirectory.type}</div>
         <div> Size:</div>
-        <div>{formatBytes()}</div>
+        <div>{formatBytes(currentDirectory.size)}</div>
         <div>Visibility:</div>
         <div>{currentDirectory.visibility}</div>
       </div>

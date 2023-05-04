@@ -964,7 +964,12 @@ padding: 6px 10px;
 }
 
 /* replace with dragging effect */
-.box:hover {
+/* .box:hover {
+    background-color: #fafafa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+} */
+.box-hover {}
+.box-hover:hover {
     background-color: #fafafa;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -1008,11 +1013,11 @@ padding: 6px 10px;
     margin: auto 0;
 }
 
-.box-star:hover {
+/* .box-star:hover {
     color: rgba(128,128,128, .8);
     transition: .1s;
     cursor: pointer;
-}
+} */
 
 .box-friend {
     width: 120px;
@@ -1694,7 +1699,7 @@ padding: 6px 10px;
     display: flex;
     flex-direction:column-reverse;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .form-inline {
     display: flex;
@@ -1746,7 +1751,7 @@ padding: 6px 10px;
     border-radius: 5px;
     font: 18px system-ui;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    max-width: 600px;
     min-width: 325px;
     margin: auto;
     z-index: 1;
@@ -1889,4 +1894,144 @@ padding: 6px 10px;
 }
 .hide-splash {
     margin-right: -280px;
+}
+
+/* ------------------ inbox -------------------- */
+
+.inbox-container {
+/* background-color: white; */
+height: 100%;
+display: grid;
+grid-template-columns: repeat(2, auto);
+justify-content: left;
+}
+
+.inbox-create-dm {
+    /* this will keep position relative to container, while still acting as a nav component */
+    position: absolute;
+   padding: 14px;
+    background-color: #fafafa;
+    width: 200px;
+    min-width: 100px;
+    border-bottom: 1px solid lightgrey;
+    font-size: 16px;
+    font-weight: bolder;
+    color: dimgray;
+}
+
+.left-inbox {
+    width: 200px;
+}
+
+.left-inbox-contacts{
+    overflow-y: scroll;
+    
+    
+    margin-top: 50px;
+    height: 447px;
+}
+
+.right-inbox {
+/* padding: 10px; */
+width: 100%;
+border-left: 1px solid lightgrey;
+margin-bottom: 50px;
+min-width: 200px;
+}
+
+.inbox-contact {
+    padding: 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #ededed;
+    display: grid;
+    grid-template-columns: repeat(2,auto);
+    align-items: center;
+    justify-content: left;
+    color: dimgray;
+}
+.inbox-contact:hover {
+    background-color: #e0e0e0;
+}
+
+.inbox-username{
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.inbox-textarea{
+    position:absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin-left: 10px;
+    padding: 10px;
+    /* could not figure out how to keep textbox relative to right container */
+    margin-left: 200px;
+    background-color: #f6f6f6;
+    border-left: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.window-header {
+    background-color: #3d3d3d;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    position: relative;
+    z-index: 1
+}
+
+.inbox-search {
+    position:absolute;
+    top: 0;
+    right: -1px;
+    left: 0;
+    margin-top: 44px;
+    /* padding: 10px; */
+    margin-left: 200px;
+    
+}
+
+/* ---------- visibility and permissions ------------- */
+
+.visibility-container {
+height: 100%;
+}
+
+.visibility-header {
+height: 40%;
+/* background-color:#ff9999; */
+padding: 20px;
+border-bottom: 1px solid lightgray;
+}
+
+.visibility-footer {
+    height: 60%;
+    /* background-color: #aaa; */
+}
+.visibility-selection{
+    margin: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+}
+
+.visibility-checkbox {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid dimgray;
+    float: left;
+    border-radius: 100px;
+    transition: .1s;
+}
+/* .visibility-checkbox:hover{
+    cursor: pointer;
+} */
+.visibility-selected {
+    background-color: #ffee90;
 }

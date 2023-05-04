@@ -18,7 +18,9 @@ const LearnMore = ({ windowDimension }) => {
           </div>
 
           <div className="learn-more-description">
-            <div className="learn-more-title">Welcome to Student Sources</div>
+            <div className="learn-more-title">
+              Effortlessly organize, excel in your studies
+            </div>
             <div className="learn-more-body">
               <b>Student Sources</b> is designed to help democratize the
               learning process. Our software tools provide students the ability

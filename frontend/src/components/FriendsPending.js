@@ -13,7 +13,7 @@ const FriendsPending = ({
       return handleFilter(filter, loadData);
     })
     .map((loadData, index) => (
-      <div className="box" key={index}>
+      <div className="box box-hover" key={index}>
         <div className="user-grid">
           <div className="box-icon">
             <svg
@@ -36,7 +36,7 @@ const FriendsPending = ({
 
         {savedUserList.includes(loadData.id) ? (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => removeSaved(true, loadData.id)}
           >
             <svg
@@ -49,7 +49,7 @@ const FriendsPending = ({
           </div>
         ) : (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => insertSaved(true, loadData.id)}
           >
             <svg

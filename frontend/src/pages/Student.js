@@ -74,7 +74,7 @@ const Student = ({
   };
 
   useEffect(() => {
-    if (!data.id > 0) {
+    if (data.id < 0) {
       data.currentPoint = "login";
       window.scrollTo(0, 0);
       navigate("/login");

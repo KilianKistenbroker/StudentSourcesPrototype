@@ -19,7 +19,7 @@ const Users = ({
       return loadData.user !== data.user;
     })
     .map((loadData, index) => (
-      <div className="box" key={index}>
+      <div className="box box-hover" key={index}>
         <div className="user-grid">
           <div className="box-icon">
             <svg
@@ -42,7 +42,7 @@ const Users = ({
 
         {data.id !== loadData.id && savedUserList.includes(loadData.id) ? (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => removeSaved(true, loadData.id)}
           >
             <svg
@@ -55,7 +55,7 @@ const Users = ({
           </div>
         ) : data.id !== loadData.id ? (
           <div
-            className="box-star"
+            className="box-star cursor-enabled"
             onClick={() => insertSaved(true, loadData.id)}
           >
             <svg

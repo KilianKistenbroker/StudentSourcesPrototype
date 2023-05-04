@@ -7,7 +7,6 @@ import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
 import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
-import Message from "../components/Window";
 import Window from "../components/Window";
 
 const Sources = ({ data, windowDimension, message, setMessage }) => {
@@ -40,7 +39,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
 
   // -------- call essential getters here on re-render ----------
   useEffect(() => {
-    if (!data.id > 0) {
+    if (data.id < 0) {
       data.currentPoint = "login";
       window.scrollTo(0, 0);
       navigate("/login");
