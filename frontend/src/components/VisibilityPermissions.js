@@ -162,7 +162,7 @@ const VisibilityPermissions = ({ tempFile }) => {
         </div>
       </div>
 
-      <div className="visibility-footer">footer</div>
+      <div className="visibility-footer">{/* footer */}</div>
     </div>
   );
 };
