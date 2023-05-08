@@ -130,7 +130,8 @@ const Inbox = ({ data }) => {
       <div className="commentText">
         <p className="">
           {" "}
-          <a className="commenterUsername link">@{comment.username}:</a>{" "}
+          <a className="commenterUsername link">{comment.username}</a>
+          <br />
           {comment.commentText}
         </p>{" "}
         <span className="date sub-text">{comment.date}</span>
@@ -167,7 +168,7 @@ const Inbox = ({ data }) => {
               <img src={"http://placekitten.com/50/50"} />
             </div>
             {/* temp username */}
-            <div className="inbox-username">@{conversation[0].username}</div>
+            <div className="inbox-username">{conversation[0].username}</div>
           </div>
         </div>
       </div>

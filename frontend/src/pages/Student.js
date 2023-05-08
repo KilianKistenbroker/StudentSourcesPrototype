@@ -60,6 +60,11 @@ const Student = ({
     pageLimit: 0,
   });
 
+  const [tempFile, setTempFile] = useState({
+    state: null,
+    content: null,
+  });
+
   const { insertNode } = useTreeTraversal();
   const handleInsertNode = (name, type) => {
     const finalTree = insertNode(
@@ -76,7 +81,7 @@ const Student = ({
   useEffect(() => {
     if (data.id < 0) {
       data.currentPoint = "login";
-      window.scrollTo(0, 0);
+
       navigate("/login");
       return;
     }
@@ -92,10 +97,133 @@ const Student = ({
     if (message.body !== "hold") setMessage({ title: null, body: null });
     else setMessage({ title: message.title, body: null });
     setSearchResults([]);
+    window.scrollTo(0, 0);
 
-    console.log("cur dir size");
-    console.log(currentDirectory.size);
+    // console.log("cur dir size");
+    // console.log(currentDirectory.size);
   }, [currentDirectory, currentFile]);
+
+  function getParentPath(pathString) {
+    const pathArray = pathString.split("/");
+    pathArray.pop(); // Remove the last element from the array
+    const newPathString = pathArray.join("/");
+    return newPathString;
+  }
+
+  const updateParentSize = (node, parsingArr, size) => {
+    parsingArr.shift();
+    if (parsingArr.length === 0) {
+      node.size += size;
+      return node;
+    }
+    node.size += size;
+    for (let i = 0; i < node.items.length; i++) {
+      if (node.items[i].name === parsingArr[0]) {
+        node.items[i] = updateParentSize(node.items[i], parsingArr, size);
+        return node;
+      }
+    }
+  };
+
+  const updatePathnames = (node, pathname) => {
+    node.pathname = pathname + "/" + node.name;
+    for (let i = 0; i < node.items.length; i++) {
+      updatePathnames(node.items[i], node.pathname);
+    }
+  };
+
+  // move this to useTraverseTree
+  const handleMoveFile = (pathDest) => {
+    const tempRef = parseTree(explorerData, pathDest, -1);
+
+    if (tempRef.items.some((item) => item.name === tempFile.content.name)) {
+      // prompt skip or replace
+    } else {
+      const tempRef2 = parseTree(explorerData, pathDest, -1);
+
+      // --------------  insert moved file into destination -------------- //
+      if (currentDirectory.pathname === pathDest) {
+        console.log("this was entered");
+        currentDirectory.items.push(tempFile.content);
+      } else {
+        tempRef2.items.push(tempFile.content);
+      }
+
+      // --------------- delete moved file from source path --------------- //
+      const parent = getParentPath(tempFile.content.pathname);
+      let tempRef3 = parseTree(explorerData, parent, -1);
+      let tempArr = [];
+
+      for (let i = 0; i < tempRef3.items.length; i++) {
+        if (tempRef3.items[i].name !== tempFile.content.name) {
+          tempArr.push(tempRef3.items[i]);
+        }
+      }
+      tempRef3.items = tempArr;
+
+      // -------------- updating pathname of every child -------------- //
+
+      updatePathnames(tempFile.content, pathDest);
+
+      // ------------- sorting moved item ------------------ //
+      if (currentDirectory.pathname === pathDest) {
+        currentDirectory.items.sort((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+
+          return fa.localeCompare(fb, undefined, { numeric: true });
+        });
+
+        let folders = [];
+        let files = [];
+        for (let i = 0; i < currentDirectory.items.length; i++) {
+          if (currentDirectory.items[i].type === "Folder")
+            folders.push(currentDirectory.items[i]);
+          else files.push(currentDirectory.items[i]);
+        }
+        const updateitems = folders.concat(files);
+        currentDirectory.items = updateitems;
+      } else {
+        tempRef2.items.sort((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+
+          return fa.localeCompare(fb, undefined, { numeric: true });
+        });
+
+        let folders = [];
+        let files = [];
+        for (let i = 0; i < tempRef2.items.length; i++) {
+          if (tempRef2.items[i].type === "Folder")
+            folders.push(tempRef2.items[i]);
+          else files.push(tempRef2.items[i]);
+        }
+        const updateitems = folders.concat(files);
+        tempRef2.items = updateitems;
+      }
+
+      // ------------ update size for src and dest paths------------ //
+      let parsingArr1 = pathDest.split("/");
+      const res1 = updateParentSize(
+        explorerData,
+        parsingArr1,
+        tempFile.content.size
+      );
+
+      let parsingArr2 = parent.split("/");
+      console.log(parsingArr2);
+      const res2 = updateParentSize(
+        explorerData,
+        parsingArr2,
+        -tempFile.content.size
+      );
+    }
+
+    setTempFile({
+      state: null,
+      content: null,
+    });
+  };
 
   const handleSetScale = (multiplier, state) => {
     if (state === "pdf") {
@@ -282,7 +410,21 @@ const Student = ({
   // }
 
   return (
-    <div className="page">
+    <div
+      className="page"
+      onMouseUp={() => {
+        setTempFile({
+          state: null,
+          content: null,
+        });
+      }}
+      onMouseLeave={() => {
+        setTempFile({
+          state: null,
+          content: null,
+        });
+      }}
+    >
       {/* {splashMsg.isShowing ? (
         <div className="splashMsg show-splash">{splashMsg.message}</div>
       ) : (
@@ -414,7 +556,7 @@ const Student = ({
                   className="header-more-options"
                   onFocus={() => console.log("focusing")}
                   onBlur={() => setDisplay("")}
-                  style={{ height: "80px" }}
+                  style={{ height: "110px" }}
                 >
                   <ul>
                     <div
@@ -457,6 +599,26 @@ const Student = ({
                     >
                       Expand
                     </div>
+                    <div
+                      className="cursor-enabled"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        setMessage({
+                          title: "Trash",
+                          body: "This feature shall provide rendering for trash bin.",
+                        });
+                        setDisplay("");
+                      }}
+                      onClick={() => {
+                        setMessage({
+                          title: "Trash",
+                          body: "This feature shall provide rendering for trash bin.",
+                        });
+                        setDisplay("");
+                      }}
+                    >
+                      Trash
+                    </div>
                   </ul>
                 </button>
               </span>
@@ -489,6 +651,8 @@ const Student = ({
             style={owner.user !== data.user ? { height: "100%" } : {}}
           >
             <DirectoryTree
+              setSplashMsg={setSplashMsg}
+              explorerData={explorerData}
               handleInsertNode={handleInsertNode}
               explorer={explorerData}
               setCurrentDirectory={setCurrentDirectory}
@@ -498,6 +662,10 @@ const Student = ({
               currentFile={currentFile}
               owner={owner}
               data={data}
+              setMessage={setMessage}
+              tempFile={tempFile}
+              setTempFile={setTempFile}
+              handleMoveFile={handleMoveFile}
             />
             {/* spacing */}
             <div
@@ -1004,6 +1172,9 @@ const Student = ({
               showingLeftPanel={showingLeftPanel}
               splashMsg={splashMsg}
               setSplashMsg={setSplashMsg}
+              tempFile={tempFile}
+              setTempFile={setTempFile}
+              handleMoveFile={handleMoveFile}
             />
           )}
         </div>

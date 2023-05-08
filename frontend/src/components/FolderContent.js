@@ -28,9 +28,10 @@ const FolderContent = ({
   showingLeftPanel,
   splashMsg,
   setSplashMsg,
+  tempFile,
+  setTempFile,
+  handleMoveFile,
 }) => {
-  const [tempFile, setTempFile] = useState({});
-
   const handleSetCurrentFile = async (file) => {
     await setCurrentFile(file);
   };
@@ -122,6 +123,7 @@ const FolderContent = ({
           message={message}
           setMessage={setMessage}
           setTempFile={setTempFile}
+          tempFile={tempFile}
         />
       </div>
       {owner.user === data.user && (
@@ -136,6 +138,9 @@ const FolderContent = ({
           setFiles={setFiles}
           setMessage={setMessage}
           setSplashMsg={setSplashMsg}
+          tempFile={tempFile}
+          setTempFile={setTempFile}
+          handleMoveFile={handleMoveFile}
         />
       )}
 

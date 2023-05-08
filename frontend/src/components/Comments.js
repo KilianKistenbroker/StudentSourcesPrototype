@@ -24,7 +24,8 @@ const Comments = ({ data, commentsData }) => {
       <div className="commentText">
         <p className="">
           {" "}
-          <a className="commenterUsername link">@{comment.username}:</a>{" "}
+          <a className="commenterUsername link">{comment.username}</a>
+          <br />
           {comment.commentText}
         </p>{" "}
         <span className="date sub-text">{comment.date}</span>

@@ -190,7 +190,11 @@ const Window = ({
         </div>
         <div style={{ height: "500.5px" }}>
           {/* add INBOX component here */}
-          <VisibilityPermissions data={data} tempFile={tempFile} />
+          <VisibilityPermissions
+            data={data}
+            tempFile={tempFile}
+            setMessage={setMessage}
+          />
         </div>
       </div>
     );

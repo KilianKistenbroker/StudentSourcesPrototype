@@ -23,6 +23,7 @@ const CurrentDirectory = ({
   data,
   message,
   setMessage,
+  tempFile,
   setTempFile,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
@@ -72,6 +73,7 @@ const CurrentDirectory = ({
   if (!pinSelected) {
     return currentDirectory.items.map((loadData, index) => (
       <div
+        draggable
         className="box box-hover"
         style={{
           display: "grid",
@@ -79,10 +81,15 @@ const CurrentDirectory = ({
           justifyContent: "space-between",
         }}
         key={index}
+        onDragStart={() => {
+          setTempFile({
+            state: "dragging",
+            content: loadData,
+          });
+        }}
       >
         {/* file type and file name */}
         <div
-          draggable
           className="main-panel-filename cursor-enabled"
           style={owner.user !== data.user ? { width: "100%" } : {}}
           onClick={
@@ -177,7 +184,7 @@ const CurrentDirectory = ({
               className="box-star cursor-enabled"
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                setTempFile(loadData);
+                setTempFile({ state: null, content: loadData });
                 setMessage({
                   title: "Visibility and Permissions",
                   body: null,
@@ -235,6 +242,7 @@ const CurrentDirectory = ({
       })
       .map((loadData, index) => (
         <div
+          draggable
           className="box box-hover"
           style={{
             display: "grid",
@@ -337,7 +345,7 @@ const CurrentDirectory = ({
                 style={{ marginLeft: "10px" }}
                 className="box-star cursor-enabled"
                 onClick={() => {
-                  setTempFile(loadData);
+                  setTempFile({ state: null, content: loadData });
                   setMessage({
                     title: "Visibility and Permissions",
                     body: null,

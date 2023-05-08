@@ -15,7 +15,7 @@ import AboutUs from "./pages/AboutUs";
 function App() {
   const [loading, setLoading] = useState(null);
   const [explorerData, setExplorerData] = useState(folderData);
-  // const [currentStorage, setCurrentStorage] = useState(0);
+  const [trash, setTrash] = useState([]);
   const [storageLimit, setStorageLimit] = useState(1e9);
   const [splashMsg, setSplashMsg] = useState({
     message: "",
@@ -26,6 +26,15 @@ function App() {
     body: "",
   });
 
+  // or we can pass setExploreData and setTrash as props to Login.js and SignUp.js
+  const getFolderData = async () => {
+    // set loading to true
+    // get folderdata from backend
+    // init explorer data with folderdata
+    // init trash data with trash folder in folder data
+    // set loading to false
+  };
+
   // ------------ store user info from login/signup ---------- //
 
   const [data, setData] = useState({
@@ -34,7 +43,6 @@ function App() {
     lastName: "",
     email: "",
     password: "",
-    // isLoggedIn: false,
     id: -1,
   });
 
@@ -47,12 +55,6 @@ function App() {
       setLoading(true);
     }
   }, []);
-
-  // useEffect(() => {
-  //   setCurrentStorage(explorerData.size);
-  //   console.log("current storage");
-  //   console.log(explorerData.size);
-  // }, [explorerData]);
 
   useEffect(() => {
     if (splashMsg.isShowing) {
@@ -206,6 +208,8 @@ function App() {
                 message={message}
                 setMessage={setMessage}
                 setSplashMsg={setSplashMsg}
+                trash={trash}
+                setTrash={setTrash}
               />
             }
           />

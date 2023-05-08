@@ -2011,6 +2011,9 @@ border-bottom: 1px solid lightgray;
 .visibility-footer {
     height: 60%;
     /* background-color: #aaa; */
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 .visibility-selection{
     margin: 20px;
@@ -2035,4 +2038,11 @@ border-bottom: 1px solid lightgray;
 .visibility-selected {
     background-color: #ffd900;
     border: 2px solid lightgray;
+}
+
+.visibility-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 10px;
+    margin-top: 40px;
 }

@@ -11,8 +11,9 @@ import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
 import { useState } from "react";
 
-const VisibilityPermissions = ({ tempFile }) => {
-  const [visibility, setVisibility] = useState(tempFile.visibility);
+const VisibilityPermissions = ({ tempFile, setMessage }) => {
+  const [visibility, setVisibility] = useState(tempFile.content.visibility);
+  const [input, setInput] = useState("");
 
   return (
     <div className="visibility-container">
@@ -23,33 +24,35 @@ const VisibilityPermissions = ({ tempFile }) => {
             display: "grid",
             overflow: "hidden",
             justifyContent: "space-between",
+            backgroundColor: "white",
+            border: "1px solid lightgrey",
           }}
         >
           {/* file type and file name */}
           <div className="main-panel-filename" style={{ width: "225px" }}>
-            {tempFile.type === "Folder" ? (
+            {tempFile.content.type === "Folder" ? (
               <span style={{ marginRight: "10px", float: "left" }}>
                 <FOLDER style={{ width: "40px", height: "40px" }} />
               </span>
             ) : (
               <span style={{ marginRight: "10px", float: "left" }}>
-                {["jpeg", "jpg"].includes(tempFile.type) ? (
+                {["jpeg", "jpg"].includes(tempFile.content.type) ? (
                   <JPG style={{ width: "40px", height: "40px" }} />
-                ) : "gif" === tempFile.type ? (
+                ) : "gif" === tempFile.content.type ? (
                   <GIF style={{ width: "40px", height: "40px" }} />
-                ) : "png" === tempFile.type ? (
+                ) : "png" === tempFile.content.type ? (
                   <PNG style={{ width: "40px", height: "40px" }} />
-                ) : "txt" === tempFile.type ? (
+                ) : "txt" === tempFile.content.type ? (
                   <TXT style={{ width: "40px", height: "40px" }} />
-                ) : "pdf" === tempFile.type ? (
+                ) : "pdf" === tempFile.content.type ? (
                   <PDF style={{ width: "40px", height: "40px" }} />
-                ) : "mp4" === tempFile.type ? (
+                ) : "mp4" === tempFile.content.type ? (
                   <MP4 style={{ width: "40px", height: "40px" }} />
-                ) : "mp3" === tempFile.type ? (
+                ) : "mp3" === tempFile.content.type ? (
                   <MP3 style={{ width: "40px", height: "40px" }} />
-                ) : "mov" === tempFile.type ? (
+                ) : "mov" === tempFile.content.type ? (
                   <MOV style={{ width: "40px", height: "40px" }} />
-                ) : "url" === tempFile.type ? (
+                ) : "url" === tempFile.content.type ? (
                   <URL style={{ width: "40px", height: "40px" }} />
                 ) : (
                   <UNKNOWN style={{ width: "40px", height: "40px" }} />
@@ -66,7 +69,7 @@ const VisibilityPermissions = ({ tempFile }) => {
                 textOverflow: "ellipsis",
               }}
             >
-              {tempFile.name}
+              {tempFile.content.name}
             </div>
           </div>
 
@@ -74,7 +77,7 @@ const VisibilityPermissions = ({ tempFile }) => {
 
           {/* visibility */}
 
-          {tempFile.visibility === "Private" ? (
+          {tempFile.content.visibility === "Private" ? (
             <div
               style={{
                 display: "flex",
@@ -84,7 +87,7 @@ const VisibilityPermissions = ({ tempFile }) => {
                 color: "dimgray",
               }}
             >
-              <b>private</b>
+              <b>Private</b>
               <div style={{ marginLeft: "10px" }} className="box-star">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +165,115 @@ const VisibilityPermissions = ({ tempFile }) => {
         </div>
       </div>
 
-      <div className="visibility-footer">{/* footer */}</div>
+      <div className="visibility-footer">
+        {/* footer */}
+        {visibility === "Public" ? (
+          <div>
+            <div style={{ whiteSpace: "nowrap" }}>
+              <b>Note:</b> everyone can access this file.
+            </div>
+
+            <div className="visibility-footer-grid">
+              <label>Usernames</label>
+              <div></div>
+              <form>
+                <input
+                  style={{
+                    height: "50px",
+                    color: "dimgrey",
+                    cursor: "default",
+                  }}
+                  type="text"
+                  readOnly
+                  value={"@Everyone"}
+                />
+              </form>
+              <select
+                style={{
+                  textAlign: "center",
+                  fontSize: "14px",
+                  minWidth: "150px",
+                }}
+              >
+                <option value="Can view & download">Can view & download</option>
+                <option value="Can view only">Can view only</option>
+              </select>
+              <div
+                style={{ color: "dimgray", fontSize: "14px", marginTop: "5px" }}
+              ></div>
+              <div></div>
+              <button style={{ marginTop: "39px" }}>Copy URL</button>
+              <button
+                onClick={() =>
+                  setMessage({
+                    title: null,
+                    body: null,
+                  })
+                }
+                style={{ marginTop: "39px" }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        ) : visibility === "Private" ? (
+          <div>
+            <b>Note:</b> only you can access this file.
+          </div>
+        ) : (
+          <div>
+            <div style={{ whiteSpace: "nowrap" }}>
+              <b>Note:</b> only certain users can access this file.
+            </div>
+
+            <div className="visibility-footer-grid">
+              <label>Usernames</label>
+              <div></div>
+              <form>
+                <input
+                  style={{
+                    height: "50px",
+                    color: "dimgrey",
+                  }}
+                  type="text"
+                  autoFocus={true}
+                  placeholder={"@Username"}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+              </form>
+              <select
+                style={{
+                  textAlign: "center",
+                  fontSize: "14px",
+                  minWidth: "150px",
+                }}
+              >
+                <option value="Can view & download">Can view & download</option>
+                <option value="Can view only">Can view only</option>
+              </select>
+              <div
+                style={{ color: "dimgray", fontSize: "14px", marginTop: "5px" }}
+              >
+                <b>Hint:</b> seperate handles with spaces
+              </div>
+              <div></div>
+              <button style={{ marginTop: "20px" }}>Copy URL</button>
+              <button
+                onClick={() =>
+                  setMessage({
+                    title: null,
+                    body: null,
+                  })
+                }
+                style={{ marginTop: "20px" }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
