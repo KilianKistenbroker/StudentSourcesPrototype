@@ -31,6 +31,8 @@ const StudentSearch = ({
   const inputRef = useRef();
 
   const handleEmptyTrash = () => {
+    // run confirm message first
+
     // send a request to backend to purge trashbin
 
     while (trashItems.items.length > 0) {
