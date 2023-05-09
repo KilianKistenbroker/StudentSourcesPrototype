@@ -692,7 +692,7 @@ top:-9999px
 .selection-content {
     padding-top: 15px;
     min-width: 80px;
-    transition: .1s;
+    /* transition: .1s; */
 }
 
 .nested {
@@ -726,6 +726,14 @@ top:-9999px
     background: #ececec;
     /* transition: .5s; */
     cursor: pointer;
+}
+
+.delete-all {
+
+}
+.delete-all:hover {
+    color: #adadad;
+    background-color: white;
 }
 
 #logo-link {
@@ -1487,7 +1495,7 @@ padding: 6px 10px;
     padding-left: 75px;
     display: flex;
     flex-direction: column;
-    transition: .1s;
+    /* transition: .1s; */
     font: 14px system-ui;
     cursor: pointer;
     user-select: none;

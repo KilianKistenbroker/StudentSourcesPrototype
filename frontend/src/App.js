@@ -11,11 +11,14 @@ import folderData from "./data/folderData";
 import LearnMore from "./pages/LearnMore";
 import Credits from "./pages/Credits";
 import AboutUs from "./pages/AboutUs";
+import trashData from "./data/trashData";
 
 function App() {
   const [loading, setLoading] = useState(null);
   const [explorerData, setExplorerData] = useState(folderData);
-  const [trash, setTrash] = useState([]);
+
+  // intitializing to test render
+  const [trash, setTrash] = useState(trashData.items);
   const [storageLimit, setStorageLimit] = useState(1e9);
   const [splashMsg, setSplashMsg] = useState({
     message: "",
@@ -51,6 +54,7 @@ function App() {
 
     if (localStorage.getItem("data")) {
       handleAuthenticate();
+      console.log(trash);
     } else {
       setLoading(true);
     }
@@ -208,8 +212,8 @@ function App() {
                 message={message}
                 setMessage={setMessage}
                 setSplashMsg={setSplashMsg}
-                trash={trash}
-                setTrash={setTrash}
+                trashItems={trash}
+                setTrashItems={setTrash}
               />
             }
           />

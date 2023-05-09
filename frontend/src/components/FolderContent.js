@@ -31,6 +31,7 @@ const FolderContent = ({
   tempFile,
   setTempFile,
   handleMoveFile,
+  setTrashItems,
 }) => {
   const handleSetCurrentFile = async (file) => {
     await setCurrentFile(file);
@@ -124,6 +125,8 @@ const FolderContent = ({
           setMessage={setMessage}
           setTempFile={setTempFile}
           tempFile={tempFile}
+          handleMoveFile={handleMoveFile}
+          setSplashMsg={setSplashMsg}
         />
       </div>
       {owner.user === data.user && (
@@ -141,6 +144,8 @@ const FolderContent = ({
           tempFile={tempFile}
           setTempFile={setTempFile}
           handleMoveFile={handleMoveFile}
+          data={data}
+          owner={owner}
         />
       )}
 

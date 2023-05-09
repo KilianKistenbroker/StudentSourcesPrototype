@@ -11,6 +11,9 @@ import { ReactComponent as MP4 } from "../logos/icons/mp4.svg";
 import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
 import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
+import readDroppedFiles from "../helpers/readDroppedFiles";
+import handleDrop from "../helpers/handleDrop";
+import handleDragOver from "../helpers/handleDrag";
 
 const CurrentDirectory = ({
   currentDirectory,
@@ -25,8 +28,13 @@ const CurrentDirectory = ({
   setMessage,
   tempFile,
   setTempFile,
+  handleMoveFile,
+  setSplashMsg,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
+  const [dragOver, setDragOver] = useState(false);
+  const [moveEffect, setMoveEffect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // gather pins and store them in an array
@@ -38,6 +46,21 @@ const CurrentDirectory = ({
     }
     setPinnedItems(temp);
   }, [currentDirectory]);
+
+  const updateParentSize = (node, parsingArr, size) => {
+    parsingArr.shift();
+    if (parsingArr.length === 0) {
+      node.size += size;
+      return node;
+    }
+    node.size += size;
+    for (let i = 0; i < node.items.length; i++) {
+      if (node.items[i].name === parsingArr[0]) {
+        node.items[i] = updateParentSize(node.items[i], parsingArr, size);
+        return node;
+      }
+    }
+  };
 
   const setPinned = (loadData) => {
     let index = 0;
@@ -87,6 +110,33 @@ const CurrentDirectory = ({
             content: loadData,
           });
         }}
+        onDrop={(e) =>
+          handleDrop(
+            e,
+            loadData,
+            setDragOver,
+            setMoveEffect,
+            handleMoveFile,
+            setLoading,
+            tempFile,
+            explorerData,
+            setMessage,
+            setSplashMsg,
+            data,
+            owner
+          )
+        }
+        onDragOver={(e) =>
+          handleDragOver(
+            e,
+            tempFile,
+            loadData,
+            setMoveEffect,
+            setDragOver,
+            data,
+            owner
+          )
+        }
       >
         {/* file type and file name */}
         <div
@@ -250,6 +300,39 @@ const CurrentDirectory = ({
             justifyContent: "space-between",
           }}
           key={index}
+          onDragStart={() => {
+            setTempFile({
+              state: "dragging",
+              content: loadData,
+            });
+          }}
+          onDrop={(e) =>
+            handleDrop(
+              e,
+              loadData,
+              setDragOver,
+              setMoveEffect,
+              handleMoveFile,
+              setLoading,
+              tempFile,
+              explorerData,
+              setMessage,
+              setSplashMsg,
+              data,
+              owner
+            )
+          }
+          onDragOver={(e) =>
+            handleDragOver(
+              e,
+              tempFile,
+              loadData,
+              setMoveEffect,
+              setDragOver,
+              data,
+              owner
+            )
+          }
         >
           {/* file type and file name */}
           <div

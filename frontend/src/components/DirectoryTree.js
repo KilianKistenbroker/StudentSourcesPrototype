@@ -14,6 +14,8 @@ import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
 import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
 import readDroppedFiles from "../helpers/readDroppedFiles";
+import handleDrop from "../helpers/handleDrop";
+import handleDragOver from "../helpers/handleDrag";
 
 const DirectoryTree = ({
   setSplashMsg,
@@ -24,7 +26,6 @@ const DirectoryTree = ({
   currentDirectory,
   windowDimension,
   setCurrentFile,
-  loading,
   currentFile,
   owner,
   data,
@@ -32,6 +33,8 @@ const DirectoryTree = ({
   tempFile,
   setTempFile,
   handleMoveFile,
+  setShowingTrash,
+  showTrash,
 }) => {
   const [expand, setExpand] = useState(false);
   const [specialExpand, setSpecialExpand] = useState(false);
@@ -40,6 +43,8 @@ const DirectoryTree = ({
   const delimiters = /[./:]+/;
   const restrictedChars = /[{}|"%~#<>]/;
   const [dragOver, setDragOver] = useState(false);
+  const [moveEffect, setMoveEffect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [showInput, setShowInput] = useState({
     visible: false,
@@ -126,102 +131,6 @@ const DirectoryTree = ({
     }
   };
 
-  const handleDrop = async (e, node) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(false);
-
-    if (tempFile && tempFile.state === "dragging") {
-      handleMoveFile(node.pathname);
-    } else {
-      const objArr = await readDroppedFiles(e, explorer);
-
-      // --- this will update and sort global currDir --- //
-
-      // check if size meets storage limit.
-      let size = 0;
-      for (let i = 0; i < objArr.length; i++) {
-        size += objArr[i].size;
-      }
-
-      if (explorerData.size + size > 1e9) {
-        console.log("exceeded storage limit w/ : " + explorerData.size + size);
-        // set failed in main message
-        // setLoading(false);
-        setMessage({
-          title: "Uh-oh!",
-          body: "Looks like this upload request exceeds the available storage space on this account. Try deleting files to free up space.",
-        });
-        return;
-      }
-
-      for (let i = 0; i < objArr.length; i++) {
-        if (explorer.items.some((item) => item.name === objArr[i].name)) {
-          // prompt skip or replace b/c merge is too hard to code :/
-        } else {
-          explorer.items.push(objArr[i]);
-        }
-      }
-
-      explorer.items.sort((a, b) => {
-        let fa = a.name.toLowerCase(),
-          fb = b.name.toLowerCase();
-
-        return fa.localeCompare(fb, undefined, { numeric: true });
-      });
-
-      // this may never be needed here ...
-      let folders = [];
-      let files = [];
-      for (let i = 0; i < explorer.items.length; i++) {
-        if (explorer.items[i].type === "Folder")
-          folders.push(explorer.items[i]);
-        else files.push(explorer.items[i]);
-      }
-      const updateitems = folders.concat(files);
-      explorer.items = updateitems;
-
-      /* parse through tree using pathname from current directory. 
-      then add size to each node in branch */
-
-      let parsingArr = explorer.pathname.split("/");
-      const res = updateParentSize(explorerData, parsingArr, size);
-
-      // console.log("from update parents");
-      // console.log(res);
-
-      // setLoading(false);
-
-      console.log("snapshot");
-      console.log(explorerData);
-
-      // send req to backend to sync files in cloud
-
-      console.log("updated storage limit w/ : " + explorerData.size + size);
-      // set success in splash message
-      setSplashMsg({
-        message: "Upload successful!",
-        isShowing: true,
-      });
-    }
-  };
-
-  const handleDragOver = (e) => {
-    if (tempFile.content && tempFile.content === explorer) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(true);
-
-    if (tempFile.state && tempFile.state === "dragging") {
-      e.dataTransfer.dropEffect = "move";
-    } else {
-      e.dataTransfer.dropEffect = "copy";
-    }
-  };
-
   const handleSetInputFalse = () => {
     setShowInput({ ...showInput, visible: false });
     setValidInput(false);
@@ -238,7 +147,9 @@ const DirectoryTree = ({
     }
 
     // set curr dir
-    if (currentDirectory.pathname !== explorer.pathname) {
+    if (currentDirectory.pathname !== explorer.pathname || showTrash) {
+      setShowingTrash(false);
+
       if (specialExpand) {
         setExpand(!expand);
         return;
@@ -300,9 +211,9 @@ const DirectoryTree = ({
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (explorer.type === "Folder") {
     return (
@@ -325,10 +236,38 @@ const DirectoryTree = ({
             setExpand(false);
             setTempFile({ state: "dragging", content: explorer });
           }}
-          onDrop={(e) => handleDrop(e, explorer)}
-          onDragOver={handleDragOver}
-          onDragLeave={() => setDragOver(false)}
-          style={dragOver ? { backgroundColor: "#e0e0e0" } : {}}
+          onDrop={(e) =>
+            handleDrop(
+              e,
+              explorer,
+              setDragOver,
+              setMoveEffect,
+              handleMoveFile,
+              setLoading,
+              tempFile,
+              explorerData,
+              setMessage,
+              setSplashMsg,
+              data,
+              owner
+            )
+          }
+          onDragOver={(e) =>
+            handleDragOver(
+              e,
+              tempFile,
+              explorer,
+              setMoveEffect,
+              setDragOver,
+              data,
+              owner
+            )
+          }
+          onDragLeave={() => {
+            setDragOver(false);
+            setMoveEffect(false);
+          }}
+          style={dragOver || moveEffect ? { backgroundColor: "#e0e0e0" } : {}}
         >
           <span
             className="cursor-enabled"
@@ -466,6 +405,8 @@ const DirectoryTree = ({
                   tempFile={tempFile}
                   setTempFile={setTempFile}
                   handleMoveFile={handleMoveFile}
+                  setShowingTrash={setShowingTrash}
+                  showTrash={showTrash}
                 />
               );
             }

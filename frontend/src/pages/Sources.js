@@ -371,7 +371,7 @@ and also call request to update lists */
                 {/* Users */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons cursor-enabled"
+                  className="header-icons"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
@@ -388,7 +388,7 @@ and also call request to update lists */
                 {/* Folders */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons cursor-enabled"
+                  className="header-icons"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
@@ -405,7 +405,7 @@ and also call request to update lists */
                 {/* Saved */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons cursor-enabled"
+                  className="header-icons"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
@@ -423,7 +423,7 @@ and also call request to update lists */
                 {/* Friends */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="header-icons cursor-enabled"
+                  className="header-icons"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >

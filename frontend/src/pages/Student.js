@@ -15,6 +15,7 @@ import Notes from "../components/Notes";
 import Info from "../components/Info";
 import Message from "../components/Window";
 import Window from "../components/Window";
+import Trash from "../components/Trash";
 
 const Student = ({
   data,
@@ -27,6 +28,8 @@ const Student = ({
   setMessage,
   splashMsg,
   setSplashMsg,
+  trashItems,
+  setTrashItems,
 }) => {
   const navigate = useNavigate();
 
@@ -37,10 +40,12 @@ const Student = ({
   const [showingLeftPanel, setShowingLeftPanel] = useState(false);
   const [currentFile, setCurrentFile] = useState(null);
   const [loading, setLoading] = useState(null);
-  const [display, setDisplay] = useState("");
+  const [miniPanel, setMiniPanel] = useState("");
+
+  const [showTrash, setShowTrash] = useState(false);
 
   const [pinSelected, setPinSelected] = useState(false);
-  const [format, setFormat] = useState("list");
+  // const [format, setFormat] = useState("list");
   const [textURL, setTextURL] = useState("");
 
   const [notesData, setNotesData] = useState("");
@@ -60,6 +65,8 @@ const Student = ({
     pageLimit: 0,
   });
 
+  /* --- currently used for dragging items and 
+  for Visibility & Permissions pop up --- */
   const [tempFile, setTempFile] = useState({
     state: null,
     content: null,
@@ -93,6 +100,7 @@ const Student = ({
 
   useEffect(() => {
     setPinSelected(false);
+    setShowTrash(false);
     // setCurrentFile(null);
     if (message.body !== "hold") setMessage({ title: null, body: null });
     else setMessage({ title: message.title, body: null });
@@ -218,11 +226,11 @@ const Student = ({
         -tempFile.content.size
       );
     }
-
-    setTempFile({
-      state: null,
-      content: null,
-    });
+    if (tempFile.state === "dragging")
+      setTempFile({
+        state: null,
+        content: null,
+      });
   };
 
   const handleSetScale = (multiplier, state) => {
@@ -284,7 +292,7 @@ const Student = ({
     console.log(state);
     const element = document.getElementById(state);
 
-    setDisplay(state);
+    setMiniPanel(state);
 
     element.focus({
       preventScroll: true,
@@ -415,13 +423,13 @@ const Student = ({
       onMouseUp={() => {
         setTempFile({
           state: null,
-          content: null,
+          content: tempFile.content,
         });
       }}
       onMouseLeave={() => {
         setTempFile({
           state: null,
-          content: null,
+          content: tempFile.content,
         });
       }}
     >
@@ -450,6 +458,9 @@ const Student = ({
         setMessage={setMessage}
         setCurrentDirectory={setCurrentDirectory}
         showingLeftPanel={showingLeftPanel}
+        setShowTrash={setShowTrash}
+        setTrashItems={setTrashItems}
+        showTrash={showTrash}
       />
 
       <span
@@ -549,13 +560,13 @@ const Student = ({
           <div className="header-tab" style={{ direction: "ltr" }}>
             Files
             {/* more options button */}
-            {display === "filespanel" ? (
+            {miniPanel === "filespanel" ? (
               <span style={{ float: "right" }}>
                 <button
                   id="filespanel"
                   className="header-more-options"
                   onFocus={() => console.log("focusing")}
-                  onBlur={() => setDisplay("")}
+                  onBlur={() => setMiniPanel("")}
                   style={{ height: "110px" }}
                 >
                   <ul>
@@ -567,14 +578,14 @@ const Student = ({
                           title: "Collapse",
                           body: "This feature shall provide an option to collapse their entire directory tree, for the purpose simplifying the directory tree.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                       onClick={() => {
                         setMessage({
                           title: "Collapse",
                           body: "This feature shall provide an option to collapse their entire directory tree, for the purpose simplifying the directory tree.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                     >
                       Collapse
@@ -587,14 +598,14 @@ const Student = ({
                           title: "Expand",
                           body: "This feature shall provide an option to expand their entire directory tree, for the purpose of file hunting.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                       onClick={() => {
                         setMessage({
                           title: "Expand",
                           body: "This feature shall provide an option to expand their entire directory tree, for the purpose of file hunting.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                     >
                       Expand
@@ -604,17 +615,20 @@ const Student = ({
                       onTouchEnd={(e) => {
                         e.preventDefault();
                         setMessage({
-                          title: "Trash",
-                          body: "This feature shall provide rendering for trash bin.",
+                          title: null,
+                          body: null,
                         });
-                        setDisplay("");
+
+                        setShowTrash(true);
+                        setMiniPanel("");
                       }}
                       onClick={() => {
                         setMessage({
-                          title: "Trash",
-                          body: "This feature shall provide rendering for trash bin.",
+                          title: null,
+                          body: null,
                         });
-                        setDisplay("");
+                        setShowTrash(true);
+                        setMiniPanel("");
                       }}
                     >
                       Trash
@@ -666,6 +680,8 @@ const Student = ({
               tempFile={tempFile}
               setTempFile={setTempFile}
               handleMoveFile={handleMoveFile}
+              setShowingTrash={setShowTrash}
+              showTrash={showTrash}
             />
             {/* spacing */}
             <div
@@ -683,13 +699,13 @@ const Student = ({
             <div className="header-tab" style={{ direction: "ltr" }}>
               Ask Chatbot
               {/* more options button */}
-              {display === "chatbotpanel" ? (
+              {miniPanel === "chatbotpanel" ? (
                 <span style={{ float: "right" }}>
                   <button
                     id="chatbotpanel"
                     className="header-more-options"
                     onFocus={() => console.log("focusing")}
-                    onBlur={() => setDisplay("")}
+                    onBlur={() => setMiniPanel("")}
                     style={{ height: "170px" }}
                   >
                     <ul>
@@ -700,14 +716,14 @@ const Student = ({
                             title: "Disable Chatbot",
                             body: "This feature shall provide an option to disable their chatbot, as a way to ensure that users do not accidently send requests to OpenAI's API services.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Disable Chatbot",
                             body: "This feature shall provide an option to disable their chatbot, as a way to ensure that users do not accidently send requests to OpenAI's API services.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Disable
@@ -720,14 +736,14 @@ const Student = ({
                             title: "Download Conversation",
                             body: "This feature shall provide an option to download the conversation between the user and the chatbot.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Download Conversation",
                             body: "This feature shall provide an option to download the conversation between the user and the chatbot.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Download
@@ -739,14 +755,14 @@ const Student = ({
                             title: "Regenerate Response",
                             body: "Using OpenAI's API services, this feature shall provide an option to regenerate the previous response.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Regenerate Response",
                             body: "Using OpenAI's API services, this feature shall provide an option to regenerate the previous response.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Regenerate
@@ -758,14 +774,14 @@ const Student = ({
                             title: "Read Current File",
                             body: "Using OpenAI's API services, this feature shall provide an option to store the current file in context, so that users can ask questions about the file without having to provide context every time.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Read Current File",
                             body: "Using OpenAI's API services, this feature shall provide an option to store the current file in context, so that users can ask questions about the file without having to provide context every time.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Read file
@@ -778,14 +794,14 @@ const Student = ({
                             title: "Clear Conversation",
                             body: "This feature shall provide an option to clear the entire conversation, as way to clean up storage space.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Clear Conversation",
                             body: "This feature shall provide an option to clear the entire conversation, as way to clean up storage space.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Clear
@@ -916,12 +932,12 @@ const Student = ({
             <div className="header-tab" id="notestab">
               Notes
               {/* more options button */}
-              {display === "notespanel" ? (
+              {miniPanel === "notespanel" ? (
                 <span style={{ float: "right" }}>
                   <button
                     id="notespanel"
                     className="header-more-options"
-                    onBlur={() => setDisplay("")}
+                    onBlur={() => setMiniPanel("")}
                     style={{ height: "110px" }}
                   >
                     <ul>
@@ -932,14 +948,14 @@ const Student = ({
                             title: "Download Notes",
                             body: "This feature shall provide the option to download notes as a text file to the users local machine.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Download Notes",
                             body: "This feature shall provide the option to download notes as a text file to the users local machine.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Download
@@ -951,14 +967,14 @@ const Student = ({
                             title: "Copy",
                             body: "This feature shall provide the option to copy notes to clipboard for the purpose of pasting it somewhere else.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setMessage({
                             title: "Copy",
                             body: "This feature shall provide the option to copy notes to clipboard for the purpose of pasting it somewhere else.",
                           });
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Copy
@@ -968,11 +984,11 @@ const Student = ({
                         className="cursor-enabled"
                         onTouchEnd={() => {
                           setNotesData("");
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                         onClick={() => {
                           setNotesData("");
-                          setDisplay("");
+                          setMiniPanel("");
                         }}
                       >
                         Clear
@@ -1014,13 +1030,13 @@ const Student = ({
           <div className="header-tab">
             Comments
             {/* more options button */}
-            {display === "commentspanel" ? (
+            {miniPanel === "commentspanel" ? (
               <span style={{ float: "right" }}>
                 <button
                   id="commentspanel"
                   className="header-more-options"
                   onFocus={() => console.log("focusing")}
-                  onBlur={() => setDisplay("")}
+                  onBlur={() => setMiniPanel("")}
                   style={{ height: "80px" }}
                 >
                   <ul>
@@ -1031,14 +1047,14 @@ const Student = ({
                           title: "Disable Comments",
                           body: "This feature shall provide the option to disable comments, such that other users cannot view or send comments.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                       onClick={() => {
                         setMessage({
                           title: "Disable Comments",
                           body: "This feature shall provide the option to disable comments, such that other users cannot view or send comments.",
                         });
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                     >
                       Disable
@@ -1047,11 +1063,11 @@ const Student = ({
                       className="cursor-enabled"
                       onTouchEnd={() => {
                         setComments([]);
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                       onClick={() => {
                         setComments([]);
-                        setDisplay("");
+                        setMiniPanel("");
                       }}
                     >
                       Clear
@@ -1130,7 +1146,19 @@ const Student = ({
           {/* add MAIN CONTENT components here */}
 
           {/* if a file is selected, then load file here */}
-          {currentFile ? (
+          {showTrash ? (
+            <Trash
+              data={data}
+              message={message}
+              setMessage={setMessage}
+              splashMsg={splashMsg}
+              setSplashMsg={setSplashMsg}
+              trashItems={trashItems}
+              setTrashItems={setTrashItems}
+              windowDimension={windowDimension}
+              setTempFile={setTempFile}
+            />
+          ) : currentFile ? (
             <FileContent
               currentFile={currentFile}
               setCurrentFile={setCurrentFile}
@@ -1175,6 +1203,7 @@ const Student = ({
               tempFile={tempFile}
               setTempFile={setTempFile}
               handleMoveFile={handleMoveFile}
+              setTrashItems={setTrashItems}
             />
           )}
         </div>

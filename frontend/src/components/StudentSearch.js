@@ -19,6 +19,9 @@ const StudentSearch = ({
   setMessage,
   setCurrentDirectory,
   showingLeftPanel,
+  setShowTrash,
+  setTrashItems,
+  showTrash,
 }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
@@ -44,38 +47,38 @@ const StudentSearch = ({
     return temp;
   };
 
-  const handleSort = () => {
-    currentDirectory.items.sort((a, b) => {
-      let fa = a.name.toLowerCase(),
-        fb = b.name.toLowerCase();
+  // const handleSort = () => {
+  //   currentDirectory.items.sort((a, b) => {
+  //     let fa = a.name.toLowerCase(),
+  //       fb = b.name.toLowerCase();
 
-      return fa.localeCompare(fb, undefined, { numeric: true });
-    });
+  //     return fa.localeCompare(fb, undefined, { numeric: true });
+  //   });
 
-    let folders = [];
-    let files = [];
-    for (let i = 0; i < currentDirectory.items.length; i++) {
-      if (currentDirectory.items[i].type === "Folder")
-        folders.push(currentDirectory.items[i]);
-      else files.push(currentDirectory.items[i]);
-    }
-    const updateitems = folders.concat(files);
-    currentDirectory.items = updateitems;
+  //   let folders = [];
+  //   let files = [];
+  //   for (let i = 0; i < currentDirectory.items.length; i++) {
+  //     if (currentDirectory.items[i].type === "Folder")
+  //       folders.push(currentDirectory.items[i]);
+  //     else files.push(currentDirectory.items[i]);
+  //   }
+  //   const updateitems = folders.concat(files);
+  //   currentDirectory.items = updateitems;
 
-    // remove unneccessary data here before parsing with stringify
-    const tempObject = {
-      name: currentDirectory.name,
-      pathname: currentDirectory.pathname,
-      type: currentDirectory.type,
-      size: 0,
-      isPinned: false,
-      visibility: currentDirectory.visibility,
-      dataUrl: "",
-      items: currentDirectory.items,
-    };
+  //   // remove unneccessary data here before parsing with stringify
+  //   const tempObject = {
+  //     name: currentDirectory.name,
+  //     pathname: currentDirectory.pathname,
+  //     type: currentDirectory.type,
+  //     size: 0,
+  //     isPinned: false,
+  //     visibility: currentDirectory.visibility,
+  //     dataUrl: "",
+  //     items: currentDirectory.items,
+  //   };
 
-    setCurrentDirectory(tempObject);
-  };
+  //   setCurrentDirectory(tempObject);
+  // };
 
   // this will populate searchResults
   const searchHelper = async (e) => {
@@ -97,7 +100,7 @@ const StudentSearch = ({
     <div
       className="sub-navbar"
       style={
-        currentFile
+        currentFile || showTrash
           ? {
               marginTop: "0px",
             }
@@ -164,7 +167,50 @@ const StudentSearch = ({
           />
         </form>
 
-        {currentFile ? (
+        {showTrash ? (
+          <div className="selection">
+            <div
+              className={
+                selected === "saved" ? "selected" : "selection-content"
+              }
+              style={{
+                width: "125px",
+                fontSize: "18px",
+                fontWeight: "lighter",
+                paddingTop: "18px",
+                fontFamily: "sans-serif",
+              }}
+              onClick={() => {
+                setMessage({
+                  title: "Empty trash",
+                  body: "All items in your trash bin will be permanently deleted.",
+                });
+              }}
+            >
+              Empty trash
+            </div>
+
+            <div
+              onClick={() => {
+                setMessage({ title: null, body: null });
+                setShowTrash(false);
+              }}
+              className={
+                selected === "users" ? "selected" : "selection-content"
+              }
+            >
+              {/* exit / go back */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="header-icons cursor-enabled"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+              </svg>
+            </div>
+          </div>
+        ) : currentFile ? (
           <div className="selection">
             <div
               className={

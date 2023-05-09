@@ -108,7 +108,7 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                 color: "dimgray",
               }}
             >
-              <b>public</b>
+              <b>Public</b>
               <div style={{ marginLeft: "10px" }} className="box-star">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
