@@ -1387,6 +1387,16 @@ padding: 6px 10px;
 }
 
 /* ------ inner main grid content  */
+.tiny-footer-show {
+    transform: translate(0, 0px);
+    /* transition: .1s; */
+}
+
+.tiny-footer-hide {
+transform: translate(0, 75px);
+/* transition: .1s; */
+}
+
 
 .tiny-footer {
     height: 80px;
@@ -1398,12 +1408,10 @@ padding: 6px 10px;
     bottom: 0;
     background-color: #fafafa;
     border-top: 2px solid #ededed ;
-    text-align: right;
-
-    display: grid;
-    grid-template-columns: repeat(3, auto);
+    display: flex;
+    justify-content: right;
     z-index: 1;
-    /* justify-content: center; */
+    transition: .2s;
 }
 .page-manager {
     display: grid;

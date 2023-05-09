@@ -16,6 +16,7 @@ import Info from "../components/Info";
 import Message from "../components/Window";
 import Window from "../components/Window";
 import Trash from "../components/Trash";
+import TinyFooter from "../components/TinyFooter";
 
 const Student = ({
   data,
@@ -86,6 +87,10 @@ const Student = ({
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [showTrash]);
+
+  useEffect(() => {
     if (data.id < 0) {
       data.currentPoint = "login";
 
@@ -134,7 +139,10 @@ const Student = ({
   };
 
   const updatePathnames = (node, pathname) => {
-    node.pathname = pathname + "/" + node.name;
+    const regex = new RegExp("/", "g");
+    const adjustedForPathname = node.name.replace(regex, "%");
+
+    node.pathname = pathname + "/" + adjustedForPathname;
     for (let i = 0; i < node.items.length; i++) {
       updatePathnames(node.items[i], node.pathname);
     }
@@ -144,7 +152,10 @@ const Student = ({
   const handleMoveFile = (pathDest) => {
     const tempRef = parseTree(explorerData, pathDest, -1);
 
-    if (tempRef.items.some((item) => item.name === tempFile.content.name)) {
+    if (
+      tempRef.items.some((item) => item.name === tempFile.content.name) &&
+      pathDest !== "Home/~Trash"
+    ) {
       // prompt skip or replace
     } else {
       const tempRef2 = parseTree(explorerData, pathDest, -1);
@@ -163,7 +174,7 @@ const Student = ({
       let tempArr = [];
 
       for (let i = 0; i < tempRef3.items.length; i++) {
-        if (tempRef3.items[i].name !== tempFile.content.name) {
+        if (tempRef3.items[i].pathname !== tempFile.content.pathname) {
           tempArr.push(tempRef3.items[i]);
         }
       }
@@ -459,8 +470,10 @@ const Student = ({
         setCurrentDirectory={setCurrentDirectory}
         showingLeftPanel={showingLeftPanel}
         setShowTrash={setShowTrash}
-        setTrashItems={setTrashItems}
         showTrash={showTrash}
+        trashItems={trashItems}
+        setTrashItems={setTrashItems}
+        exploreData={explorerData}
       />
 
       <span
@@ -1206,6 +1219,26 @@ const Student = ({
               setTrashItems={setTrashItems}
             />
           )}
+          <TinyFooter
+            windowDimension={windowDimension}
+            showingRightPanel={showingRightPanel}
+            owner={owner}
+            data={data}
+            // pdfController={pdfController}
+            currentFile={currentFile}
+            // setPdfController={setPdfController}
+            setMessage={setMessage}
+            showingLeftPanel={showingLeftPanel}
+            // setLoadingPDF={setLoadingPDF}
+            showTrash={showTrash}
+            setShowTrash={setShowTrash}
+            setTrashItems={setTrashItems}
+            trashItems={trashItems}
+            handleMoveFile={handleMoveFile}
+            tempFile={tempFile}
+            explorerData={explorerData}
+            setSplashMsg={setSplashMsg}
+          />
         </div>
       </div>
     </div>

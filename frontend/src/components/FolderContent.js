@@ -81,7 +81,9 @@ const FolderContent = ({
             Name
           </div>
 
-          {owner.user === data.user && (
+          <div></div>
+
+          {/* {owner.user === data.user && (
             <div
               style={{
                 margin: "0px",
@@ -94,7 +96,7 @@ const FolderContent = ({
             >
               Pinned
             </div>
-          )}
+          )} */}
           {owner.user === data.user && (
             <div
               style={{
@@ -104,7 +106,7 @@ const FolderContent = ({
                 overflow: "hidden",
                 color: "#202020",
                 fontWeight: "bolder",
-                marginRight: "10px",
+                marginRight: "15px",
               }}
             >
               Visibility
@@ -149,7 +151,7 @@ const FolderContent = ({
         />
       )}
 
-      <TinyFooter
+      {/* <TinyFooter
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
         owner={owner}
@@ -157,7 +159,7 @@ const FolderContent = ({
         message={message}
         setMessage={setMessage}
         showingLeftPanel={showingLeftPanel}
-      />
+      /> */}
     </div>
   );
 };

@@ -84,15 +84,15 @@ const DirectoryTree = ({
             body: null,
           });
           const res = input.split(delimiters);
-          if (res.length !== 2 && !res.includes("com")) {
-            setValidInput(false);
-          } else {
-            if (res.includes("com")) {
-              setValidInput(true);
-            } else {
-              setValidInput(["txt"].includes(res[1]));
-            }
+          // if (res.length !== 2 && !res.includes("com")) {
+          //   setValidInput(false);
+          // } else {
+          if (res.includes("com")) {
+            setValidInput(true);
+          } else if (["txt"].includes(res[res.length - 1])) {
+            setValidInput(["txt"].includes(res[res.length - 1]));
           }
+          // }
         } else {
           setMessage({
             title: "Uh-oh!",
@@ -180,10 +180,10 @@ const DirectoryTree = ({
       if (showInput.type === "file") {
         const temp = input.split(delimiters);
         if (temp.includes("com")) {
-          if (temp.includes("https:")) handleInsertNode(e.target.value, "url");
+          if (temp.includes("https")) handleInsertNode(e.target.value, "url");
           else handleInsertNode("https://" + e.target.value, "url");
         } else {
-          handleInsertNode(e.target.value, temp[1]);
+          handleInsertNode(e.target.value, temp[temp.length - 1]);
         }
       } else {
         handleInsertNode(e.target.value, showInput.type);
@@ -215,7 +215,10 @@ const DirectoryTree = ({
   //   return <div>Loading...</div>;
   // }
 
-  if (explorer.type === "Folder") {
+  if (explorer.name.includes("~")) {
+    // these are hidden files
+    return;
+  } else if (explorer.type === "Folder") {
     return (
       <div>
         <div

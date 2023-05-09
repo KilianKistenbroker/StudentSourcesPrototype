@@ -20,13 +20,31 @@ const StudentSearch = ({
   setCurrentDirectory,
   showingLeftPanel,
   setShowTrash,
-  setTrashItems,
   showTrash,
+  trashItems,
+  setTrashItems,
+  exploreData,
 }) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const inputRef = useRef();
+
+  const handleEmptyTrash = () => {
+    // send a request to backend to purge trashbin
+
+    while (trashItems.items.length > 0) {
+      trashItems.items.pop();
+    }
+
+    let tempTrash = JSON.parse(JSON.stringify(trashItems));
+    for (let i = 0; i < exploreData.items.length; i++) {
+      if (exploreData.items[i].name === "~Trash") {
+        exploreData.items[i] = tempTrash;
+        setTrashItems(tempTrash);
+      }
+    }
+  };
 
   const handleExit = () => {
     setOwner(null);
@@ -181,10 +199,11 @@ const StudentSearch = ({
                 fontFamily: "sans-serif",
               }}
               onClick={() => {
-                setMessage({
-                  title: "Empty trash",
-                  body: "All items in your trash bin will be permanently deleted.",
-                });
+                handleEmptyTrash();
+                // setMessage({
+                //   title: "Empty trash",
+                //   body: "All items in your trash bin will be permanently deleted.",
+                // });
               }}
             >
               Empty trash

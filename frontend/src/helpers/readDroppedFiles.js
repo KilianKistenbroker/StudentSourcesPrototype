@@ -9,7 +9,13 @@ const readFileContent = async (file) => {
 };
 
 const readEntries = async (entry, parent, path) => {
-  const currentPath = path ? `${path}/${entry.name}` : entry.name;
+  // adjust name to remove '/' this shouldn't be a problem, but just in case
+  const regex = new RegExp("/", "g");
+  const adjustedForPathname = entry.name.replace(regex, "%");
+
+  const currentPath = path
+    ? `${path}%${adjustedForPathname}`
+    : adjustedForPathname;
 
   if (entry.isFile) {
     const nameAndType = entry.name.split(".");

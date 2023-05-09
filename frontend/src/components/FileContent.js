@@ -274,7 +274,7 @@ const FileContent = ({
         </div>
       )} */}
 
-      <TinyFooter
+      {/* <TinyFooter
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
         owner={owner}
@@ -285,7 +285,7 @@ const FileContent = ({
         setMessage={setMessage}
         showingLeftPanel={showingLeftPanel}
         // setLoadingPDF={setLoadingPDF}
-      />
+      /> */}
     </div>
   );
 };

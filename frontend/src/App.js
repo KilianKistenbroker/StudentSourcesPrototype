@@ -13,12 +13,14 @@ import Credits from "./pages/Credits";
 import AboutUs from "./pages/AboutUs";
 import trashData from "./data/trashData";
 
+import retreiveJSON from "./helpers/retreiveS3Bucket";
+import explorer from "./data/folderData";
+
 function App() {
   const [loading, setLoading] = useState(null);
-  const [explorerData, setExplorerData] = useState(folderData);
+  const [explorerData, setExplorerData] = useState(null);
+  const [trash, setTrash] = useState(null);
 
-  // intitializing to test render
-  const [trash, setTrash] = useState(trashData.items);
   const [storageLimit, setStorageLimit] = useState(1e9);
   const [splashMsg, setSplashMsg] = useState({
     message: "",
@@ -29,17 +31,7 @@ function App() {
     body: "",
   });
 
-  // or we can pass setExploreData and setTrash as props to Login.js and SignUp.js
-  const getFolderData = async () => {
-    // set loading to true
-    // get folderdata from backend
-    // init explorer data with folderdata
-    // init trash data with trash folder in folder data
-    // set loading to false
-  };
-
   // ------------ store user info from login/signup ---------- //
-
   const [data, setData] = useState({
     user: "",
     firstName: "",
@@ -54,11 +46,19 @@ function App() {
 
     if (localStorage.getItem("data")) {
       handleAuthenticate();
-      console.log(trash);
+      // console.log(trash);
     } else {
       setLoading(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (loading === false) {
+      console.log("loading finished");
+      console.log(explorerData);
+      initTrash();
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (splashMsg.isShowing) {
@@ -66,6 +66,17 @@ function App() {
       element.focus();
     }
   }, [splashMsg]);
+
+  const initTrash = () => {
+    for (let i = 0; i < explorerData.items.length; i++) {
+      if (explorerData.items[i].name === "~Trash") {
+        setTrash(explorerData.items[i]);
+        setLoading(true);
+        return;
+      }
+    }
+    setLoading(false);
+  };
 
   // ------------ authenticate localstorage ----------- //
 
@@ -81,7 +92,10 @@ function App() {
         localStorage.clear();
         window.location.reload();
       }
-      setLoading(true);
+
+      // retreive folder data
+      retreiveJSON(setExplorerData);
+      setLoading(false);
     } catch (err) {
       if (!err?.response) {
         setLoading(false);

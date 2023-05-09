@@ -68,7 +68,7 @@ const Trash = ({
           </div>
         </div>
 
-        {trashItems.map((loadData, index) => (
+        {trashItems.items.map((loadData, index) => (
           <div
             draggable
             className="box box-hover"
@@ -115,7 +115,7 @@ const Trash = ({
             {/* file type and file name */}
             <div
               className="main-panel-filename cursor-enabled"
-              style={{ width: "100%" }}
+              style={{ width: "100%", maxWidth: "300px", minWidth: "100px" }}
               //   onClick={
               //     loadData.type === "Folder"
               //       ? () => setCurrentDirectory(explorerData, loadData.pathname, -1)
