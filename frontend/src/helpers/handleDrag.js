@@ -13,6 +13,7 @@ const handleDragOver = (
       destNode.pathname.includes(tempFile.content.pathname)) ||
     (tempFile.content && destNode.items.includes(tempFile.content)) ||
     destNode.type !== "Folder" ||
+    (destNode.name === "~Trash" && !tempFile.state) ||
     data.user !== owner.user
   ) {
     return;

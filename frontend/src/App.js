@@ -15,6 +15,7 @@ import trashData from "./data/trashData";
 
 import retreiveJSON from "./helpers/retreiveS3Bucket";
 import explorer from "./data/folderData";
+import SplashMessage from "./components/SplashMessage";
 
 function App() {
   const [loading, setLoading] = useState(null);
@@ -95,6 +96,8 @@ function App() {
 
       // retreive folder data
       retreiveJSON(setExplorerData);
+      console.log("folder was retreived");
+
       setLoading(false);
     } catch (err) {
       if (!err?.response) {
@@ -129,35 +132,26 @@ function App() {
   // ------ check for initial server response ----------//
 
   if (loading === null) {
-    return <div className="App">Loading...</div>;
+    return (
+      <div className="App">
+        <SplashMessage splashMsg={splashMsg} setSplashMsg={setSplashMsg} />
+        Loading...
+      </div>
+    );
   } else if (loading === false) {
-    return <div className="App">No server response...</div>;
+    return (
+      <div className="App">
+        <SplashMessage splashMsg={splashMsg} setSplashMsg={setSplashMsg} />
+        No server response...
+      </div>
+    );
   }
 
   return (
     <div className="App">
       {/* ----------- splash message ------------ */}
 
-      {splashMsg.isShowing ? (
-        <button
-          className="splashMsg show-splash"
-          id="splash"
-          onBlur={() =>
-            setTimeout(() => {
-              setSplashMsg({
-                message: splashMsg.message,
-                isShowing: false,
-              });
-            }, 500)
-          }
-        >
-          {splashMsg.message}
-        </button>
-      ) : (
-        <button className="splashMsg hide-splash" id="splash">
-          {splashMsg.message}
-        </button>
-      )}
+      <SplashMessage splashMsg={splashMsg} setSplashMsg={setSplashMsg} />
 
       {/* ------------- router pages ------------ */}
 
@@ -188,6 +182,8 @@ function App() {
                 message={message}
                 setMessage={setMessage}
                 setSplashMsg={setSplashMsg}
+                setExplorerData={setExplorerData}
+                setLoading={setLoading}
               />
             }
           />
@@ -200,6 +196,8 @@ function App() {
                 message={message}
                 setMessage={setMessage}
                 setSplashMsg={setSplashMsg}
+                setExplorerData={setExplorerData}
+                setLoading={setLoading}
               />
             }
           />

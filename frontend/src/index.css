@@ -569,9 +569,29 @@ top:-9999px
     right: 10px;
 }
 
+.more-options {
+    position: absolute;
+    transform: translate(-80px, 10px);
+    
+    text-align: left;
+    border: 1px solid #ededed;
+    
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: dimgray;
+    line-height: 30px;
+    transition: .15s;
+    font-size: 15px;
+    overflow: hidden;
+    margin-top: -7px;
+    z-index: 5;
+}
+
 .header-more-options {
     position: absolute;
     right: 30px;
+    
     text-align: left;
     border: 1px solid #ededed;
     
@@ -977,6 +997,10 @@ padding: 6px 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 } */
 .box-hover {}
+.box-highlight {
+    background-color: #fafafa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .box-hover:hover {
     background-color: #fafafa;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

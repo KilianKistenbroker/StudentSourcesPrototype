@@ -15,7 +15,13 @@ const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
 const user_endpoint = "/user";
 
-const Signup = ({ data, windowDimension, setSplashMsg }) => {
+const Signup = ({
+  data,
+  windowDimension,
+  setSplashMsg,
+  setExplorerData,
+  setLoading,
+}) => {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -171,6 +177,37 @@ const Signup = ({ data, windowDimension, setSplashMsg }) => {
         // data.isLoggedIn = true;
 
         console.log(data);
+
+        // send request to create root folder in db
+        const res = 1;
+
+        let tempExplorer = {
+          id: res,
+          name: "Home",
+          pathname: "Home",
+          type: "Folder",
+          size: 0,
+          isPinned: false,
+          visibility: "Public",
+          permissions: "Can view only",
+          dataUrl: "",
+          items: [
+            {
+              id: -1, // i don't think an id needs to be created here
+              name: "~Trash",
+              pathname: "Home/~Trash",
+              type: "Folder",
+              size: 0,
+              isPinned: false,
+              visibility: "Private",
+              permissions: "Only you have access",
+              dataUrl: "",
+              items: [],
+            },
+          ],
+        };
+        setExplorerData(tempExplorer);
+        setLoading(false);
 
         localStorage.setItem("data", JSON.stringify(data));
         window.scrollTo(0, 0);

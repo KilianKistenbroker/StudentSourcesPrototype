@@ -17,6 +17,7 @@ import Message from "../components/Window";
 import Window from "../components/Window";
 import Trash from "../components/Trash";
 import TinyFooter from "../components/TinyFooter";
+import downloadZip from "../helpers/downloadZip";
 
 const Student = ({
   data,
@@ -174,7 +175,7 @@ const Student = ({
       let tempArr = [];
 
       for (let i = 0; i < tempRef3.items.length; i++) {
-        if (tempRef3.items[i].pathname !== tempFile.content.pathname) {
+        if (tempRef3.items[i].id !== tempFile.content.id) {
           tempArr.push(tempRef3.items[i]);
         }
       }
@@ -237,7 +238,7 @@ const Student = ({
         -tempFile.content.size
       );
     }
-    if (tempFile.state === "dragging")
+    if (tempFile.state)
       setTempFile({
         state: null,
         content: null,
@@ -580,72 +581,57 @@ const Student = ({
                   className="header-more-options"
                   onFocus={() => console.log("focusing")}
                   onBlur={() => setMiniPanel("")}
-                  style={{ height: "110px" }}
+                  style={
+                    owner.user === data.user
+                      ? { height: "80px" }
+                      : { height: "50px" }
+                  }
                 >
                   <ul>
                     <div
                       className="cursor-enabled"
                       onTouchEnd={(e) => {
                         e.preventDefault();
-                        setMessage({
-                          title: "Collapse",
-                          body: "This feature shall provide an option to collapse their entire directory tree, for the purpose simplifying the directory tree.",
-                        });
+                        currentFile
+                          ? handleDownload()
+                          : downloadZip(currentDirectory);
                         setMiniPanel("");
                       }}
                       onClick={() => {
-                        setMessage({
-                          title: "Collapse",
-                          body: "This feature shall provide an option to collapse their entire directory tree, for the purpose simplifying the directory tree.",
-                        });
+                        currentFile
+                          ? handleDownload()
+                          : downloadZip(currentDirectory);
                         setMiniPanel("");
                       }}
                     >
-                      Collapse
+                      Download
                     </div>
-                    <div
-                      className="cursor-enabled"
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        setMessage({
-                          title: "Expand",
-                          body: "This feature shall provide an option to expand their entire directory tree, for the purpose of file hunting.",
-                        });
-                        setMiniPanel("");
-                      }}
-                      onClick={() => {
-                        setMessage({
-                          title: "Expand",
-                          body: "This feature shall provide an option to expand their entire directory tree, for the purpose of file hunting.",
-                        });
-                        setMiniPanel("");
-                      }}
-                    >
-                      Expand
-                    </div>
-                    <div
-                      className="cursor-enabled"
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        setMessage({
-                          title: null,
-                          body: null,
-                        });
 
-                        setShowTrash(true);
-                        setMiniPanel("");
-                      }}
-                      onClick={() => {
-                        setMessage({
-                          title: null,
-                          body: null,
-                        });
-                        setShowTrash(true);
-                        setMiniPanel("");
-                      }}
-                    >
-                      Trash
-                    </div>
+                    {owner.user === data.user && (
+                      <div
+                        className="cursor-enabled"
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          setMessage({
+                            title: null,
+                            body: null,
+                          });
+
+                          setShowTrash(true);
+                          setMiniPanel("");
+                        }}
+                        onClick={() => {
+                          setMessage({
+                            title: null,
+                            body: null,
+                          });
+                          setShowTrash(true);
+                          setMiniPanel("");
+                        }}
+                      >
+                        Trash
+                      </div>
+                    )}
                   </ul>
                 </button>
               </span>
@@ -1170,6 +1156,11 @@ const Student = ({
               setTrashItems={setTrashItems}
               windowDimension={windowDimension}
               setTempFile={setTempFile}
+              handleMoveFile={handleMoveFile}
+              tempFile={tempFile}
+              explorerData={explorerData}
+              owner={owner}
+              currentDirectory={currentDirectory}
             />
           ) : currentFile ? (
             <FileContent
@@ -1238,6 +1229,7 @@ const Student = ({
             tempFile={tempFile}
             explorerData={explorerData}
             setSplashMsg={setSplashMsg}
+            message={message}
           />
         </div>
       </div>

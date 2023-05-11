@@ -66,7 +66,9 @@ const DropZone = ({
 
   return (
     <div>
-      {dragOver || (currentDirectory.items.length === 0 && !moveEffect) ? (
+      {dragOver ||
+      (currentDirectory.items.length === 0 && !moveEffect) ||
+      (explorerData.items.length === 1 && !moveEffect) ? (
         <div
           className={"dropzone dragging"}
           onDrop={(e) =>
@@ -96,7 +98,7 @@ const DropZone = ({
               owner
             )
           }
-          onDragExit={() => {
+          onDragLeave={() => {
             setDragOver(false);
             setMoveEffect(false);
           }}

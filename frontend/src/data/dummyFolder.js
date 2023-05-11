@@ -21,6 +21,7 @@ const explorer = {
   size: 0,
   isPinned: false,
   visibility: "Public",
+  permissions: "Can view and download",
   dataUrl: "",
   items: [
     {
@@ -30,6 +31,7 @@ const explorer = {
       size: 0,
       isPinned: false,
       visibility: "Public",
+      permissions: "Can view and download",
       dataUrl: "",
       items: [
         {
@@ -39,6 +41,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -50,6 +53,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -61,6 +65,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -72,6 +77,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -83,6 +89,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -94,6 +101,7 @@ const explorer = {
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],

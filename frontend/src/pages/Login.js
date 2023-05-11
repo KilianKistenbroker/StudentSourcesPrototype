@@ -4,10 +4,17 @@ import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../api/axios";
 import Footer from "../components/Footer";
+import retreiveJSON from "../helpers/retreiveS3Bucket";
 
 const user_endpoint = "/users";
 
-const Login = ({ data, windowDimension, setSplashMsg }) => {
+const Login = ({
+  data,
+  windowDimension,
+  setSplashMsg,
+  setExplorerData,
+  setLoading,
+}) => {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -86,6 +93,9 @@ const Login = ({ data, windowDimension, setSplashMsg }) => {
         console.log(data);
 
         localStorage.setItem("data", JSON.stringify(data));
+
+        retreiveJSON(setExplorerData);
+        setLoading(false);
 
         // clear input fields here
         setUser("");

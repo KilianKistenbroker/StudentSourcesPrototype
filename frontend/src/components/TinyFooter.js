@@ -21,6 +21,7 @@ const TinyFooter = ({
   tempFile,
   explorerData,
   setSplashMsg,
+  message,
 }) => {
   // const handlePageManager = (num) => {
   //   // setLoadingPDF(true);
@@ -42,9 +43,10 @@ const TinyFooter = ({
   return (
     <div
       className={
-        windowDimension.winWidth > 1200 && currentFile
+        (windowDimension.winWidth > 1200 && currentFile) ||
+        (windowDimension.winWidth > 1200 && message.title)
           ? "tiny-footer max-margin tiny-footer-hide"
-          : currentFile
+          : currentFile || message.title
           ? "tiny-footer medium-margin tiny-footer-hide"
           : windowDimension.winWidth > 1200
           ? "tiny-footer max-margin tiny-footer-show"

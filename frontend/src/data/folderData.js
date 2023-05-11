@@ -11,30 +11,36 @@
 // export default explorer;
 
 const explorer = {
+  id: 1,
   name: "Home",
   pathname: "Home",
   type: "Folder",
   size: 593,
   isPinned: false,
   visibility: "Public",
+  permissions: "Can view and download",
   dataUrl: "",
   items: [
     {
+      id: 2,
       name: "Artificial Intelligence",
       pathname: "Home/Artificial Intelligence",
       type: "Folder",
       size: 190,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl: "",
       items: [
         {
+          id: 3,
           name: "foreshadowing.url",
           pathname: "Home/Artificial Intelligence/foreshadowing.url",
           type: "url",
           size: 190,
           isPinned: false,
           visibility: "Private",
+          permissions: "Only you have access",
           dataUrl:
             "data:application/octet-stream;base64,W3swMDAyMTRBMC0wMDAwLTAwMDAtQzAwMC0wMDAwMDAwMDAwNDZ9XQ0KUHJvcDM9MTksMTENCltJbnRlcm5ldFNob3J0Y3V0XQ0KSURMaXN0PQ0KVVJMPWh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9dVJRSDJDRnZlZFkmbGlzdD1QTE9fX0lhQnpNZjk3OEQwY3AtMDVtVVdqX2ZabjFxUU1RJmluZGV4PTM5JnQ9MjA5NXMNCg==",
           items: [],
@@ -42,21 +48,25 @@ const explorer = {
       ],
     },
     {
+      id: 4,
       name: "Intro to Databases",
       pathname: "Home/Intro to Databases",
       type: "Folder",
       size: 76,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl: "",
       items: [
         {
+          id: 5,
           name: "Lecture Example.txt",
           pathname: "Home/Intro to Databases/Lecture Example.txt",
           type: "txt",
           size: 76,
           isPinned: false,
           visibility: "Private",
+          permissions: "Only you have access",
           dataUrl:
             "data:application/octet-stream;base64,VGhpcyB3b3VsZCBwcm9iYWJseSBiZSBhIHBkZiwgYnV0IGEgcGRmIGlzIHRvbyBsYXJnZSB0byBzdG9yZSBhcyBkdW1teSBkYXRhLg==",
           items: [],
@@ -64,34 +74,41 @@ const explorer = {
       ],
     },
     {
+      id: 6,
       name: "Programming Paradigms",
       pathname: "Home/Programming Paradigms",
       type: "Folder",
       size: 0,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl: "",
       items: [],
     },
     {
+      id: 7,
       name: "Software Engineering",
       pathname: "Home/Software Engineering",
       type: "Folder",
       size: 0,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl: "",
       items: [
         {
+          id: 8,
           name: "My References",
           pathname: "Home/Software Engineering/My References",
           type: "Folder",
           size: 504,
           isPinned: false,
           visibility: "Private",
+          permissions: "Only you have access",
           dataUrl: "",
           items: [
             {
+              id: 9,
               name: "form validation.url",
               pathname:
                 "Home/Software Engineering/My References/form validation.url",
@@ -99,11 +116,13 @@ const explorer = {
               size: 190,
               isPinned: false,
               visibility: "Private",
+              permissions: "Only you have access",
               dataUrl:
                 "data:application/octet-stream;base64,W3swMDAyMTRBMC0wMDAwLTAwMDAtQzAwMC0wMDAwMDAwMDAwNDZ9XQ0KUHJvcDM9MTksMTENCltJbnRlcm5ldFNob3J0Y3V0XQ0KSURMaXN0PQ0KVVJMPWh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9YnJjSEszUDZDaFEmbGlzdD1QTE9fX0lhQnpNZjk3OEQwY3AtMDVtVVdqX2ZabjFxUU1RJmluZGV4PTI4JnQ9MjM3NHMNCg==",
               items: [],
             },
             {
+              id: 10,
               name: "react tutoral.url",
               pathname:
                 "Home/Software Engineering/My References/react tutoral.url",
@@ -111,11 +130,13 @@ const explorer = {
               size: 173,
               isPinned: false,
               visibility: "Private",
+              permissions: "Only you have access",
               dataUrl:
                 "data:application/octet-stream;base64,W3swMDAyMTRBMC0wMDAwLTAwMDAtQzAwMC0wMDAwMDAwMDAwNDZ9XQ0KUHJvcDM9MTksMTENCltJbnRlcm5ldFNob3J0Y3V0XQ0KSURMaXN0PQ0KVVJMPWh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9ajk0MndLaVhGdTgmbGlzdD1QTDRjVXhlR2tjQzlnWkQtVHZ3Zm9kMmdhSVN6ZlJpUDlkDQo=",
               items: [],
             },
             {
+              id: 11,
               name: "spring + react tutorial.url",
               pathname:
                 "Home/Software Engineering/My References/spring + react tutorial.url",
@@ -123,6 +144,7 @@ const explorer = {
               size: 141,
               isPinned: false,
               visibility: "Private",
+              permissions: "Only you have access",
               dataUrl:
                 "data:application/octet-stream;base64,W3swMDAyMTRBMC0wMDAwLTAwMDAtQzAwMC0wMDAwMDAwMDAwNDZ9XQ0KUHJvcDM9MTksMTENCltJbnRlcm5ldFNob3J0Y3V0XQ0KSURMaXN0PQ0KVVJMPWh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9NExaS25lZ0FtNGcmdD0xMDY1cw0K",
               items: [],
@@ -132,76 +154,90 @@ const explorer = {
       ],
     },
     {
+      id: -1,
       name: "~Trash",
       pathname: "Home/~Trash",
       type: "Folder",
       size: 0,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl: "",
       items: [
         {
+          id: 13,
           name: "lecture - Copy (2).txt",
-          pathname: "Home/Lecture Material/lecture - Copy (2).txt",
+          pathname: "Home/~Trash/lecture - Copy (2).txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
         },
         {
+          id: 14,
           name: "lecture - Copy (3).txt",
-          pathname: "Home/Lecture Material/lecture - Copy (3).txt",
+          pathname: "Home/~Trash/lecture - Copy (3).txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
         },
         {
+          id: 15,
           name: "lecture - Copy (4).txt",
-          pathname: "Home/Lecture Material/lecture - Copy (4).txt",
+          pathname: "Home/~Trash/lecture - Copy (4).txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
         },
         {
+          id: 16,
           name: "lecture - Copy (5).txt",
-          pathname: "Home/Lecture Material/lecture - Copy (5).txt",
+          pathname: "Home/~Trash/lecture - Copy (5).txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
         },
         {
+          id: 17,
           name: "lecture - Copy.txt",
-          pathname: "Home/Lecture Material/lecture - Copy.txt",
+          pathname: "Home/~Trash/lecture - Copy.txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
         },
         {
+          id: 18,
           name: "lecture.txt",
-          pathname: "Home/Lecture Material/lecture.txt",
+          pathname: "Home/~Trash/lecture.txt",
           type: "txt",
           size: 0,
           isPinned: false,
           visibility: "Public",
+          permissions: "Can view and download",
           dataUrl:
             "data:application/octet-stream;base64,dGhpcyBpcyBhIHJlYWQgb25seS4uIGV2ZW4gdGhvdWdoIHRoaXMgY2FuIGJlIGJ5cGFzc2VkIGluIGluc3BlY3RvciwgY2hhbmdlcyB3aWxsIG5vdCBiZSBzYXZlZC4=",
           items: [],
@@ -209,12 +245,14 @@ const explorer = {
       ],
     },
     {
+      id: 19,
       name: "Readme.txt",
       pathname: "Home/Readme.txt",
       type: "txt",
       size: 327,
       isPinned: false,
       visibility: "Private",
+      permissions: "Only you have access",
       dataUrl:
         "data:text/plain;base64,bW9zdCBvdGhlciBmaWxlIHR5cGVzIGFyZSB0b28gbGFyZ2UgdG8gYmUgdXNlZCBhcyBkdW1teSBkYXRhLCBzbyB3ZSBhcmUgY3VycmVudGx5IG9ubHkgc2hvd2luZyBmb2xkZXJzLCB0eHQgZmlsZXMsIGFuZCB1cmwgZmlsZXMuDQoNCnN1cHBvcnRlZCBmaWxlcyBpbmNsdWRlOiB0eHQsIHBkZiwgbXA0LCBtcDMsIG1vdiwgdXJsLCBqcGVnLCBqcGcsIHBuZywgZ2lmZi4NCg0KDQoNCk5PVEU6IG1wNCwgbW92LCBhbmQgbXAzIGFyZSBkaXNhYmxlZCB1bnRpbCB2aWRlbyBzdHJlYW1pbmcgaXMgcG9zc2libGUuTG93IHJlc29sdXRpb24gaW1nJ3MgbWF5IGFwcGVhciBibHVycnku",
       items: [],

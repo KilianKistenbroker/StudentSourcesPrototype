@@ -32,6 +32,10 @@ const CurrentDirectory = ({
   setSplashMsg,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
+
+  // this will be set to the index of loadData that 'more options' is attached to
+  const [moreOptions, setMoreOptions] = useState(-1);
+
   const [dragOver, setDragOver] = useState(false);
   const [moveEffect, setMoveEffect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -46,6 +50,20 @@ const CurrentDirectory = ({
     }
     setPinnedItems(temp);
   }, [currentDirectory]);
+
+  const handleSetFocus = (index) => {
+    // console.log(state);
+    const element = document.getElementById(`${index}`);
+
+    setMoreOptions(index);
+
+    console.log(moreOptions);
+    console.log(index);
+
+    element.focus({
+      preventScroll: true,
+    });
+  };
 
   const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
@@ -101,7 +119,9 @@ const CurrentDirectory = ({
       .map((loadData, index) => (
         <div
           draggable
-          className="box box-hover"
+          className={
+            moreOptions === index ? "box box-highlight" : "box box-hover"
+          }
           style={{
             display: "grid",
             overflow: "hidden",
@@ -235,7 +255,6 @@ const CurrentDirectory = ({
             <div
               style={{
                 display: "flex",
-                // width: "120px",
                 marginLeft: "10px",
                 textAlign: "center",
               }}
@@ -295,14 +314,80 @@ const CurrentDirectory = ({
                   </svg>
                 )}
               </div>
+
+              {moreOptions === index ? (
+                <span style={{ float: "right" }}>
+                  <button
+                    id={`${index}`}
+                    className="more-options"
+                    onFocus={() => console.log("focusing")}
+                    onBlur={() => {
+                      setMoreOptions(-1);
+                    }}
+                    style={{ height: "110px" }}
+                  >
+                    <ul>
+                      <div
+                        className="cursor-enabled"
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          setMoreOptions(-1);
+                        }}
+                        onClick={() => {
+                          setMoreOptions(-1);
+                        }}
+                      >
+                        Download
+                      </div>
+                      <div
+                        className="cursor-enabled"
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          setMoreOptions(-1);
+                        }}
+                        onClick={() => {
+                          setMoreOptions(-1);
+                        }}
+                      >
+                        Rename
+                      </div>
+
+                      {owner.user === data.user && (
+                        <div
+                          className="cursor-enabled"
+                          onTouchEnd={(e) => {
+                            e.preventDefault();
+                            setMoreOptions(-1);
+                          }}
+                          onClick={() => {
+                            setMoreOptions(-1);
+                          }}
+                        >
+                          Delete
+                        </div>
+                      )}
+                    </ul>
+                  </button>
+                </span>
+              ) : (
+                <span style={{ float: "right" }}>
+                  <button
+                    id={`${index}`}
+                    className="more-options hiding"
+                    style={{}}
+                  ></button>
+                </span>
+              )}
+
               <div
                 className="box-star cursor-enabled"
                 style={{ marginLeft: "10px" }}
                 onClick={() =>
-                  setMessage({
-                    title: "More Options for Folders/Files",
-                    body: "This feature shall provide more options to download or share the selected folder or file.",
-                  })
+                  // setMessage({
+                  //   title: "More Options for Folders/Files",
+                  //   body: "This feature shall provide more options to download or share the selected folder or file.",
+                  // })
+                  handleSetFocus(index)
                 }
               >
                 <svg
@@ -330,7 +415,9 @@ const CurrentDirectory = ({
       .map((loadData, index) => (
         <div
           draggable
-          className="box box-hover"
+          className={
+            moreOptions === index ? "box box-highlight" : "box box-hover"
+          }
           style={{
             display: "grid",
             overflow: "hidden",
@@ -521,15 +608,75 @@ const CurrentDirectory = ({
                   </svg>
                 )}
               </div>
+
+              {moreOptions === index ? (
+                <span style={{ float: "right" }}>
+                  <button
+                    id={`${index}`}
+                    className="more-options"
+                    onFocus={() => console.log("focusing")}
+                    onBlur={() => {
+                      setMoreOptions(-1);
+                    }}
+                    style={{ height: "110px" }}
+                  >
+                    <ul>
+                      <div
+                        className="cursor-enabled"
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          setMoreOptions(-1);
+                        }}
+                        onClick={() => {
+                          setMoreOptions(-1);
+                        }}
+                      >
+                        Download
+                      </div>
+                      <div
+                        className="cursor-enabled"
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          setMoreOptions(-1);
+                        }}
+                        onClick={() => {
+                          setMoreOptions(-1);
+                        }}
+                      >
+                        Rename
+                      </div>
+
+                      {owner.user === data.user && (
+                        <div
+                          className="cursor-enabled"
+                          onTouchEnd={(e) => {
+                            e.preventDefault();
+                            setMoreOptions(-1);
+                          }}
+                          onClick={() => {
+                            setMoreOptions(-1);
+                          }}
+                        >
+                          Delete
+                        </div>
+                      )}
+                    </ul>
+                  </button>
+                </span>
+              ) : (
+                <span style={{ float: "right" }}>
+                  <button
+                    id={`${index}`}
+                    className="more-options hiding"
+                    style={{}}
+                  ></button>
+                </span>
+              )}
+
               <div
                 style={{ marginLeft: "10px" }}
                 className="box-star cursor-enabled"
-                onClick={() =>
-                  setMessage({
-                    title: "More Options for Folders/Files",
-                    body: "This feature shall provide more options to download or share the selected folder or file.",
-                  })
-                }
+                onClick={() => handleSetFocus(index)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

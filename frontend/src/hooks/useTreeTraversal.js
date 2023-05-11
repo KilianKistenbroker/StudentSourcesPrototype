@@ -31,6 +31,7 @@ const useTreeTraversal = () => {
         size: 0,
         isPinned: false,
         visibility: "Private", // <-default
+        permissions: "Only you have access",
         dataUrl: dataUrl,
         items: [],
       });
@@ -51,20 +52,6 @@ const useTreeTraversal = () => {
       }
       const updateitems = folders.concat(files);
       currentDirectory.items = updateitems;
-
-      // remove unneccessary data here before parsing with stringify
-      // const tempObject = {
-      //   name: currentDirectory.name,
-      //   pathname: currentDirectory.pathname,
-      //   type: currentDirectory.type,
-      //   size: 0,
-      //   isPinned: false,
-      //   visibility: currentDirectory.visibility,
-      //   dataUrl: "",
-      //   items: currentDirectory.items,
-      // };
-
-      // setCurrentDirectory(tempObject);
     }
   }
 

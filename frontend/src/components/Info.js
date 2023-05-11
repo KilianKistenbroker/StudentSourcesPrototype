@@ -27,6 +27,8 @@ const Info = ({ currentDirectory, currentFile }) => {
         <div>{formatBytes(currentFile.size)}</div>
         <div>Visibility:</div>
         <div>{currentFile.visibility}</div>
+        <div>Permissions:</div>
+        <div>{currentFile.permissions}</div>
       </div>
     );
   } else {
@@ -42,6 +44,8 @@ const Info = ({ currentDirectory, currentFile }) => {
         <div>{formatBytes(currentDirectory.size)}</div>
         <div>Visibility:</div>
         <div>{currentDirectory.visibility}</div>
+        <div>Permissions:</div>
+        <div>{currentDirectory.permissions}</div>
       </div>
     );
   }
