@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import downloadFile from "../helpers/downloadFile";
 
 const StudentSearch = ({
   currentDirectory,
@@ -6,7 +7,6 @@ const StudentSearch = ({
   showingRightPanel,
   currentFile,
   setCurrentFile,
-  handleDownload,
   setPinSelected,
   pinSelected,
   setFiles,
@@ -33,7 +33,10 @@ const StudentSearch = ({
   const handleEmptyTrash = () => {
     // run confirm message first
 
-    // send a request to backend to purge trashbin
+    // send a request to backend to empty trashbin
+
+    exploreData.size -= trashItems.size;
+    trashItems.size = 0;
 
     while (trashItems.items.length > 0) {
       trashItems.items.pop();
@@ -237,7 +240,7 @@ const StudentSearch = ({
               className={
                 selected === "saved" ? "selected" : "selection-content"
               }
-              onClick={() => handleDownload()}
+              onClick={() => downloadFile(currentFile)}
             >
               {/* download*/}
               <svg

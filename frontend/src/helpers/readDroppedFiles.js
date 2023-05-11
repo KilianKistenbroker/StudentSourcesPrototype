@@ -33,6 +33,7 @@ const readEntries = async (entry, parent, path) => {
             nameAndType[nameAndType.length - 1]
           )
         ) {
+          // UPLOAD FILE TO S3 BUCKET HERE AND GET UNIQUE KEY FROM BACKEND
           dataUrl = await readFileContent(file);
         }
 

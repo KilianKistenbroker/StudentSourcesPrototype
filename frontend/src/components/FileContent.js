@@ -139,6 +139,19 @@ const FileContent = ({
     }
   }, [currentFile]);
 
+  const handlePageManager = (num) => {
+    // setLoadingPDF(true);
+    const temp = pdfController.currentPage + num;
+    if (temp > pdfController.pageLimit || temp < 1) {
+      return;
+    } else {
+      setPdfController({
+        currentPage: temp,
+        pageLimit: pdfController.pageLimit,
+      });
+    }
+  };
+
   const getYoutubeVideoId = (url) => {
     const regex =
       /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/;
@@ -201,26 +214,74 @@ const FileContent = ({
             onChange={(e) => setTextURL(e.target.value)}
           />
         ) : "pdf" === currentFile.type ? (
-          <Document
-            file={currentFile.dataUrl}
-            onLoadSuccess={({ numPages }) => {
-              console.log(`PDF loaded with ${numPages} pages.`);
-              setNumPages(numPages);
-              setPdfController({
-                currentPage: 1,
-                pageLimit: numPages,
-              });
-            }}
-          >
-            <div className="pdfPlaceholder"></div>
-            <Page
-              // this fixes flicker but is no longer supported and may be removed
-              loading={""}
-              renderMode="svg"
-              pageNumber={pdfController.currentPage}
-              scale={scale.render}
-            />
-          </Document>
+          <div>
+            {/* pdf controller */}
+            <div
+              className={
+                windowDimension.winWidth > 1200
+                  ? "pdf-controller max-margin"
+                  : "pdf-controller min-margin"
+              }
+              style={
+                windowDimension.winWidth < 800 ||
+                (!showingRightPanel && !showingLeftPanel)
+                  ? { margin: "0px" }
+                  : windowDimension.winWidth > 800 && !showingRightPanel
+                  ? { marginRight: "0" }
+                  : windowDimension.winWidth > 800 && !showingLeftPanel
+                  ? { marginLeft: "0" }
+                  : {}
+              }
+            >
+              <div
+                style={{ float: "left" }}
+                onClick={() => handlePageManager(-1)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="pdf-button"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                </svg>
+              </div>
+              <div
+                style={{ float: "right" }}
+                onClick={() => handlePageManager(1)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  className="pdf-button"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+              </div>
+            </div>
+
+            <Document
+              file={currentFile.dataUrl}
+              onLoadSuccess={({ numPages }) => {
+                console.log(`PDF loaded with ${numPages} pages.`);
+                setNumPages(numPages);
+                setPdfController({
+                  currentPage: 1,
+                  pageLimit: numPages,
+                });
+              }}
+            >
+              <div className="pdfPlaceholder"></div>
+              <Page
+                // this fixes flicker but is no longer supported and may be removed
+                loading={""}
+                renderMode="svg"
+                pageNumber={pdfController.currentPage}
+                scale={scale.render}
+              />
+            </Document>
+          </div>
         ) : "mp4" === currentFile.type || "mov" === currentFile.type ? (
           <video
             src={videoURL}
@@ -274,7 +335,7 @@ const FileContent = ({
         </div>
       )} */}
 
-      {/* <TinyFooter
+      <TinyFooter
         windowDimension={windowDimension}
         showingRightPanel={showingRightPanel}
         owner={owner}
@@ -285,7 +346,7 @@ const FileContent = ({
         setMessage={setMessage}
         showingLeftPanel={showingLeftPanel}
         // setLoadingPDF={setLoadingPDF}
-      /> */}
+      />
     </div>
   );
 };

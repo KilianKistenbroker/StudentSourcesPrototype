@@ -11,9 +11,13 @@ import { ReactComponent as MP4 } from "../logos/icons/mp4.svg";
 import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
 import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import readDroppedFiles from "../helpers/readDroppedFiles";
 import handleDrop from "../helpers/handleDrop";
 import handleDragOver from "../helpers/handleDrag";
+import downloadZip from "../helpers/downloadZip";
+import downloadFile from "../helpers/downloadFile";
 
 const CurrentDirectory = ({
   currentDirectory,
@@ -35,6 +39,14 @@ const CurrentDirectory = ({
 
   // this will be set to the index of loadData that 'more options' is attached to
   const [moreOptions, setMoreOptions] = useState(-1);
+  const [validInput, setValidInput] = useState(false);
+  const [input, setInput] = useState("");
+  const [showInput, setShowInput] = useState({
+    index: -1,
+    visible: false,
+    type: "",
+  });
+  const restrictedChars = /[{}|"%~#<>]/;
 
   const [dragOver, setDragOver] = useState(false);
   const [moveEffect, setMoveEffect] = useState(false);
@@ -50,6 +62,65 @@ const CurrentDirectory = ({
     }
     setPinnedItems(temp);
   }, [currentDirectory]);
+
+  useEffect(() => {
+    if (showInput.type === "Folder") {
+      setValidInput(input.length > 0 && !restrictedChars.test(input));
+    } else {
+      try {
+        if (!restrictedChars.test(input)) {
+          setValidInput(true);
+        } else {
+          setValidInput(false);
+        }
+      } catch (err) {}
+    }
+  }, [input]);
+
+  // updates all the pathnames for the children
+  function updatePathname(node, parentPath) {
+    node.pathname = parentPath + "/" + node.name;
+    node.items.forEach((child) => {
+      updatePathname(child, node.pathname);
+    });
+  }
+
+  const handleDownload = (loadData) => {
+    if (loadData.type === "Folder") {
+      downloadZip(loadData);
+    } else {
+      /* send request instead of doing this, 
+      only call this if i already have the data 
+      on the frontend */
+      downloadFile(loadData);
+    }
+  };
+
+  const handleRename = (e, loadData) => {
+    if (e.keyCode === 13 && e.target.value && validInput) {
+      const adjustedInput = input.trim();
+      loadData.name = adjustedInput;
+
+      updatePathname(loadData, currentDirectory.pathname);
+      handleSetInputFalse();
+      console.log(showInput.index);
+    }
+  };
+
+  const initializeInput = (loadData, index) => {
+    setInput(loadData.name);
+    setShowInput({
+      index: index,
+      visible: true,
+      type: loadData.type,
+    });
+  };
+
+  const handleSetInputFalse = () => {
+    setShowInput({ index: -1, type: "", visible: false });
+    setValidInput(false);
+    setInput("");
+  };
 
   const handleSetFocus = (index) => {
     // console.log(state);
@@ -171,10 +242,11 @@ const CurrentDirectory = ({
                 : { width: "100%", maxWidth: "300px", minWidth: "100px" }
             }
             onClick={
-              loadData.type === "Folder"
+              loadData.type === "Folder" && showInput.index !== index
                 ? () => setCurrentDirectory(explorerData, loadData.pathname, -1)
-                : // change below func to display file contents
-                  () => setCurrentFile(loadData)
+                : showInput.index !== index
+                ? () => setCurrentFile(loadData)
+                : () => {}
             }
           >
             {loadData.type === "Folder" ? (
@@ -208,17 +280,40 @@ const CurrentDirectory = ({
             )}
 
             {/* padding is used to center. temp solution */}
-            <div
-              className=""
-              style={{
-                paddingTop: "10px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                userSelect: "none",
-              }}
-            >
-              {loadData.name}
-            </div>
+            {showInput.visible && showInput.index === index ? (
+              <div className="inputContainer">
+                <input
+                  style={{ fontSize: "14px" }}
+                  type="text"
+                  onKeyDown={(e) => handleRename(e, loadData)}
+                  onBlur={() => handleSetInputFalse()}
+                  className="inputContainer__input-2"
+                  value={input}
+                  placeholder={loadData.type !== "Folder" ? "example.txt" : ""}
+                  onChange={(e) => setInput(e.target.value)}
+                  autoFocus
+                />
+                {validInput ? (
+                  <div className="inputValid-2">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </div>
+                ) : (
+                  <div className="inputValid-2"></div>
+                )}
+              </div>
+            ) : (
+              <div
+                className=""
+                style={{
+                  paddingTop: "10px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  userSelect: "none",
+                }}
+              >
+                {loadData.name}
+              </div>
+            )}
           </div>
           {/* pinned icon */}
           <div></div>
@@ -331,9 +426,11 @@ const CurrentDirectory = ({
                         className="cursor-enabled"
                         onTouchEnd={(e) => {
                           e.preventDefault();
+                          handleDownload(loadData);
                           setMoreOptions(-1);
                         }}
                         onClick={() => {
+                          handleDownload(loadData);
                           setMoreOptions(-1);
                         }}
                       >
@@ -343,10 +440,10 @@ const CurrentDirectory = ({
                         className="cursor-enabled"
                         onTouchEnd={(e) => {
                           e.preventDefault();
-                          setMoreOptions(-1);
+                          initializeInput(loadData, index);
                         }}
                         onClick={() => {
-                          setMoreOptions(-1);
+                          initializeInput(loadData, index);
                         }}
                       >
                         Rename
@@ -357,9 +454,17 @@ const CurrentDirectory = ({
                           className="cursor-enabled"
                           onTouchEnd={(e) => {
                             e.preventDefault();
+                            setTempFile({
+                              state: "delete",
+                              content: loadData,
+                            });
                             setMoreOptions(-1);
                           }}
                           onClick={() => {
+                            setTempFile({
+                              state: "delete",
+                              content: loadData,
+                            });
                             setMoreOptions(-1);
                           }}
                         >

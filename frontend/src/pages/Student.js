@@ -18,6 +18,7 @@ import Window from "../components/Window";
 import Trash from "../components/Trash";
 import TinyFooter from "../components/TinyFooter";
 import downloadZip from "../helpers/downloadZip";
+import downloadFile from "../helpers/downloadFile";
 
 const Student = ({
   data,
@@ -47,7 +48,6 @@ const Student = ({
   const [showTrash, setShowTrash] = useState(false);
 
   const [pinSelected, setPinSelected] = useState(false);
-  // const [format, setFormat] = useState("list");
   const [textURL, setTextURL] = useState("");
 
   const [notesData, setNotesData] = useState("");
@@ -124,6 +124,14 @@ const Student = ({
     return newPathString;
   }
 
+  useEffect(() => {
+    if (tempFile.state && tempFile.state === "restore")
+      handleMoveFile(currentDirectory.pathname);
+    else if (tempFile.state && tempFile.state === "delete") {
+      handleMoveFile("Home/~Trash");
+    }
+  }, [tempFile.state]);
+
   const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
     if (parsingArr.length === 0) {
@@ -159,6 +167,11 @@ const Student = ({
     ) {
       // prompt skip or replace
     } else {
+      // set cur dir to home directory if current directory was  moved to trash
+      if (pathDest === "Home/~Trash" && currentDirectory === tempFile.content) {
+        setCurrentDirectory(explorerData);
+      }
+
       const tempRef2 = parseTree(explorerData, pathDest, -1);
 
       // --------------  insert moved file into destination -------------- //
@@ -337,51 +350,6 @@ const Student = ({
     setCurrentDirectory(temp);
   }
 
-  const handleDownload = () => {
-    if (currentFile.type === "txt") {
-      const updatedContent = textURL;
-      const blob = new Blob([updatedContent], {
-        type: "text/plain;charset=utf-8",
-      });
-
-      saveAs(blob, currentFile.name);
-    } else if (currentFile.type === "url") {
-      const fileURL = currentFile.dataUrl;
-      const fileURLParts = fileURL.split(",");
-      const byteString = window.atob(fileURLParts[1]);
-
-      console.log(byteString);
-
-      const urlFileContent = `[InternetShortcut]\n${byteString}\n`;
-      const blob = new Blob([urlFileContent], {
-        type: "application/internet-shortcut",
-      });
-
-      const fileName = currentFile.name.endsWith(".url")
-        ? currentFile.name
-        : `${currentFile.name}.url`;
-
-      saveAs(blob, fileName);
-    } else if (
-      [["jpeg", "jpg", "gif", "png", "pdf"].includes(currentFile.type)]
-    ) {
-      console.log(currentFile);
-      const imgURL = currentFile.dataUrl;
-      const imgDataUrlParts = imgURL.split(",");
-      const byteString = window.atob(imgDataUrlParts[1]);
-      const mimeString = imgDataUrlParts[0].split(":")[1].split(";")[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      const blob = new Blob([ab], { type: mimeString });
-      saveAs(blob, currentFile.name);
-    }
-  };
-
   function formatDate(date) {
     const day = date.getDate().toString().padStart(2, "0");
     const monthIndex = date.getMonth();
@@ -457,7 +425,6 @@ const Student = ({
         showingRightPanel={showingRightPanel}
         currentFile={currentFile}
         setCurrentFile={setCurrentFile}
-        handleDownload={handleDownload}
         setPinSelected={setPinSelected}
         pinSelected={pinSelected}
         setFiles={setFiles}
@@ -593,13 +560,13 @@ const Student = ({
                       onTouchEnd={(e) => {
                         e.preventDefault();
                         currentFile
-                          ? handleDownload()
+                          ? downloadFile(currentFile)
                           : downloadZip(currentDirectory);
                         setMiniPanel("");
                       }}
                       onClick={() => {
                         currentFile
-                          ? handleDownload()
+                          ? downloadFile(currentFile)
                           : downloadZip(currentDirectory);
                         setMiniPanel("");
                       }}

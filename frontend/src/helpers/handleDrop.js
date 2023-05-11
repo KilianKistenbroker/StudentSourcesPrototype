@@ -46,6 +46,17 @@ const handleDrop = async (
   } else {
     const objArr = await readDroppedFiles(e, node);
 
+    if (objArr === -1) {
+      console.log("exceeded storage limit");
+      // set failed in main message
+      setLoading(false);
+      setMessage({
+        title: "Uh-oh!",
+        body: "Looks like this upload request exceeds the available storage space on this account. Try deleting files from trash bin to free up space.",
+      });
+      return;
+    }
+
     // --- this will update and sort global currDir --- //
 
     // check if size meets storage limit.

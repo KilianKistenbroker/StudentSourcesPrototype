@@ -7,9 +7,9 @@ const TinyFooter = ({
   showingRightPanel,
   owner,
   data,
-  // pdfController,
+  pdfController,
   currentFile,
-  // setPdfController,
+  setPdfController,
   // message,
   setMessage,
   showingLeftPanel,
@@ -23,18 +23,18 @@ const TinyFooter = ({
   setSplashMsg,
   message,
 }) => {
-  // const handlePageManager = (num) => {
-  //   // setLoadingPDF(true);
-  //   const temp = pdfController.currentPage + num;
-  //   if (temp > pdfController.pageLimit || temp < 1) {
-  //     return;
-  //   } else {
-  //     setPdfController({
-  //       currentPage: temp,
-  //       pageLimit: pdfController.pageLimit,
-  //     });
-  //   }
-  // };
+  const handlePageManager = (num) => {
+    // setLoadingPDF(true);
+    const temp = pdfController.currentPage + num;
+    if (temp > pdfController.pageLimit || temp < 1) {
+      return;
+    } else {
+      setPdfController({
+        currentPage: temp,
+        pageLimit: pdfController.pageLimit,
+      });
+    }
+  };
 
   const [dragOver, setDragOver] = useState(false);
   const [moveEffect, setMoveEffect] = useState(false);
@@ -63,7 +63,6 @@ const TinyFooter = ({
           : {}
       }
     >
-      {/* trashbin */}
       {owner.user === data.user && !showTrash ? (
         <svg
           onDrop={(e) =>

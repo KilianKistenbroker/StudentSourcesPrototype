@@ -24,7 +24,12 @@ const useTreeTraversal = () => {
       const regex = new RegExp("/", "g");
       const adjustedForPathname = name.replace(regex, "%");
 
+      // temporary placement
+      const time = new Date().getTime();
+      console.log(time);
+
       currentDirectory.items.push({
+        id: time, // temporary
         pathname: currentDirectory.pathname + "/" + adjustedForPathname,
         name,
         type,

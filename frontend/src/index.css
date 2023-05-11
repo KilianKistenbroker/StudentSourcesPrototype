@@ -1555,6 +1555,7 @@ transform: translate(0, 75px);
     padding-left: 67.5px;
   }
   
+  
   .inputContainer__input {
     padding: 5px;
     display: flex;
@@ -1564,7 +1565,7 @@ transform: translate(0, 75px);
     align-items: center;
     justify-content: space-between;
     cursor: text;
-    height: 32px;
+    height: 40px;
     width: 100%;
     /* margin-right: 10px; */
     /* outline: none; */
@@ -1574,13 +1575,40 @@ transform: translate(0, 75px);
     /* border-top: 1px solid lightgray; */
     border-bottom: 1px solid #e0e0e0;
     font: 15px system-ui;
-    height: 32px;
+    height: 40px;
     width: 50px;
     background-color: white;
     text-align: center;
-    padding-top: 7px;
+    padding-top: 10px;
     color: limegreen;
     /* background-color: #ededed; */
+    font-size: bolder;
+    transition: .1s;
+  }
+
+  /* copied from above */
+    .inputContainer__input-2 {
+    padding: 5px;
+    display: flex;
+    border: 2px solid #e0e0e0;
+    border-right: 0px solid lightgray;
+    align-items: center;
+    justify-content: space-between;
+    cursor: text;
+    height: 45px;
+    width: 100%;
+    }
+ /* copied from above */
+  .inputValid-2 {
+    border: 2px solid #e0e0e0;
+    border-left: 0px solid lightgray;
+    font: 15px system-ui;
+    height: 45px;
+    width: 50px;
+    background-color: white;
+    text-align: center;
+    padding-top: 12.5px;
+    color: limegreen;
     font-size: bolder;
     transition: .1s;
   }
@@ -1633,6 +1661,32 @@ transform: translate(0, 75px);
   }
 
   /* ---------- for displaying pdf's --------  */
+  .pdf-controller {
+    position: fixed;
+    z-index: 2;
+    /* background-color: #adadad; */
+    /* width: 100%; */
+    min-width: 100px;
+    /* justify-self: left; */
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    padding: 10px;
+    padding-top: 20px;
+  }
+
+  .pdf-button {
+    height: 100px;
+    width: 40px;
+    /* border: 1px solid #3d3d3d; */
+    background-color: #202020;
+    color: #f6f6f6;
+    border-radius: 2px;
+  }
+  .pdf-button:hover {
+    cursor: pointer;
+    background-color: #3d3d3d;
+  }
 
  .react-pdf__Page__canvas {
     /* width: 100% !important;

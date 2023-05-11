@@ -35,18 +35,18 @@ const Trash = ({
   const [moveEffect, setMoveEffect] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (tempFile.state && tempFile.state === "restore")
-      handleMoveFile(currentDirectory.pathname);
-  }, [tempFile.state]);
-
   const deleteThisItem = (loadData) => {
+    // updated size of home directory
+    explorerData.size -= loadData.size;
+
     let tempTrash = {
       id: -1,
       name: "~Trash",
       pathname: "Home/~Trash",
       type: "Folder",
-      size: 0,
+
+      // updated size of trashbin
+      size: trashItems.size - loadData.size,
       isPinned: false,
       visibility: "Private",
       permissions: "Only you have access",

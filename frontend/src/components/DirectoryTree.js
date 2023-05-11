@@ -39,7 +39,7 @@ const DirectoryTree = ({
   const [expand, setExpand] = useState(false);
   const [specialExpand, setSpecialExpand] = useState(false);
   const [input, setInput] = useState("");
-  const [validInput, setValidInput] = useState(true);
+  const [validInput, setValidInput] = useState(false);
   const delimiters = /[./:]+/;
   const restrictedChars = /[{}|"%~#<>]/;
   const [dragOver, setDragOver] = useState(false);
@@ -84,16 +84,14 @@ const DirectoryTree = ({
             body: null,
           });
           const res = input.split(delimiters);
-          // if (res.length !== 2 && !res.includes("com")) {
-          //   setValidInput(false);
-          // } else {
+          console.log(res);
           if (res.includes("com")) {
             setValidInput(true);
-          } else if (["txt"].includes(res[res.length - 1])) {
-            setValidInput(["txt"].includes(res[res.length - 1]));
+          } else {
+            setValidInput("txt" === res[res.length - 1]);
           }
-          // }
         } else {
+          setValidInput(false);
           setMessage({
             title: "Uh-oh!",
             body: 'Filenames cannot contain these characters: {}|"%~#<>',
@@ -183,6 +181,7 @@ const DirectoryTree = ({
           if (temp.includes("https")) handleInsertNode(e.target.value, "url");
           else handleInsertNode("https://" + e.target.value, "url");
         } else {
+          console.log(temp);
           handleInsertNode(e.target.value, temp[temp.length - 1]);
         }
       } else {
