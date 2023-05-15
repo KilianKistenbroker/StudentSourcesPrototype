@@ -60,6 +60,11 @@ public class JsonController {
                 .body(resource);
     }
 
+    @DeleteMapping("/deleteJson/{key}")
+    public ResponseEntity<String> deleteJson(@PathVariable String key) {
+        return new ResponseEntity<>(service.deleteJson(key), HttpStatus.OK);
+    }
+
     private void traverse(JsonNode node) {
         if (node.isObject()) {
             ObjectNode objectNode = (ObjectNode) node;

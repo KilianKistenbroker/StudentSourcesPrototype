@@ -117,6 +117,7 @@ const Window = ({
             data={data}
             splashMsg={splashMsg}
             setSplashMsg={setSplashMsg}
+            explorerData={explorerData}
           />
         </div>
       </div>

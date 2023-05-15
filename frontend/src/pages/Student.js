@@ -48,6 +48,7 @@ const Student = ({
   const [loadingBar, setLoadingBar] = useState({
     filename: null,
     progress: null,
+    pathname: null,
   });
 
   const [pinSelected, setPinSelected] = useState(false);
@@ -170,6 +171,19 @@ const Student = ({
     ) {
       // prompt skip or replace
     } else {
+      // return if tempfile is frozen for uploading
+      if (
+        loadingBar.pathname &&
+        pathDest === "Home/~Trash" &&
+        loadingBar.pathname.includes(tempFile.content.pathname)
+      ) {
+        setMessage({
+          title: "Uh-oh!",
+          body: "Files are currently being uploaded inside this folder.",
+        });
+        return;
+      }
+
       // set cur dir to home directory if current directory was  moved to trash
       if (
         !showTrash &&

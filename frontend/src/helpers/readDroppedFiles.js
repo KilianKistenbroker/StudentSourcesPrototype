@@ -72,7 +72,12 @@ const readEntries = async (
           console.log("received key:");
           console.log(key);
 
-          const res = await uploadFile(key.data, file, setLoadingBar);
+          const res = await uploadFile(
+            key.data,
+            file,
+            setLoadingBar,
+            parent.pathname
+          );
 
           const newItem = {
             id: key.data, // <-- REPLACE WITH DB GENERATED ID
@@ -89,8 +94,8 @@ const readEntries = async (
           };
           parent.items.push(newItem);
 
-          // Add the item's size to the parent folder's size
-          // parent.size += newItem.size;
+          // sort parent node
+          sortItem(parent);
 
           // update all the parents of newly inserted node
           let parsingArr = parent.pathname.split("/");
@@ -138,6 +143,9 @@ const readEntries = async (
 
       parent.items.push(newFolder);
 
+      // sort parent node
+      sortItem(parent);
+
       const reader = entry.createReader();
 
       const readAllEntries = async () => {
@@ -174,6 +182,25 @@ const readEntries = async (
       return;
     }
   }
+};
+
+const sortItem = (node) => {
+  node.items.sort((a, b) => {
+    let fa = a.name.toLowerCase(),
+      fb = b.name.toLowerCase();
+
+    return fa.localeCompare(fb, undefined, { numeric: true });
+  });
+
+  // this may never be needed here ...
+  let folders = [];
+  let files = [];
+  for (let i = 0; i < node.items.length; i++) {
+    if (node.items[i].type === "Folder") folders.push(node.items[i]);
+    else files.push(node.items[i]);
+  }
+  const updateitems = folders.concat(files);
+  node.items = updateitems;
 };
 
 const updateParentSize = (node, parsingArr, size) => {
@@ -253,6 +280,7 @@ const readDroppedFiles = async (
   setLoadingBar({
     filename: null,
     progress: null,
+    pathname: null,
   });
   setSplashMsg({ message: "Finished uploading!", isShowing: true });
 

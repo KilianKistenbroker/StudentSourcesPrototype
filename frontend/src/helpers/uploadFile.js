@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 
-const uploadFile = async (key, file, setLoadingBar) => {
+const uploadFile = async (key, file, setLoadingBar, pathname) => {
   const type = file.name.split(".").pop();
   const adjustedKey = key + "." + type;
   const formData = new FormData();
@@ -16,6 +16,7 @@ const uploadFile = async (key, file, setLoadingBar) => {
         progress: Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         ),
+        pathname: pathname,
       });
     },
   };

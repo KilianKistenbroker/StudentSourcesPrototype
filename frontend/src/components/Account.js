@@ -3,8 +3,9 @@ import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import parseAndDelete from "../helpers/deleteFiles";
 
-const Account = ({ data, splashMsg, setSplashMsg }) => {
+const Account = ({ data, splashMsg, setSplashMsg, explorerData }) => {
   const navigate = useNavigate();
 
   const user_regex_l = /\S{4,24}/;
@@ -152,7 +153,11 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.delete(`/user/${data.id}`);
+      const res = await axios.delete(`/user/${data.id}`); // delete user from db
+      parseAndDelete(explorerData); // delete user files from bucket and db
+
+      const adjustedKey = data.id + ".json";
+      const res1 = await axios.delete(`/deleteJson/${adjustedKey}`); // delete user home directory json from bucket
 
       // data.isLoggedIn = false;
       data.id = -1;
@@ -161,7 +166,7 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
 
       // display splash here
       setSplashMsg({
-        message: "Your account was successfully deleted.",
+        message: "Your account was deleted.",
         isShowing: true,
       });
     } catch (err) {
