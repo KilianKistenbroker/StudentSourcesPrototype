@@ -35,6 +35,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
   const [filter, setFilter] = useState("");
 
   const [explorerData, setExplorerData] = useState(null);
+  const [currentDirectory, setCurrentDirectory] = useState(null);
   const [owner, setOwner] = useState(null);
 
   // -------- call essential getters here on re-render ----------
@@ -55,6 +56,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
     // fetch users folder from efs
     setOwner(user);
     setExplorerData(dummyFolder);
+    setCurrentDirectory(dummyFolder);
   };
 
   const getFriends = async (e) => {
@@ -93,7 +95,6 @@ and also call request to update lists */
     if (str2.length === 0) {
       const res = await axios.get("/users");
       setLoadUsers(res.data);
-      console.log(res.data);
 
       // fetch query results from backend
     } else {
@@ -209,7 +210,6 @@ and also call request to update lists */
         fk_receiver_id: reciever_id,
       });
 
-      console.log(response);
       if (response) {
         // add user to sentList for quicker/easier referencing
         let tempList = sentList;
@@ -274,6 +274,8 @@ and also call request to update lists */
         setExplorerData={setExplorerData}
         message={message}
         setMessage={setMessage}
+        currentDirectory={currentDirectory}
+        setCurrentDirectory={setCurrentDirectory}
       />
     );
   }

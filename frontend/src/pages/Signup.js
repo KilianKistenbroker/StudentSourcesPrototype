@@ -4,6 +4,8 @@ import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../api/axios";
 import Footer from "../components/Footer";
+import uploadJson from "../helpers/uploadJson";
+import initTrash from "../helpers/initializeTrash";
 
 const user_regex_l = /\S{4,24}/;
 
@@ -20,7 +22,8 @@ const Signup = ({
   windowDimension,
   setSplashMsg,
   setExplorerData,
-  setLoading,
+  setTrash,
+  setCurrentDirectory,
 }) => {
   const userRef = useRef();
   const errRef = useRef();
@@ -129,19 +132,6 @@ const Signup = ({
       return;
     }
 
-    // double check here in case they overwrote my html
-    // if (
-    //   !validFirstName ||
-    //   !validLastName ||
-    //   !validEmail ||
-    //   !validName ||
-    //   !validPassword ||
-    //   !checkbox
-    // ) {
-    //   setErrMsg("Invalid entry.");
-    //   return;
-    // }
-
     try {
       const response = await axios.post(user_endpoint, {
         email: convertEmail,
@@ -165,8 +155,6 @@ const Signup = ({
         setUser("");
         setPassword("");
 
-        console.log(response);
-
         data.user = user;
         data.firstName = firstName;
         data.lastName = lastName;
@@ -174,15 +162,13 @@ const Signup = ({
         data.password = password;
         data.id = response.data;
 
-        // data.isLoggedIn = true;
-
-        console.log(data);
-
         // send request to create root folder in db
-        const res = 1;
+        const res = await axios.post(`/postFile/${data.id}/Home`);
+        console.log("returned from db");
+        console.log(res.data);
 
-        let tempExplorer = {
-          id: res,
+        const tempExplorer = {
+          id: res.data,
           name: "Home",
           pathname: "Home",
           type: "Folder",
@@ -191,6 +177,7 @@ const Signup = ({
           visibility: "Public",
           permissions: "Can view only",
           dataUrl: "",
+          notes: "",
           items: [
             {
               id: -1, // i don't think an id needs to be created here
@@ -202,12 +189,27 @@ const Signup = ({
               visibility: "Private",
               permissions: "Only you have access",
               dataUrl: "",
+              notes: "",
               items: [],
             },
           ],
         };
+        const ret = uploadJson(`${data.id}`, tempExplorer);
+        if (ret === -1) {
+          setErrMsg("Could not create new account.");
+          return;
+        }
+
         setExplorerData(tempExplorer);
-        setLoading(false);
+        const res2 = initTrash(tempExplorer, setTrash);
+        if (res2 === -1) {
+          setErrMsg("Failed to initialize trashbin");
+          return;
+        }
+        setCurrentDirectory(tempExplorer);
+
+        // retreiveJSON(setExplorerData);
+        // setLoading(false);
 
         localStorage.setItem("data", JSON.stringify(data));
         window.scrollTo(0, 0);

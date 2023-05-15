@@ -1,9 +1,10 @@
 package com.example.springbackendv2.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import com.example.springbackendv2.config.StorageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,39 +13,40 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class StorageService {
 
-//    @Value("${aws.s3.bucket}")
-//    private String bucketName;
-//
-//    @Autowired
-//    private StorageConfig s3Client;
+    @Value("${application.bucket1.name1}")
+    private String fileBucket;
 
-    @Value("${application.bucket.name}")
-    private String bucketName;
+    @Value("${application.bucket2.name2}")
+    private String JsonBucket;
 
     @Autowired
-    private AmazonS3 s3Client;
+    private AmazonS3 s3Client1;
 
-    private static final String trashFolder = "trash/";
+    @Autowired
+    private AmazonS3 s3Client2;
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String key) {
         File fileObject = convertMultiPartFileToFile(file);
-
-//        this filename is adjusted to ensure uniqueness
-        String filename = System.currentTimeMillis() + "-" + file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucketName, filename, fileObject));
+        s3Client1.putObject(new PutObjectRequest(fileBucket, key, fileObject));
         fileObject.delete();
 
-        return "File uploaded: " + filename;
+        return "File uploaded: " + file.getOriginalFilename() + " as " + key;
+    }
+
+    public String uploadJson(MultipartFile file, String key) {
+        File fileObject = convertMultiPartFileToFile(file);
+        s3Client2.putObject(new PutObjectRequest(JsonBucket, key, fileObject));
+        fileObject.delete();
+
+        return "File uploaded: " + file.getOriginalFilename() + " as " + key;
     }
 
     public byte[] downloadFile(String fileName) {
-        S3Object s3Object = s3Client.getObject(bucketName, fileName);
+        S3Object s3Object = s3Client1.getObject(fileBucket, fileName);
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
 
         try {
@@ -55,52 +57,26 @@ public class StorageService {
         }
     }
 
-    public void deleteFile(String fileName) {
-        //designating a path of the targeted file
-        String trashedFile = trashFolder+fileName;
+    public byte[] downloadJson(String fileName) {
+        S3Object s3Object = s3Client2.getObject(JsonBucket, fileName);
+        S3ObjectInputStream inputStream = s3Object.getObjectContent();
 
-        //creating a copy of the original file and placing in the trash folder
-        CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName, fileName, bucketName, trashedFile);
-        s3Client.copyObject(copyObjectRequest);
-
-        //deleting the original file
-        s3Client.deleteObject(bucketName, fileName);
-        //return fileName + " removed";
-    }
-
-    public void emptyTrash(){
-        //Making a list of all the files in the trash bin
-        ObjectListing listings = s3Client.listObjects(bucketName, trashFolder);
-        List<S3ObjectSummary> summaries = listings.getObjectSummaries();
-
-        //Selecting each of the files that are to be purged
-        List<String> deletedFiles = new ArrayList<>();
-        for (S3ObjectSummary summary : summaries) {
-            deletedFiles.add(summary.getKey());
-        }
-
-        //Deleting all files that have been selected
-        if(!deletedFiles.isEmpty()){
-            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName).withKeys(deletedFiles.toArray(new String[0]));
-            s3Client.deleteObjects(deleteObjectsRequest);
+        try {
+            byte[] content = IOUtils.toByteArray(inputStream);
+            return content;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-//    This will get the root folder of the user... I think.
+    public String deleteFile(String fileName) {
+        s3Client1.deleteObject(fileBucket, fileName);
+        return fileName + " removed";
+    }
 
-    public ArrayList<String> getRoot(String username) {
-        ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
-                .withBucketName(bucketName)
-                .withPrefix(username).withDelimiter("");
-
-        ObjectListing objects = s3Client.listObjects(listObjectsRequest);
-
-        List<S3ObjectSummary> summaries = objects.getObjectSummaries();
-        ArrayList<String> obj_keys = new ArrayList<>();
-        for (S3ObjectSummary objectSummary : summaries){
-            obj_keys.add(objectSummary.getKey());
-        }
-        return obj_keys;
+    public String deleteJson(String fileName) {
+        s3Client2.deleteObject(JsonBucket, fileName);
+        return fileName + " removed";
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) {
@@ -113,4 +89,5 @@ public class StorageService {
 
         return convertedFile;
     }
+
 }

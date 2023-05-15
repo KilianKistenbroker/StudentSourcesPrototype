@@ -13,11 +13,12 @@ import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import readDroppedFiles from "../helpers/readDroppedFiles";
 import handleDrop from "../helpers/handleDrop";
 import handleDragOver from "../helpers/handleDrag";
 import downloadZip from "../helpers/downloadZip";
 import downloadFile from "../helpers/downloadFile";
+import uploadJson from "../helpers/uploadJson";
+import axios from "../api/axios";
 
 const CurrentDirectory = ({
   currentDirectory,
@@ -60,6 +61,7 @@ const CurrentDirectory = ({
         temp.push(currentDirectory.items[i].name);
       }
     }
+
     setPinnedItems(temp);
   }, [currentDirectory]);
 
@@ -89,9 +91,6 @@ const CurrentDirectory = ({
     if (loadData.type === "Folder") {
       downloadZip(loadData);
     } else {
-      /* send request instead of doing this, 
-      only call this if i already have the data 
-      on the frontend */
       downloadFile(loadData);
     }
   };
@@ -103,7 +102,23 @@ const CurrentDirectory = ({
 
       updatePathname(loadData, currentDirectory.pathname);
       handleSetInputFalse();
-      console.log(showInput.index);
+
+      // update in db
+      const res = axios.put(`/file/${loadData.id}`, {
+        id: null,
+        fk_owner_id: null,
+        fk_comments_id: null,
+        fk_chatbot_id: null,
+        filename: adjustedInput,
+        visibility: loadData.visibility,
+      });
+
+      // update in bucket
+      const res1 = uploadJson(data.id, explorerData);
+      if (res1 === -1) {
+        console.log("failed to update home directory");
+        setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
+      }
     }
   };
 
@@ -123,14 +138,9 @@ const CurrentDirectory = ({
   };
 
   const handleSetFocus = (index) => {
-    // console.log(state);
     const element = document.getElementById(`${index}`);
 
     setMoreOptions(index);
-
-    console.log(moreOptions);
-    console.log(index);
-
     element.focus({
       preventScroll: true,
     });
@@ -153,7 +163,6 @@ const CurrentDirectory = ({
 
   const setPinned = (loadData) => {
     let index = 0;
-    console.log(loadData.pathname);
     for (let i = 0; i < currentDirectory.items.length; i++) {
       if (currentDirectory.items[i].pathname === loadData.pathname) {
         currentDirectory.items[i].isPinned =
@@ -161,8 +170,6 @@ const CurrentDirectory = ({
         index = i;
       }
     }
-
-    console.log(index);
 
     let temp = JSON.parse(JSON.stringify(pinnedItems));
 
@@ -177,7 +184,12 @@ const CurrentDirectory = ({
       }
     }
 
-    console.log(pinnedItems);
+    console.log(explorerData);
+    const res = uploadJson(data.id, explorerData);
+    if (res === -1) {
+      console.log("failed to update home directory");
+      setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
+    }
   };
 
   // ------------------ pin is not selected ----------------- //
@@ -415,7 +427,6 @@ const CurrentDirectory = ({
                   <button
                     id={`${index}`}
                     className="more-options"
-                    onFocus={() => console.log("focusing")}
                     onBlur={() => {
                       setMoreOptions(-1);
                     }}
@@ -719,7 +730,6 @@ const CurrentDirectory = ({
                   <button
                     id={`${index}`}
                     className="more-options"
-                    onFocus={() => console.log("focusing")}
                     onBlur={() => {
                       setMoreOptions(-1);
                     }}

@@ -115,7 +115,6 @@ export default function Navbar({
   };
 
   const handleSetFocus = (state) => {
-    console.log(state);
     const element = document.getElementById(state);
     if (state == "userpanel") {
       setDisplay("userpanel");
@@ -140,7 +139,6 @@ export default function Navbar({
             <button
               id="userpanel"
               className="user-panel displaying user-account"
-              onFocus={() => console.log("focused user")}
               onBlur={() => setDisplay("")}
             >
               {/* indicate storage limit somewhere here */}
@@ -236,7 +234,6 @@ export default function Navbar({
             <button
               id="notifications"
               className="user-panel displaying notifications"
-              onFocus={() => console.log("focused notifications")}
               onBlur={() => setDisplay("")}
             >
               ~ No new notifications ~

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import readDroppedFiles from "../helpers/readDroppedFiles";
 import handleDrop from "../helpers/handleDrop";
 import handleDragOver from "../helpers/handleDrag";
 
@@ -18,6 +17,7 @@ const DropZone = ({
   setCurrentDirectory,
   data,
   owner,
+  setLoadingBar,
 }) => {
   const [dragOver, setDragOver] = useState(false);
   const [moveEffect, setMoveEffect] = useState(false);
@@ -26,7 +26,6 @@ const DropZone = ({
   // not sure what this is for
   useEffect(() => {
     if (files) {
-      console.log(files);
       handleDrop(
         files,
         currentDirectory,
@@ -39,7 +38,8 @@ const DropZone = ({
         setMessage,
         setSplashMsg,
         data,
-        owner
+        owner,
+        setLoadingBar
       );
       setFiles(null);
     }
@@ -58,9 +58,7 @@ const DropZone = ({
           color: "dimgray",
           transition: ".2s",
         }}
-      >
-        Loading...
-      </div>
+      ></div>
     );
   }
 
@@ -84,7 +82,8 @@ const DropZone = ({
               setMessage,
               setSplashMsg,
               data,
-              owner
+              owner,
+              setLoadingBar
             )
           }
           onDragOver={(e) =>
@@ -143,7 +142,8 @@ const DropZone = ({
               setMessage,
               setSplashMsg,
               data,
-              owner
+              owner,
+              setLoadingBar
             )
           }
           onDragOver={(e) =>

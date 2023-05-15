@@ -22,6 +22,8 @@ const TinyFooter = ({
   explorerData,
   setSplashMsg,
   message,
+  loadingBar,
+  setLoadingBar,
 }) => {
   const handlePageManager = (num) => {
     // setLoadingPDF(true);
@@ -63,6 +65,18 @@ const TinyFooter = ({
           : {}
       }
     >
+      {loadingBar.filename ? (
+        <div className="tiny-loading-bar">
+          Uploading:
+          <br />
+          <b>
+            {loadingBar.filename}: {loadingBar.progress}%
+          </b>
+        </div>
+      ) : (
+        <div className="tiny-loading-bar">Synced</div>
+      )}
+
       {owner.user === data.user && !showTrash ? (
         <svg
           onDrop={(e) =>

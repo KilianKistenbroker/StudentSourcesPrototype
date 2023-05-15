@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 import downloadFile from "../helpers/downloadFile";
+import uploadJson from "../helpers/uploadJson";
+import parseAndDelete from "../helpers/deleteFiles";
 
 const StudentSearch = ({
   currentDirectory,
@@ -30,7 +32,7 @@ const StudentSearch = ({
   const [filter, setFilter] = useState("");
   const inputRef = useRef();
 
-  const handleEmptyTrash = () => {
+  const handleEmptyTrash = async () => {
     // run confirm message first
 
     // send a request to backend to empty trashbin
@@ -38,7 +40,10 @@ const StudentSearch = ({
     exploreData.size -= trashItems.size;
     trashItems.size = 0;
 
-    while (trashItems.items.length > 0) {
+    console.log(trashItems);
+
+    for (let i = trashItems.items.length - 1; i >= 0; i--) {
+      parseAndDelete(trashItems.items[i]);
       trashItems.items.pop();
     }
 
@@ -49,6 +54,19 @@ const StudentSearch = ({
         setTrashItems(tempTrash);
       }
     }
+
+    const ret = uploadJson(`${data.id}`, exploreData);
+    // if (ret === -1) {
+    //   setSplashMsg({
+    //     message: "Upload failed!",
+    //     isShowing: true,
+    //   });
+    // } else {
+    //   setSplashMsg({
+    //     message: "Upload successful!",
+    //     isShowing: true,
+    //   });
+    // }
   };
 
   const handleExit = () => {
@@ -373,9 +391,11 @@ const StudentSearch = ({
               onClick={() => {
                 // handleSort();
                 setMessage({
-                  title: "Select",
-                  body: "This feature shall toggle multi-selection mode for deleting, moving, sharing, downloading in bulk and also sort alphanumerically.",
+                  title: "Save",
+                  body: "This is a temporary save button.",
                 });
+                // TESTING JSON UPLOAD
+                uploadJson(`${data.id}`, exploreData);
               }}
             >
               {/* Select */}

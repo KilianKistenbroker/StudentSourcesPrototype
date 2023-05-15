@@ -10,10 +10,66 @@ import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
 import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
 import { useState } from "react";
+import axios from "../api/axios";
+import uploadJson from "../helpers/uploadJson";
+import { useEffect } from "react";
 
-const VisibilityPermissions = ({ tempFile, setMessage }) => {
+const VisibilityPermissions = ({
+  tempFile,
+  setMessage,
+  data,
+  explorerData,
+  windowDimension,
+}) => {
   const [visibility, setVisibility] = useState(tempFile.content.visibility);
+  const [permissions, setPermissions] = useState(tempFile.content.permissions);
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    // testing changes
+    if (visibility === "Public" || visibility === "Shared-Private") {
+      setPermissions("Can view & download");
+    } else {
+      setPermissions("Only you have access");
+    }
+    console.log(visibility);
+    console.log(permissions);
+  }, [visibility]);
+
+  const handleSetVisibilty = async () => {
+    const oldVisibility = tempFile.content.visibility;
+    const oldPermissions = tempFile.content.permissions;
+
+    try {
+      tempFile.content.visibility = visibility;
+      tempFile.content.permissions = permissions;
+
+      const res = axios.put(`/file/${tempFile.content.id}`, {
+        id: null,
+        fk_owner_id: null,
+        fk_comments_id: null,
+        fk_chatbot_id: null,
+        filename: tempFile.content.name,
+        visibility: visibility,
+      });
+
+      const res1 = uploadJson(data.id, explorerData);
+      if (res1 === -1) {
+        console.log("Failed to save home directory.");
+      }
+    } catch (error) {
+      console.log(error);
+
+      // undo changes
+      tempFile.content.visibility = oldVisibility;
+      tempFile.content.permissions = oldPermissions;
+    }
+
+    setMessage({
+      title: null,
+      body: null,
+    });
+  };
 
   return (
     <div className="visibility-container">
@@ -173,7 +229,14 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
               <b>Note:</b> everyone can access this file.
             </div>
 
-            <div className="visibility-footer-grid">
+            <div
+              className="visibility-footer-grid"
+              style={
+                windowDimension.winWidth < 600
+                  ? { gridTemplateColumns: "repeat(1, auto)" }
+                  : { gridTemplateColumns: "repeat(2, auto)" }
+              }
+            >
               <label>Usernames</label>
               <div></div>
               <form>
@@ -182,6 +245,7 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                     height: "50px",
                     color: "dimgrey",
                     cursor: "default",
+                    marginTop: "10px",
                   }}
                   type="text"
                   readOnly
@@ -193,24 +257,33 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                   textAlign: "center",
                   fontSize: "14px",
                   minWidth: "150px",
+                  minHeight: "50px",
+                  marginTop: "10px",
                 }}
               >
-                <option value="Can view & download">Can view & download</option>
-                <option value="Can view only">Can view only</option>
+                <option
+                  value="Can view & download"
+                  onClick={(e) => {
+                    setPermissions(e.target.value);
+                  }}
+                >
+                  Can view & download
+                </option>
+                <option
+                  value="Can view only"
+                  onClick={(e) => {
+                    setPermissions(e.target.value);
+                  }}
+                >
+                  Can view only
+                </option>
               </select>
-              <div
-                style={{ color: "dimgray", fontSize: "14px", marginTop: "5px" }}
-              ></div>
-              <div></div>
-              <button style={{ marginTop: "39px" }}>Copy URL</button>
+              <button style={{ marginTop: "10px" }}>Copy URL</button>
               <button
-                onClick={() =>
-                  setMessage({
-                    title: null,
-                    body: null,
-                  })
-                }
-                style={{ marginTop: "39px" }}
+                onClick={() => {
+                  handleSetVisibilty();
+                }}
+                style={{ marginTop: "10px" }}
               >
                 Done
               </button>
@@ -226,7 +299,14 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
               <b>Note:</b> only certain users can access this file.
             </div>
 
-            <div className="visibility-footer-grid">
+            <div
+              className="visibility-footer-grid"
+              style={
+                windowDimension.winWidth < 800
+                  ? { gridTemplateColumns: "repeat(1, auto)" }
+                  : { gridTemplateColumns: "repeat(2, auto)" }
+              }
+            >
               <label>Usernames</label>
               <div></div>
               <form>
@@ -234,6 +314,7 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                   style={{
                     height: "50px",
                     color: "dimgrey",
+                    marginTop: "10px",
                   }}
                   type="text"
                   autoFocus={true}
@@ -247,18 +328,28 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                   textAlign: "center",
                   fontSize: "14px",
                   minWidth: "150px",
+                  minHeight: "50px",
+                  marginTop: "10px",
                 }}
               >
-                <option value="Can view & download">Can view & download</option>
-                <option value="Can view only">Can view only</option>
+                <option
+                  value="Can view & download"
+                  onClick={(e) => {
+                    setPermissions(e.target.value);
+                  }}
+                >
+                  Can view & download
+                </option>
+                <option
+                  value="Can view only"
+                  onClick={(e) => {
+                    setPermissions(e.target.value);
+                  }}
+                >
+                  Can view only
+                </option>
               </select>
-              <div
-                style={{ color: "dimgray", fontSize: "14px", marginTop: "5px" }}
-              >
-                <b>Hint:</b> seperate handles with spaces
-              </div>
-              <div></div>
-              <button style={{ marginTop: "20px" }}>Copy URL</button>
+              <button style={{ marginTop: "10px" }}>Copy URL</button>
               <button
                 onClick={() =>
                   setMessage({
@@ -266,10 +357,19 @@ const VisibilityPermissions = ({ tempFile, setMessage }) => {
                     body: null,
                   })
                 }
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "10px" }}
               >
                 Done
               </button>
+              <div
+                style={{
+                  color: "dimgray",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                }}
+              >
+                <b>Hint:</b> seperate handles with spaces
+              </div>
             </div>
           </div>
         )}

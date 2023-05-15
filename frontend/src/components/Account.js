@@ -74,8 +74,6 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("submit was called");
-
     // convert email to lowercase here
     let convertEmail = email.toLowerCase();
     var element;
@@ -112,8 +110,6 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
         user,
       });
 
-      console.log(res);
-
       if (res.data.id === -1) {
         // setErrMsg("Invalid email or username.");
         setSplashMsg({
@@ -132,8 +128,6 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
         data.lastName = lastName;
         data.email = convertEmail;
         data.password = password;
-
-        console.log(data);
 
         localStorage.setItem("data", JSON.stringify(data));
 
@@ -156,7 +150,6 @@ const Account = ({ data, splashMsg, setSplashMsg }) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    console.log("delete was called");
 
     try {
       const res = await axios.delete(`/user/${data.id}`);

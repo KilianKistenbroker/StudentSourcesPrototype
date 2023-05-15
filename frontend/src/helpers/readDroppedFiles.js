@@ -1,8 +1,13 @@
 // -------- adjust later to only store meta data -------- //
 
+import axios from "../api/axios";
+import uploadFile from "./uploadFile";
+import uploadJson from "./uploadJson";
+
 // TEMPORARY ID
 let globalID = 100;
 
+// this will probably only be used when retreiving files from backend
 const readFileContent = async (file) => {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -11,7 +16,17 @@ const readFileContent = async (file) => {
   });
 };
 
-const readEntries = async (entry, parent, path) => {
+const readEntries = async (
+  entry,
+  parent,
+  path,
+  data,
+  explorerData,
+  setLoading,
+  setMessage,
+  setSplashMsg,
+  setLoadingBar
+) => {
   // adjust name to remove '/' this shouldn't be a problem, but just in case
   const regex = new RegExp("/", "g");
   const adjustedForPathname = entry.name.replace(regex, "%");
@@ -25,87 +40,172 @@ const readEntries = async (entry, parent, path) => {
 
     return new Promise(async (resolve) => {
       entry.file(async (file) => {
-        let dataUrl = "";
+        // let dataUrl = "";
 
-        /* IMPORTANT: must replace this will file streaming. */
-        if (
-          ["pdf", "txt", "url", "jpeg", "jpg", "gif", "png"].includes(
-            nameAndType[nameAndType.length - 1]
-          )
-        ) {
-          // UPLOAD FILE TO S3 BUCKET HERE AND GET UNIQUE KEY FROM BACKEND
-          dataUrl = await readFileContent(file);
-        }
-
-        const newItem = {
-          id: globalID, // <-- REPLACE WITH DB GENERATED ID
-          name: nameAndType[0] + "." + nameAndType[nameAndType.length - 1],
-          pathname: currentPath,
-          type: nameAndType[nameAndType.length - 1],
-          size: file.size,
-          isPinned: false,
-          visibility: "Private",
-          permissions: "Only you have access",
-          dataUrl: dataUrl,
-          items: [],
-        };
-        parent.items.push(newItem);
-
-        // Add the item's size to the parent folder's size
-        parent.size += newItem.size;
-        resolve();
-      });
-    });
-  } else if (entry.isDirectory) {
-    const newFolder = {
-      id: globalID, // <-- REPLACE WITH DB GENERATED ID
-      name: entry.name,
-      pathname: currentPath,
-      type: "Folder",
-      size: 0,
-      isPinned: false,
-      visibility: "Private",
-      permissions: "Only you have access",
-      dataUrl: "",
-      items: [],
-    };
-    parent.items.push(newFolder);
-
-    const reader = entry.createReader();
-
-    const readAllEntries = async () => {
-      return new Promise((resolve) => {
-        reader.readEntries(async (entries) => {
-          if (entries.length === 0) {
-            resolve();
+        // /* IMPORTANT: must replace this will file streaming. */
+        // if (
+        //   ["pdf", "txt", "url", "jpeg", "jpg", "gif", "png"].includes(
+        //     nameAndType[nameAndType.length - 1]
+        //   )
+        // ) {
+        //   // UPLOAD FILE TO S3 BUCKET HERE AND GET UNIQUE KEY FROM BACKEND
+        //   dataUrl = await readFileContent(file);
+        // }
+        try {
+          if (explorerData.size + file.size > 1e9) {
+            console.log("exceeded storage limit");
+            // set failed in main message
+            setLoadingBar({
+              filename: null,
+              progress: null,
+            });
+            setLoading(false);
+            setMessage({
+              title: "Uh-oh!",
+              body: "Looks like some files exceed the available storage space on this account. Try deleting files from trash bin to free up space.",
+            });
             return;
           }
 
-          for (let i = 0; i < entries.length; i++) {
-            const e = entries[i];
-            globalID += 1;
-            await readEntries(e, newFolder, currentPath);
-          }
-          await readAllEntries(); // Recursively call readAllEntries()
-          resolve();
-        });
-      });
-    };
+          const key = await axios.post(`/postFile/${data.id}/${entry.name}`);
 
-    return readAllEntries();
+          console.log("received key:");
+          console.log(key);
+
+          const res = await uploadFile(key.data, file, setLoadingBar);
+
+          const newItem = {
+            id: key.data, // <-- REPLACE WITH DB GENERATED ID
+            name: nameAndType[0] + "." + nameAndType[nameAndType.length - 1],
+            pathname: currentPath,
+            type: nameAndType[nameAndType.length - 1],
+            size: file.size,
+            isPinned: false,
+            visibility: "Private",
+            permissions: "Only you have access",
+            dataUrl: "",
+            notes: "",
+            items: [],
+          };
+          parent.items.push(newItem);
+
+          // Add the item's size to the parent folder's size
+          // parent.size += newItem.size;
+
+          // update all the parents of newly inserted node
+          let parsingArr = parent.pathname.split("/");
+          const res1 = updateParentSize(explorerData, parsingArr, newItem.size);
+
+          const ret = uploadJson(`${data.id}`, explorerData);
+          if (ret === -1) {
+            setSplashMsg({
+              message: "Upload failed!",
+              isShowing: true,
+            });
+          } else {
+            setSplashMsg({
+              message: `Uploaded ~ ${entry.name}`,
+              isShowing: true,
+            });
+          }
+
+          resolve();
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      });
+    });
+  } else if (entry.isDirectory) {
+    try {
+      const key = await axios.post(`/postFile/${data.id}/${entry.name}`);
+
+      const newFolder = {
+        id: key.data, // <-- REPLACE WITH DB GENERATED ID
+        name: entry.name,
+        pathname: currentPath,
+        type: "Folder",
+        size: 0,
+        isPinned: false,
+        visibility: "Private",
+        permissions: "Only you have access",
+        dataUrl: "",
+        notes: "",
+        items: [],
+      };
+
+      console.log(newFolder);
+
+      parent.items.push(newFolder);
+
+      const reader = entry.createReader();
+
+      const readAllEntries = async () => {
+        return new Promise((resolve) => {
+          reader.readEntries(async (entries) => {
+            if (entries.length === 0) {
+              resolve();
+              return;
+            }
+
+            for (let i = 0; i < entries.length; i++) {
+              const e = entries[i];
+              globalID += 1;
+              await readEntries(
+                e,
+                newFolder,
+                currentPath,
+                data,
+                explorerData,
+                setLoading,
+                setMessage,
+                setSplashMsg,
+                setLoadingBar
+              );
+            }
+            await readAllEntries(); // Recursively call readAllEntries()
+            resolve();
+          });
+        });
+      };
+      return readAllEntries();
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+};
+
+const updateParentSize = (node, parsingArr, size) => {
+  parsingArr.shift();
+  if (parsingArr.length === 0) {
+    node.size += size;
+    return node;
+  }
+  node.size += size;
+  for (let i = 0; i < node.items.length; i++) {
+    if (node.items[i].name === parsingArr[0]) {
+      node.items[i] = updateParentSize(node.items[i], parsingArr, size);
+      return node;
+    }
   }
 };
 
 // ------- gets all contents of dropped item, and converts into a tree that i can render -------- //
 
-const readDroppedFiles = async (items, currentDirectory) => {
-  const relPath = JSON.parse(JSON.stringify(currentDirectory.pathname));
-
-  const rootFolder = {
-    name: "root",
-    type: "Folder",
-    items: [],
-  };
+const readDroppedFiles = async (
+  items,
+  node,
+  data,
+  explorerData,
+  setLoading,
+  setMessage,
+  setSplashMsg,
+  setLoadingBar
+) => {
+  console.log("uploading to:");
+  console.log(node.pathname);
+  const relPath = JSON.parse(JSON.stringify(node.pathname));
 
   if (items.dataTransfer) {
     for (let i = 0; i < items.dataTransfer.items.length; i++) {
@@ -113,7 +213,17 @@ const readDroppedFiles = async (items, currentDirectory) => {
       const item = items.dataTransfer.items[i];
       const entry = item.webkitGetAsEntry();
       if (entry) {
-        await readEntries(entry, rootFolder, relPath);
+        await readEntries(
+          entry,
+          node,
+          relPath,
+          data,
+          explorerData,
+          setLoading,
+          setMessage,
+          setSplashMsg,
+          setLoadingBar
+        );
       }
     }
   } else {
@@ -126,11 +236,28 @@ const readDroppedFiles = async (items, currentDirectory) => {
         name: file.name,
         file: (callback) => callback(file),
       };
-      await readEntries(entry, rootFolder, relPath);
+      await readEntries(
+        entry,
+        node,
+        relPath,
+        data,
+        explorerData,
+        setLoading,
+        setMessage,
+        setSplashMsg,
+        setLoadingBar
+      );
     }
   }
 
-  return rootFolder.items;
+  setLoadingBar({
+    filename: null,
+    progress: null,
+  });
+  setSplashMsg({ message: "Finished uploading!", isShowing: true });
+
+  setLoading(false);
+  return 0;
 };
 
 export default readDroppedFiles;

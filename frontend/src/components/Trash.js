@@ -13,7 +13,9 @@ import Window from "./Window";
 import handleDragOver from "../helpers/handleDrag";
 import handleDrop from "../helpers/handleDrop";
 import { useState } from "react";
-import { useEffect } from "react";
+import uploadJson from "../helpers/uploadJson";
+import axios from "../api/axios";
+import parseAndDelete from "../helpers/deleteFiles";
 
 const Trash = ({
   data,
@@ -30,13 +32,17 @@ const Trash = ({
   explorerData,
   owner,
   currentDirectory,
+  setCurrentDirectory,
 }) => {
   const [dragOver, setDragOver] = useState(false);
   const [moveEffect, setMoveEffect] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const deleteThisItem = (loadData) => {
+  const deleteThisItem = async (loadData) => {
     // updated size of home directory
+
+    parseAndDelete(loadData);
+
     explorerData.size -= loadData.size;
 
     let tempTrash = {
@@ -62,11 +68,12 @@ const Trash = ({
 
     for (let i = 0; i < explorerData.items.length; i++) {
       if (explorerData.items[i].name === "~Trash") {
-        console.log("first");
         explorerData.items[i] = tempTrash;
         setTrashItems(tempTrash);
       }
     }
+
+    const ret = uploadJson(`${data.id}`, explorerData);
   };
 
   return (

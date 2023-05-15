@@ -2,7 +2,6 @@ import TinyFooter from "./TinyFooter";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "pdfjs-dist/web/pdf_viewer.css";
-import Message from "./Window";
 import Window from "./Window";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -23,6 +22,7 @@ const FileContent = ({
   message,
   setMessage,
   showingLeftPanel,
+  loadingBar,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [videoURL, setVideoURL] = useState(null);
@@ -149,6 +149,7 @@ const FileContent = ({
         currentPage: temp,
         pageLimit: pdfController.pageLimit,
       });
+      window.scrollTo(0, 0);
     }
   };
 
@@ -345,6 +346,7 @@ const FileContent = ({
         setPdfController={setPdfController}
         setMessage={setMessage}
         showingLeftPanel={showingLeftPanel}
+        loadingBar={loadingBar}
         // setLoadingPDF={setLoadingPDF}
       />
     </div>

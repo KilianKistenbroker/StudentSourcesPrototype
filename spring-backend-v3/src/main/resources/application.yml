@@ -1,19 +1,26 @@
 cloud:
   aws:
     credentials:
-      access-key: #AKIAT7XIBPZB52ONWOU4
-      secret-key: #/VKIsnftTolgdnpKkY3r6h5DjYFkkVnwGBybVau3
+#      ss-files
+      access-key1:
+      secret-key1:
+#        pb-1
+      access-key2:
+      secret-key2:
     region:
       static: us-west-1
     stack:
       auto: false
 
 application:
-  bucket:
-    name: #studentsources
+  bucket1:
+#    ss-files
+    name1:
+  bucket2:
+#    pb-1
+    name2:
 
 server:
   tomcat:
     max-swallow-size: -1
     max-http-form-post-size: -1
-

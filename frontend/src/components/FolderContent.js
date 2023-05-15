@@ -1,9 +1,6 @@
 import CurrentDirectory from "./CurrentDirectory";
 import DropZone from "./DropZone";
-import Message from "./Window";
-import TinyFooter from "./TinyFooter";
 import Window from "./Window";
-import { useState } from "react";
 
 const FolderContent = ({
   windowDimension,
@@ -32,6 +29,7 @@ const FolderContent = ({
   setTempFile,
   handleMoveFile,
   setTrashItems,
+  setLoadingBar,
 }) => {
   const handleSetCurrentFile = async (file) => {
     await setCurrentFile(file);
@@ -63,6 +61,7 @@ const FolderContent = ({
           splashMsg={splashMsg}
           setSplashMsg={setSplashMsg}
           tempFile={tempFile}
+          windowDimension={windowDimension}
         />
         {/* display header */}
         <div className="box box-hover" style={{ overflow: "hidden" }}>
@@ -148,6 +147,7 @@ const FolderContent = ({
           handleMoveFile={handleMoveFile}
           data={data}
           owner={owner}
+          setLoadingBar={setLoadingBar}
         />
       )}
 

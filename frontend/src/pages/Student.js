@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DirectoryTree from "../components/DirectoryTree";
-import folderData from "../data/folderData";
 import useTreeTraversal from "../hooks/useTreeTraversal";
 import StudentSearch from "../components/StudentSearch";
 import FolderContent from "../components/FolderContent";
 import FileContent from "../components/FileContent";
-import { saveAs } from "file-saver";
 import explorer from "../data/folderData";
 import Comments from "../components/Comments";
 import CommentBox from "../components/CommentBox";
 import commentsData from "../data/commentsData";
 import Notes from "../components/Notes";
 import Info from "../components/Info";
-import Message from "../components/Window";
-import Window from "../components/Window";
 import Trash from "../components/Trash";
 import TinyFooter from "../components/TinyFooter";
 import downloadZip from "../helpers/downloadZip";
 import downloadFile from "../helpers/downloadFile";
+import uploadJson from "../helpers/uploadJson";
 
 const Student = ({
   data,
@@ -33,12 +30,14 @@ const Student = ({
   setSplashMsg,
   trashItems,
   setTrashItems,
+  currentDirectory,
+  setCurrentDirectory,
 }) => {
   const navigate = useNavigate();
 
   // ----------- move to app.js later (maybe) ------------ //
   // const [explorerData, setExplorerData] = useState(folderData);
-  const [currentDirectory, setCurrentDirectory] = useState(explorerData);
+  // const [currentDirectory, setCurrentDirectory] = useState(explorerData);
   const [showingRightPanel, setShowingRightPanel] = useState(false);
   const [showingLeftPanel, setShowingLeftPanel] = useState(false);
   const [currentFile, setCurrentFile] = useState(null);
@@ -46,11 +45,15 @@ const Student = ({
   const [miniPanel, setMiniPanel] = useState("");
 
   const [showTrash, setShowTrash] = useState(false);
+  const [loadingBar, setLoadingBar] = useState({
+    filename: null,
+    progress: null,
+  });
 
   const [pinSelected, setPinSelected] = useState(false);
   const [textURL, setTextURL] = useState("");
 
-  const [notesData, setNotesData] = useState("");
+  // const [notesData, setNotesData] = useState("");
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(commentsData);
   const [files, setFiles] = useState(null);
@@ -79,11 +82,10 @@ const Student = ({
     const finalTree = insertNode(
       explorerData,
       currentDirectory,
-      handleSetCurrentDirectory,
-      setCurrentDirectory,
-      setExplorerData,
       name,
-      type
+      type,
+      data,
+      setMessage
     );
   };
 
@@ -112,9 +114,6 @@ const Student = ({
     else setMessage({ title: message.title, body: null });
     setSearchResults([]);
     window.scrollTo(0, 0);
-
-    // console.log("cur dir size");
-    // console.log(currentDirectory.size);
   }, [currentDirectory, currentFile]);
 
   function getParentPath(pathString) {
@@ -125,12 +124,16 @@ const Student = ({
   }
 
   useEffect(() => {
-    if (tempFile.state && tempFile.state === "restore")
-      handleMoveFile(currentDirectory.pathname);
-    else if (tempFile.state && tempFile.state === "delete") {
+    if (tempFile.state && tempFile.state === "restore") {
+      if (trashItems.items.includes(currentDirectory)) {
+        handleMoveFile(explorerData.pathname);
+      } else {
+        handleMoveFile(currentDirectory.pathname);
+      }
+    } else if (tempFile.state && tempFile.state === "delete") {
       handleMoveFile("Home/~Trash");
     }
-  }, [tempFile.state]);
+  }, [tempFile]);
 
   const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
@@ -168,7 +171,11 @@ const Student = ({
       // prompt skip or replace
     } else {
       // set cur dir to home directory if current directory was  moved to trash
-      if (pathDest === "Home/~Trash" && currentDirectory === tempFile.content) {
+      if (
+        !showTrash &&
+        pathDest === "Home/~Trash" &&
+        currentDirectory === tempFile.content
+      ) {
         setCurrentDirectory(explorerData);
       }
 
@@ -176,7 +183,6 @@ const Student = ({
 
       // --------------  insert moved file into destination -------------- //
       if (currentDirectory.pathname === pathDest) {
-        console.log("this was entered");
         currentDirectory.items.push(tempFile.content);
       } else {
         tempRef2.items.push(tempFile.content);
@@ -244,13 +250,26 @@ const Student = ({
       );
 
       let parsingArr2 = parent.split("/");
-      console.log(parsingArr2);
       const res2 = updateParentSize(
         explorerData,
         parsingArr2,
         -tempFile.content.size
       );
     }
+
+    const ret = uploadJson(`${data.id}`, explorerData);
+    // if (ret === -1) {
+    //   setSplashMsg({
+    //     message: "Upload failed!",
+    //     isShowing: true,
+    //   });
+    // } else {
+    //   setSplashMsg({
+    //     message: "Upload successful!",
+    //     isShowing: true,
+    //   });
+    // }
+
     if (tempFile.state)
       setTempFile({
         state: null,
@@ -307,14 +326,11 @@ const Student = ({
         });
       }
     }
-    console.log("scale");
-    console.log(scale);
   };
 
   // ---------------------------------------------- //
 
   const handleSetFocus = (state) => {
-    console.log(state);
     const element = document.getElementById(state);
 
     setMiniPanel(state);
@@ -380,7 +396,6 @@ const Student = ({
     if (comment.trim(" ").length === 0) return;
     else {
       const commentsCopy = comments.slice();
-      console.log(commentsCopy.length);
       commentsCopy.push({
         // id: commentsCopy.slice(-1).id + 1,
         commenterImage: "http://placekitten.com/50/50", // replace with avatar from db
@@ -546,7 +561,6 @@ const Student = ({
                 <button
                   id="filespanel"
                   className="header-more-options"
-                  onFocus={() => console.log("focusing")}
                   onBlur={() => setMiniPanel("")}
                   style={
                     owner.user === data.user
@@ -670,7 +684,6 @@ const Student = ({
                   <button
                     id="chatbotpanel"
                     className="header-more-options"
-                    onFocus={() => console.log("focusing")}
                     onBlur={() => setMiniPanel("")}
                     style={{ height: "170px" }}
                   >
@@ -949,11 +962,13 @@ const Student = ({
                       <div
                         className="cursor-enabled"
                         onTouchEnd={() => {
-                          setNotesData("");
+                          currentDirectory.notes = "";
+                          // setNotesData("");
                           setMiniPanel("");
                         }}
                         onClick={() => {
-                          setNotesData("");
+                          currentDirectory.notes = "";
+                          // setNotesData("");
                           setMiniPanel("");
                         }}
                       >
@@ -989,7 +1004,15 @@ const Student = ({
           {owner.user === data.user && (
             <div className="right-panel-notes">
               {/* add NOTES components here */}
-              <Notes notesData={notesData} setNotesData={setNotesData} />
+
+              <Notes
+                // notesData={notesData}
+                // setNotesData={setNotesData}
+                data={data}
+                currentDirectory={currentDirectory}
+                explorerData={explorerData}
+                setSplashMsg={setSplashMsg}
+              />
             </div>
           )}
 
@@ -1001,7 +1024,6 @@ const Student = ({
                 <button
                   id="commentspanel"
                   className="header-more-options"
-                  onFocus={() => console.log("focusing")}
                   onBlur={() => setMiniPanel("")}
                   style={{ height: "80px" }}
                 >
@@ -1128,6 +1150,7 @@ const Student = ({
               explorerData={explorerData}
               owner={owner}
               currentDirectory={currentDirectory}
+              setCurrentDirectory={setCurrentDirectory}
             />
           ) : currentFile ? (
             <FileContent
@@ -1146,6 +1169,7 @@ const Student = ({
               message={message}
               setMessage={setMessage}
               showingLeftPanel={showingLeftPanel}
+              loadingBar={loadingBar}
             />
           ) : (
             <FolderContent
@@ -1175,6 +1199,7 @@ const Student = ({
               setTempFile={setTempFile}
               handleMoveFile={handleMoveFile}
               setTrashItems={setTrashItems}
+              setLoadingBar={setLoadingBar}
             />
           )}
           <TinyFooter
@@ -1197,6 +1222,8 @@ const Student = ({
             explorerData={explorerData}
             setSplashMsg={setSplashMsg}
             message={message}
+            loadingBar={loadingBar}
+            setLoadingBar={setLoadingBar}
           />
         </div>
       </div>

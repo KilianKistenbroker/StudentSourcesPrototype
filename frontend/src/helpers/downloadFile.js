@@ -16,8 +16,6 @@ const downloadFile = (currentFile) => {
     const fileURLParts = fileURL.split(",");
     const byteString = window.atob(fileURLParts[1]);
 
-    console.log(byteString);
-
     const urlFileContent = `[InternetShortcut]\n${byteString}\n`;
     const blob = new Blob([urlFileContent], {
       type: "application/internet-shortcut",
@@ -31,7 +29,6 @@ const downloadFile = (currentFile) => {
   } else if (
     [["jpeg", "jpg", "gif", "png", "pdf"].includes(currentFile.type)]
   ) {
-    console.log(currentFile);
     const imgURL = currentFile.dataUrl;
     const imgDataUrlParts = imgURL.split(",");
     const byteString = window.atob(imgDataUrlParts[1]);
@@ -45,6 +42,8 @@ const downloadFile = (currentFile) => {
 
     const blob = new Blob([ab], { type: mimeString });
     saveAs(blob, currentFile.name);
+  } else {
+    // send request to backend to download unsupported files
   }
 };
 

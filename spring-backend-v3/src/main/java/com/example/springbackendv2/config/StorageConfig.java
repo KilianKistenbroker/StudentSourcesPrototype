@@ -16,19 +16,16 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class StorageConfig {
 
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String accessSecret;
+    @Value("${cloud.aws.credentials.access-key1}")
+    private String accessKey1;
+    @Value("${cloud.aws.credentials.secret-key1}")
+    private String accessSecret1;
+    @Value("${cloud.aws.credentials.access-key2}")
+    private String accessKey2;
+    @Value("${cloud.aws.credentials.secret-key2}")
+    private String accessSecret2;
     @Value("${cloud.aws.region.static}")
     private String region;
-
-//    @Value("${aws.access_key_id}")
-//    private String accessKey;
-//    @Value("${aws.secret_access_key}")
-//    private String accessSecret;
-//    @Value("${aws.s3.region}")
-//    private String region;
 
 
     @Bean
@@ -36,15 +33,23 @@ public class StorageConfig {
         CommonsMultipartResolver resolver
                 = new CommonsMultipartResolver();
         resolver.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
-        resolver.setMaxUploadSize(52428800L); //50MB
-        resolver.setMaxUploadSizePerFile(52428800L); //50MB
+        resolver.setMaxUploadSize(1073741824L); //50MB
+        resolver.setMaxUploadSizePerFile(1073741824L); //50MB
 
         return resolver;
     }
 
     @Bean
-    public AmazonS3 s3Client() {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, accessSecret);
+    public AmazonS3 s3Client1() {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey1, accessSecret1);
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region).build();
+    }
+
+    @Bean
+    public AmazonS3 s3Client2() {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey2, accessSecret2);
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region).build();

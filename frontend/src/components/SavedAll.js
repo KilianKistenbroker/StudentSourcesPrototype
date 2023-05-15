@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 const SavedAll = ({
   data,
   loadSaved,
