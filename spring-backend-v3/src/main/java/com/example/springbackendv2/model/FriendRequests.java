@@ -3,8 +3,8 @@ package com.example.springbackendv2.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Requests")
-public class Requests {
+@Table(name = "FriendRequests")
+public class FriendRequests {
 
     //    NOTE: generic user data... should be updated later
     @Id

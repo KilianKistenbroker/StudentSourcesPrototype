@@ -22,8 +22,8 @@ const useTreeTraversal = () => {
           "application/octet-stream;base64," + window.btoa("URL=" + name);
       }
 
-      const regex = new RegExp("/", "g");
-      const adjustedForPathname = name.replace(regex, "%");
+      const regex = /[\/:.?]/g;
+      const adjustedForPathname = name.replace(regex, "_");
 
       currentDirectory.items.push({
         id: new Date().getTime(), // placeholder until successfully created in table
@@ -57,15 +57,17 @@ const useTreeTraversal = () => {
       currentDirectory.items = updateitems;
 
       try {
-        axios.post(`/postFile/${data.id}/${name}`).then((res) => {
-          console.log(res.data);
-          for (let i = 0; i < currentDirectory.items.length; i++) {
-            if (currentDirectory.items[i].name === name) {
-              currentDirectory.items[i].id = res.data;
+        axios
+          .post(`/postFile/${data.id}/${adjustedForPathname}`)
+          .then((res) => {
+            console.log(res.data);
+            for (let i = 0; i < currentDirectory.items.length; i++) {
+              if (currentDirectory.items[i].name === name) {
+                currentDirectory.items[i].id = res.data;
+              }
             }
-          }
-          const ret = uploadJson(`${data.id}`, explorerData);
-        });
+            const ret = uploadJson(`${data.id}`, explorerData);
+          });
       } catch (error) {
         // remove the the inserted node from current directory
         console.log(error);

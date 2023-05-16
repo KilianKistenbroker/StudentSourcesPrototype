@@ -1,33 +1,32 @@
 package com.example.springbackendv2.service.impl;
 
-import com.example.springbackendv2.dto.ResourceCommentRecord;
-import com.example.springbackendv2.model.ResourceComment;
-import com.example.springbackendv2.repository.ResourceCommentRepository;
-import com.example.springbackendv2.service.ResourceCommentService;
+import com.example.springbackendv2.dto.ResourceCommentsRecord;
+import com.example.springbackendv2.model.Comments;
+import com.example.springbackendv2.repository.CommentsRepository;
+import com.example.springbackendv2.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ResourceCommentServiceImpl implements ResourceCommentService {
+public class CommentsServiceImpl implements CommentsService {
 
     @Autowired
-    ResourceCommentRepository repository;
+    CommentsRepository repository;
 
     @Override
-    public List<ResourceComment> getAllCommentByUserId(Long userId) {
+    public List<Comments> getAllCommentByUserId(Long userId) {
         return repository.findAllByUserId(userId);
     }
 
     @Override
-    public List<ResourceCommentRecord> getAllCommentDtoByResourceId(int resourceId) {
+    public List<ResourceCommentsRecord> getAllCommentDtoByResourceId(int resourceId) {
         return repository.findAllResourceCommentDTOByResourceID(resourceId);
     }
 
     @Override
-    public List<ResourceComment> getAllCommentByResourceId(int resourceId) {
+    public List<Comments> getAllCommentByResourceId(int resourceId) {
         return repository.findAllByResourceId(resourceId);
     }
 
@@ -47,7 +46,7 @@ public class ResourceCommentServiceImpl implements ResourceCommentService {
     }
 
     @Override
-    public ResourceComment saveOrUpdateComment(ResourceComment comment) {
+    public Comments saveOrUpdateComment(Comments comment) {
         return repository.save(comment);
     }
 }

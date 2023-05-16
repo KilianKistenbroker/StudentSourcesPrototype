@@ -1,66 +1,64 @@
 package com.example.springbackendv2.controller;
 
 import com.example.springbackendv2.exception.UserNotFoundException;
-import com.example.springbackendv2.model.User;
-import com.example.springbackendv2.repository.UserRepository;
+import com.example.springbackendv2.model.Users;
+import com.example.springbackendv2.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @RestController
-public class UserController {
+public class UsersController {
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     //   --------------------- BASIC POST, GET, DELETE MAPPING BY UNIQUE ID --------------------
 
 
     @PostMapping("/user")
-    Long newUser(@RequestBody User newUser){
+    Long newUser(@RequestBody Users newUser){
 
-        if (userRepository.checkUsername(newUser.getUser()) != null)
+        if (usersRepository.checkUsername(newUser.getUser()) != null)
             return -1L;
-        else if (userRepository.checkEmail(newUser.getEmail()) != null) {
+        else if (usersRepository.checkEmail(newUser.getEmail()) != null) {
             return -2L;
         }
-        userRepository.save(newUser);
+        usersRepository.save(newUser);
         return newUser.getId();
     }
 
     @GetMapping("/users")
-    List<User> getAllUsers(){
-        return userRepository.findAll();
+    List<Users> getAllUsers(){
+        return usersRepository.findAll();
     }
 
     @GetMapping("/user/{id}")
-    User getUserById(@PathVariable Long id){
-        return  userRepository.findById(id)
+    Users getUserById(@PathVariable Long id){
+        return  usersRepository.findById(id)
                     .orElseThrow(()-> new UserNotFoundException(id));
     }
 
     @PutMapping("/user/{id}")
-    User updateUser(@RequestBody User newUser, @PathVariable Long id){
+    Users updateUser(@RequestBody Users newUser, @PathVariable Long id){
 
 
-        if (userRepository.checkUsername(newUser.getUser()) != null && !Objects.equals(userRepository.checkUsername(newUser.getUser()).getId(), id)) {
-            User res = new User();
+        if (usersRepository.checkUsername(newUser.getUser()) != null && !Objects.equals(usersRepository.checkUsername(newUser.getUser()).getId(), id)) {
+            Users res = new Users();
             res.setId(-1L);
             return res;
         }
 
-        else if (userRepository.checkEmail(newUser.getEmail()) != null && !Objects.equals(userRepository.checkEmail(newUser.getEmail()).getId(), id)) {
-            User res = new User();
+        else if (usersRepository.checkEmail(newUser.getEmail()) != null && !Objects.equals(usersRepository.checkEmail(newUser.getEmail()).getId(), id)) {
+            Users res = new Users();
             res.setId(-2L);
             return res;
         }
 
-        return userRepository.findById(id)
+        return usersRepository.findById(id)
                 .map(user -> {
                     user.setUser(newUser.getUser());
                     user.setFirstName(newUser.getFirstName());
@@ -68,17 +66,17 @@ public class UserController {
                     user.setPassword(newUser.getPassword());
                     user.setEmail(newUser.getEmail());
 
-                    return userRepository.save(user);
+                    return usersRepository.save(user);
                 }).orElseThrow(()-> new UserNotFoundException(id));
     }
 
     @DeleteMapping("/user/{id}")
     String deleteUser(@PathVariable Long id){
-        if(!userRepository.existsById(id)){
+        if(!usersRepository.existsById(id)){
             throw new UserNotFoundException(id);
         }
 
-        userRepository.deleteById(id);
+        usersRepository.deleteById(id);
         return "Deleted user with id: " + id;
     }
 
@@ -87,12 +85,12 @@ public class UserController {
 
 
     @GetMapping(value = "/login/{user}/{password}")
-    public User findByName(@PathVariable("user") String user, @PathVariable("password") String password) {
-        User res = userRepository.findUsers(user);
+    public Users findByName(@PathVariable("user") String user, @PathVariable("password") String password) {
+        Users res = usersRepository.findUsers(user);
 
 //        USERNAME OR EMAIL DOES NOT EXIST
         if(res == null) {
-            res = new User();
+            res = new Users();
             res.setId(-1L);
             return res;
         }
@@ -110,18 +108,18 @@ public class UserController {
     @GetMapping(value = "/authenticate/{password}/{user_id}")
     public Boolean authenticateUser(@PathVariable("password") String password,
                                     @PathVariable("user_id") Long user_id) {
-        User res = userRepository.authenticateUser(password, user_id);
+        Users res = usersRepository.authenticateUser(password, user_id);
         return res != null;
     }
 
     @GetMapping("/search/{query}")
-    List<User> searchUser(@PathVariable String query)
+    List<Users> searchUser(@PathVariable String query)
     {
         /*   This is still a strict search. we will expand on this to
         return a margin of close results */
         String newQuery = query.replace(" ", "");
 
-        List<User> result = userRepository.searchUsersByUsername(newQuery);
+        List<Users> result = usersRepository.searchUsersByUsername(newQuery);
         for (int i = 0; i < result.size(); i++) {
             result.get(i).setPassword("");
             result.get(i).setEmail("");
@@ -135,8 +133,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/findFriends/{user_id}")
-    List<User> findByUserId(@PathVariable("user_id") Long user_id) {
-        List<User> res = userRepository.findFriends(user_id);
+    List<Users> findByUserId(@PathVariable("user_id") Long user_id) {
+        List<Users> res = usersRepository.findFriends(user_id);
         for (int i = 0; i < res.size(); i++) {
             res.get(i).setPassword("");
             res.get(i).setEmail("");
@@ -144,8 +142,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/getPending/{user_id}")
-    List<User> getPendingReq(@PathVariable("user_id") Long user_id) {
-        List<User> res = userRepository.getPending(user_id);
+    List<Users> getPendingReq(@PathVariable("user_id") Long user_id) {
+        List<Users> res = usersRepository.getPending(user_id);
         for (int i = 0; i < res.size(); i++) {
             res.get(i).setPassword("");
             res.get(i).setEmail("");
@@ -153,8 +151,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/mySavedUsers/{user_id}")
-    List<User> getSavedUsers(@PathVariable("user_id") Long user_id) {
-        List<User> res = userRepository.getSavedUsers(user_id);
+    List<Users> getSavedUsers(@PathVariable("user_id") Long user_id) {
+        List<Users> res = usersRepository.getSavedUsers(user_id);
         for (int i = 0; i < res.size(); i++) {
             res.get(i).setPassword("");
             res.get(i).setEmail("");

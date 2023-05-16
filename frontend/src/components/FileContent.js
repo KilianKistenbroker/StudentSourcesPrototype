@@ -1,8 +1,10 @@
 import TinyFooter from "./TinyFooter";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "pdfjs-dist/web/pdf_viewer.css";
 import Window from "./Window";
+import axios from "../api/axios";
+import uploadFile from "../helpers/uploadFile";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -11,8 +13,6 @@ const FileContent = ({
   currentFile,
   setCurrentFile,
   showingRightPanel,
-  textURL,
-  setTextURL,
   scale,
   owner,
   data,
@@ -23,47 +23,31 @@ const FileContent = ({
   setMessage,
   showingLeftPanel,
   loadingBar,
+  setLoadingBar,
+  dataUrl,
+  setDataUrl,
+  videoSrc,
+  setVideoSrc,
 }) => {
   const [numPages, setNumPages] = useState(null);
-  const [videoURL, setVideoURL] = useState(null);
-  const [audioURL, setAudioURL] = useState(null);
   const [videoType, setVideoType] = useState(null);
   const [videoId, setVideoId] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!currentFile) return;
-    else if (currentFile.type === "txt") {
-      let temp = "";
-      try {
-        temp = window.atob(currentFile.dataUrl.split(",")[1]);
-        setTextURL(temp);
-      } catch (err) {
-        console.log(
-          "ERROR: could not decode: " +
-            currentFile.name +
-            "." +
-            currentFile.type
-        );
-        console.log(err);
-        setTextURL("");
-      }
+    setDataUrl(null);
+    if (!currentFile) {
+      return;
+    } else if (currentFile.type === "txt") {
+      getFileData().then((res) => {
+        setDataUrl(res);
+        setLoading(false);
+      });
     } else if (["mp4", "mov"].includes(currentFile.type)) {
       try {
-        // convert to streaming data from backend.
-
-        const videoData = window.atob(currentFile.dataUrl.split(",")[1]);
-        const byteArray = new Uint8Array(videoData.length);
-        for (let i = 0; i < videoData.length; i++) {
-          byteArray[i] = videoData.charCodeAt(i);
-        }
-        let blob = null;
-        if (currentFile.type === "mp4")
-          blob = new Blob([byteArray.buffer], { type: "video/mp4" });
-        else blob = new Blob([byteArray.buffer], { type: "video/mov" });
-
-        setVideoURL(URL.createObjectURL(blob)); // this is for rendering the video
-        setTextURL(URL.createObjectURL(blob)); // this  is for downloading the video
+        const adjustedKey = currentFile.id + "." + currentFile.type;
+        setVideoSrc(`http://localhost:8080/streamVideo/${adjustedKey}`);
+        setLoading(false);
       } catch (err) {
         console.log(
           "ERROR: could not decode: " +
@@ -72,18 +56,13 @@ const FileContent = ({
             currentFile.type
         );
         console.log(err);
-        setTextURL("");
       }
     } else if (currentFile.type === "mp3") {
       try {
-        const audioData = window.atob(currentFile.dataUrl.split(",")[1]);
-        const byteArray = new Uint8Array(audioData.length);
-        for (let i = 0; i < audioData.length; i++) {
-          byteArray[i] = audioData.charCodeAt(i);
-        }
-        const blob = new Blob([byteArray.buffer], { type: "audio/mp3" });
-        setAudioURL(URL.createObjectURL(blob)); // this is for rendering the audio
-        setTextURL(URL.createObjectURL(blob)); // this is for downloading the audio
+        getFileData().then((res) => {
+          setDataUrl(res);
+          setLoading(false);
+        });
       } catch (err) {
         console.log(
           "ERROR: could not decode: " +
@@ -92,7 +71,6 @@ const FileContent = ({
             currentFile.type
         );
         console.log(err);
-        setTextURL("");
       }
     } else if (currentFile.type === "url") {
       try {
@@ -102,7 +80,7 @@ const FileContent = ({
           .find((line) => line.startsWith("URL="));
         if (urlContent) {
           const url = urlContent.replace("URL=", "").trim();
-          setTextURL(url);
+          setDataUrl(url);
 
           const youtubeId = getYoutubeVideoId(url);
           const vimeoId = getVimeoVideoId(url);
@@ -116,9 +94,8 @@ const FileContent = ({
             setVideoType(null);
             setVideoId(null);
           }
-        } else {
-          setTextURL("");
         }
+        setLoading(false);
       } catch (err) {
         console.log(
           "ERROR: could not decode: " +
@@ -127,20 +104,31 @@ const FileContent = ({
             currentFile.type
         );
         console.log(err);
-        setTextURL("");
       }
     } else if (currentFile.type === "pdf") {
-      setScale({
-        render: windowDimension.winWidth / 1050,
-        width: 1500,
-        height: scale.height,
+      // get pdf file
+
+      getFileData().then((res) => {
+        console.log(res);
+        setDataUrl(res);
+
+        setScale({
+          render: windowDimension.winWidth / 1050,
+          width: 1500,
+          height: scale.height,
+        });
+
+        setLoading(false);
       });
-      setTextURL("");
+    } else if (["jpeg", "jpg", "gif", "png"].includes(currentFile.type)) {
+      getFileData().then((res) => {
+        setDataUrl(res);
+        setLoading(false);
+      });
     }
   }, [currentFile]);
 
   const handlePageManager = (num) => {
-    // setLoadingPDF(true);
     const temp = pdfController.currentPage + num;
     if (temp > pdfController.pageLimit || temp < 1) {
       return;
@@ -150,6 +138,75 @@ const FileContent = ({
         pageLimit: pdfController.pageLimit,
       });
       window.scrollTo(0, 0);
+    }
+  };
+
+  const getFileData = async () => {
+    try {
+      const key = currentFile.id + "." + currentFile.type;
+      const res = await axios.get(`downloadFile/${key}`, {
+        responseType: "arraybuffer",
+      });
+
+      const blob = new Blob([res.data]);
+
+      if (currentFile.type === "txt") {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsText(blob);
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        return url;
+      }
+    } catch (error) {
+      console.log(error);
+      const res = await insertTxtFile("");
+      if (res === -1) {
+        console.log("Failed to upload new file");
+      }
+      return "";
+    }
+  };
+
+  const insertTxtFile = async (data) => {
+    try {
+      // insert txt file into s3 bucket
+      console.log("Inserting new file");
+
+      const updatedContent =
+        "application/octet-stream;base64," + window.btoa(data);
+      const fileURLParts = updatedContent.split(",");
+      const byteString = window.atob(fileURLParts[1]);
+
+      const blob = new Blob([byteString], {
+        type: "text/plain;charset=utf-8",
+      });
+
+      // Create a File object from the Blob
+      const file = new File([blob], `${currentFile.name}`, {
+        type: "text/plain",
+        lastModified: new Date(),
+      });
+
+      const res = await uploadFile(
+        currentFile.id,
+        file,
+        setLoadingBar,
+        currentFile.pathname
+      );
+
+      setLoadingBar({
+        filename: null,
+        progress: null,
+        pathname: null,
+      });
+      return res;
+    } catch (error) {
+      console.log("Could not insert in bucket");
+      console.log(error);
     }
   };
 
@@ -166,13 +223,15 @@ const FileContent = ({
     return match ? match[1] : null;
   };
 
-  const handleSaveChanges = () => {
-    let temp = "application/octet-stream;base64," + window.btoa(textURL);
+  const handleSaveChanges = async () => {
+    let temp = "application/octet-stream;base64," + window.btoa(dataUrl);
     currentFile.dataUrl = temp;
+
+    const res = await insertTxtFile(dataUrl);
   };
 
   if (loading) {
-    return <div className={"main-panel-content"}>Loading...</div>;
+    return <div className={"main-panel-content"}>Getting file...</div>;
   }
 
   return (
@@ -192,7 +251,7 @@ const FileContent = ({
       >
         {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
           <img
-            src={currentFile.dataUrl}
+            src={dataUrl}
             style={{ width: "100%", borderRadius: "2px" }}
           ></img>
         ) : "txt" === currentFile.type ? (
@@ -211,8 +270,8 @@ const FileContent = ({
               borderRadius: "2px",
               color: "dimgray",
             }}
-            value={textURL}
-            onChange={(e) => setTextURL(e.target.value)}
+            value={dataUrl}
+            onChange={(e) => setDataUrl(e.target.value)}
           />
         ) : "pdf" === currentFile.type ? (
           <div>
@@ -263,7 +322,7 @@ const FileContent = ({
             </div>
 
             <Document
-              file={currentFile.dataUrl}
+              file={dataUrl}
               onLoadSuccess={({ numPages }) => {
                 console.log(`PDF loaded with ${numPages} pages.`);
                 setNumPages(numPages);
@@ -275,7 +334,6 @@ const FileContent = ({
             >
               <div className="pdfPlaceholder"></div>
               <Page
-                // this fixes flicker but is no longer supported and may be removed
                 loading={""}
                 renderMode="svg"
                 pageNumber={pdfController.currentPage}
@@ -285,7 +343,8 @@ const FileContent = ({
           </div>
         ) : "mp4" === currentFile.type || "mov" === currentFile.type ? (
           <video
-            src={videoURL}
+            src={videoSrc}
+            type={`video/${currentFile.type}`}
             style={{ width: "100%", padding: "10px" }}
             controls
           >
@@ -293,7 +352,7 @@ const FileContent = ({
           </video>
         ) : "mp3" === currentFile.type ? (
           <audio
-            src={audioURL}
+            src={dataUrl}
             style={{ width: "100%", padding: "10px" }}
             controls
           >
@@ -320,14 +379,14 @@ const FileContent = ({
             <div>
               <p>
                 URL Shortcut:{" "}
-                <a href={textURL} target="_blank" rel="noreferrer">
-                  {textURL}
+                <a href={dataUrl} target="_blank" rel="noreferrer">
+                  {dataUrl}
                 </a>
               </p>
             </div>
           )
         ) : (
-          "💀"
+          "Unsupported File"
         )}
       </div>
 
@@ -347,7 +406,6 @@ const FileContent = ({
         setMessage={setMessage}
         showingLeftPanel={showingLeftPanel}
         loadingBar={loadingBar}
-        // setLoadingPDF={setLoadingPDF}
       />
     </div>
   );

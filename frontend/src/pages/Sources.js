@@ -8,6 +8,7 @@ import Users from "../components/Users";
 import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
 import Window from "../components/Window";
+import retrieveOutsideJson from "../helpers/retrieveOutsideJson";
 
 const Sources = ({ data, windowDimension, message, setMessage }) => {
   const navigate = useNavigate();
@@ -55,8 +56,11 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
   const getUsersPage = (user) => {
     // fetch users folder from efs
     setOwner(user);
-    setExplorerData(dummyFolder);
-    setCurrentDirectory(dummyFolder);
+    retrieveOutsideJson(user.id).then((res) => {
+      console.log(res);
+      setExplorerData(res);
+      setCurrentDirectory(res);
+    });
   };
 
   const getFriends = async (e) => {

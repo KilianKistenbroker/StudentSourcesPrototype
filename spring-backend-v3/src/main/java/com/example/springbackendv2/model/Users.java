@@ -1,17 +1,15 @@
 package com.example.springbackendv2.model;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RegisteredUser")
-public class User {
+@Table(name = "Users")
+public class Users {
 
 //    NOTE: generic user data... should be updated later
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String user;
+    private String user; // <- username
     private String firstName;
     private String lastName;
     private String email;

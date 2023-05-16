@@ -44,6 +44,9 @@ const Student = ({
   const [loading, setLoading] = useState(null);
   const [miniPanel, setMiniPanel] = useState("");
 
+  const [dataUrl, setDataUrl] = useState(null);
+  const [videoSrc, setVideoSrc] = useState(null);
+
   const [showTrash, setShowTrash] = useState(false);
   const [loadingBar, setLoadingBar] = useState({
     filename: null,
@@ -52,7 +55,6 @@ const Student = ({
   });
 
   const [pinSelected, setPinSelected] = useState(false);
-  const [textURL, setTextURL] = useState("");
 
   // const [notesData, setNotesData] = useState("");
   const [comment, setComment] = useState("");
@@ -108,9 +110,14 @@ const Student = ({
   }, []);
 
   useEffect(() => {
+    if (!currentFile) {
+      console.log("freeing memory");
+      setDataUrl(null);
+      setVideoSrc(null);
+    }
+
     setPinSelected(false);
     setShowTrash(false);
-    // setCurrentFile(null);
     if (message.body !== "hold") setMessage({ title: null, body: null });
     else setMessage({ title: message.title, body: null });
     setSearchResults([]);
@@ -676,6 +683,7 @@ const Student = ({
               handleMoveFile={handleMoveFile}
               setShowingTrash={setShowTrash}
               showTrash={showTrash}
+              setLoadingBar={setLoadingBar}
             />
             {/* spacing */}
             <div
@@ -1172,8 +1180,6 @@ const Student = ({
               setCurrentFile={setCurrentFile}
               windowDimension={windowDimension}
               showingRightPanel={showingRightPanel}
-              textURL={textURL}
-              setTextURL={setTextURL}
               scale={scale}
               owner={owner}
               data={data}
@@ -1184,6 +1190,11 @@ const Student = ({
               setMessage={setMessage}
               showingLeftPanel={showingLeftPanel}
               loadingBar={loadingBar}
+              setLoadingBar={setLoadingBar}
+              dataUrl={dataUrl}
+              setDataUrl={setDataUrl}
+              videoSrc={videoSrc}
+              setVideoSrc={setVideoSrc}
             />
           ) : (
             <FolderContent

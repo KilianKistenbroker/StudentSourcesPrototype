@@ -34,6 +34,7 @@ const DirectoryTree = ({
   handleMoveFile,
   setShowingTrash,
   showTrash,
+  setLoadingBar,
 }) => {
   const [expand, setExpand] = useState(false);
   const [specialExpand, setSpecialExpand] = useState(false);
@@ -247,7 +248,8 @@ const DirectoryTree = ({
               setMessage,
               setSplashMsg,
               data,
-              owner
+              owner,
+              setLoadingBar
             )
           }
           onDragOver={(e) =>
@@ -405,6 +407,7 @@ const DirectoryTree = ({
                   handleMoveFile={handleMoveFile}
                   setShowingTrash={setShowingTrash}
                   showTrash={showTrash}
+                  setLoadingBar={setLoadingBar}
                 />
               );
             }

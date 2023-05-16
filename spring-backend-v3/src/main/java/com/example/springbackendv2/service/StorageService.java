@@ -1,18 +1,24 @@
 package com.example.springbackendv2.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.LockTimeoutException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 @Service
 public class StorageService {
@@ -79,6 +85,55 @@ public class StorageService {
         return fileName + " removed";
     }
 
+    public ResponseEntity<Object> streamFile(String fileName, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            S3Object s3Object = s3Client1.getObject(fileBucket, fileName);
+            S3ObjectInputStream inputStream = s3Object.getObjectContent();
+
+            long contentLength = s3Object.getObjectMetadata().getContentLength();
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+
+            String rangeHeader = request.getHeader(HttpHeaders.RANGE);
+            if (rangeHeader != null) {
+                String[] rangeValues = rangeHeader.replace("bytes=", "").split("-");
+                long startRange = Long.parseLong(rangeValues[0]);
+                long endRange = contentLength - 1;
+
+                if (rangeValues.length == 2) {
+                    endRange = Long.parseLong(rangeValues[1]);
+                }
+
+                long requestedBytes = endRange - startRange + 1;
+
+                response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+                response.setHeader(HttpHeaders.CONTENT_RANGE, "bytes " + startRange + "-" + endRange + "/" + contentLength);
+                response.setHeader(HttpHeaders.ACCEPT_RANGES, "bytes");
+                response.setContentLengthLong(requestedBytes);
+
+                inputStream.skip(startRange);
+            } else {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setHeader(HttpHeaders.ACCEPT_RANGES, "bytes");
+                response.setHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(contentLength));
+            }
+
+            OutputStream outputStream = response.getOutputStream();
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(file.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
@@ -89,5 +144,4 @@ public class StorageService {
 
         return convertedFile;
     }
-
 }

@@ -1,25 +1,25 @@
 package com.example.springbackendv2.repository;
 
-import com.example.springbackendv2.dto.ResourceCommentRecord;
-import com.example.springbackendv2.model.ResourceComment;
+import com.example.springbackendv2.dto.ResourceCommentsRecord;
+import com.example.springbackendv2.model.Comments;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ResourceCommentRepository extends JpaRepository<ResourceComment, Long> {
+public interface CommentsRepository extends JpaRepository<Comments, Long> {
 
-    @Query(value = "select c from ResourceComment c WHERE c.userID = :userId", nativeQuery = true)
-    List<ResourceComment> findAllByUserId(@Param("userId") Long userId);
+    @Query(value = "select c from Comment c WHERE c.userID = :userId", nativeQuery = true)
+    List<Comments> findAllByUserId(@Param("userId") Long userId);
 
-    @Query(value = "select c from ResourceComment c WHERE c.resourceID = :resourceID", nativeQuery = true)
-    List<ResourceComment> findAllByResourceId(@Param("resourceID") int resourceID);
+    @Query(value = "select c from Comment c WHERE c.resourceID = :resourceID", nativeQuery = true)
+    List<Comments> findAllByResourceId(@Param("resourceID") int resourceID);
 
-    @Query(value = "delete c from ResourceComment c WHERE c.resourceID = :resourceID", nativeQuery = true)
+    @Query(value = "delete c from Comment c WHERE c.resourceID = :resourceID", nativeQuery = true)
     void deleteByResourceId(@Param("resourceID") int resourceID);
 
-    @Query(value = "delete c from ResourceComment c WHERE c.commentID = :commentID", nativeQuery = true)
+    @Query(value = "delete c from Comment c WHERE c.commentID = :commentID", nativeQuery = true)
     void deleteByCommentId(@Param("commentID") Long commentID);
 
 
@@ -39,5 +39,5 @@ public interface ResourceCommentRepository extends JpaRepository<ResourceComment
            where c.resourceID = :resourceID
            order by c.id
             """, nativeQuery = true)
-    List<ResourceCommentRecord> findAllResourceCommentDTOByResourceID(@Param("resourceID") int resourceID);
+    List<ResourceCommentsRecord> findAllResourceCommentDTOByResourceID(@Param("resourceID") int resourceID);
 }

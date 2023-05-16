@@ -2,7 +2,7 @@ package com.example.springbackendv2.dto;
 
 import java.util.Date;
 
-public record ResourceCommentRecord(
+public record ResourceCommentsRecord(
         int commentID,
         String comment,
         Date commentDate,

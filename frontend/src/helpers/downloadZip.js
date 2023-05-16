@@ -1,36 +1,41 @@
 import JSZip from "jszip";
+import axios from "../api/axios";
 
 // function to add a file to the zip
-function addFileToZip(zip, name, data) {
-  zip.file(name, data);
+async function addFileToZip(zip, name, data) {
+  zip.file(name, await data.arrayBuffer());
 }
 
 // function to add a folder to the zip
-function addFolderToZip(zip, folder) {
+async function addFolderToZip(zip, folder) {
   const newFolder = zip.folder(folder.name);
   for (const item of folder.items) {
-    // retreive this items dataURL from bucket
-
+    console.log(item);
     if (item.type === "Folder") {
-      addFolderToZip(newFolder, item);
+      await addFolderToZip(newFolder, item);
+
+      // only files from s3 bucket are zipped up
     } else {
-      const data = window.atob(item.dataUrl.split("base64,")[1]);
-      addFileToZip(newFolder, item.name, data, { base64: true });
+      const adjustedKey = item.id + "." + item.type;
+      try {
+        const response = await axios.get(`/downloadFile/${adjustedKey}`, {
+          responseType: "blob",
+        });
+        await addFileToZip(newFolder, item.name, response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
 
 // function to create and download the zip
 async function downloadZip(folder) {
-  // gather dataURL from bucket???
-
   const zip = new JSZip();
-  addFolderToZip(zip, folder);
+  await addFolderToZip(zip, folder);
   const content = await zip.generateAsync({ type: "blob" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(content);
-
-  //   change this to folder name
   link.download = "explorer.zip";
   document.body.appendChild(link);
   link.click();

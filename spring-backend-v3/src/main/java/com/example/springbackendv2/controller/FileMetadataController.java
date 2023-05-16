@@ -2,9 +2,7 @@ package com.example.springbackendv2.controller;
 
 import com.example.springbackendv2.exception.UserNotFoundException;
 import com.example.springbackendv2.model.FileMetadata;
-import com.example.springbackendv2.model.User;
 import com.example.springbackendv2.repository.FileMetadataRepository;
-import com.example.springbackendv2.repository.UserRepository;
 import com.example.springbackendv2.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class FileMetadataController {

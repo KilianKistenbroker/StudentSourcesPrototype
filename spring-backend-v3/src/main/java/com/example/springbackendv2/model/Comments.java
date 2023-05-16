@@ -8,8 +8,8 @@ import java.util.Date;
 // NEW TABLE
 
 @Entity
-@Table(name = "resourceComment")
-public class ResourceComment {
+@Table(name = "Comments")
+public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class ResourceComment {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private User user;
+    private Users user;
 
     public int getCommentID() {
         return commentID;
@@ -63,11 +63,11 @@ public class ResourceComment {
         this.resourceID = resourceID;
     }
 
-    public User getRegisteredUser() {
+    public Users getRegisteredUser() {
         return user;
     }
 
-    public void setRegisteredUser(User registeredUser) {
+    public void setRegisteredUser(Users registeredUser) {
         this.user = registeredUser;
     }
 }

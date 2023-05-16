@@ -245,7 +245,7 @@ const VisibilityPermissions = ({
                     height: "50px",
                     color: "dimgrey",
                     cursor: "default",
-                    marginTop: "10px",
+                    marginTop: "0px",
                   }}
                   type="text"
                   readOnly
@@ -253,13 +253,23 @@ const VisibilityPermissions = ({
                 />
               </form>
               <select
-                style={{
-                  textAlign: "center",
-                  fontSize: "14px",
-                  minWidth: "150px",
-                  minHeight: "50px",
-                  marginTop: "10px",
-                }}
+                style={
+                  windowDimension.winWidth < 600
+                    ? {
+                        textAlign: "center",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                        minHeight: "50px",
+                        marginTop: "20px",
+                      }
+                    : {
+                        textAlign: "center",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                        minHeight: "50px",
+                        marginTop: "0px",
+                      }
+                }
               >
                 <option
                   value="Can view & download"
@@ -278,12 +288,12 @@ const VisibilityPermissions = ({
                   Can view only
                 </option>
               </select>
-              <button style={{ marginTop: "10px" }}>Copy URL</button>
+              <button style={{ marginTop: "20px" }}>Copy URL</button>
               <button
                 onClick={() => {
                   handleSetVisibilty();
                 }}
-                style={{ marginTop: "10px" }}
+                style={{ marginTop: "20px" }}
               >
                 Done
               </button>
@@ -291,7 +301,18 @@ const VisibilityPermissions = ({
           </div>
         ) : visibility === "Private" ? (
           <div>
-            <b>Note:</b> only you can access this file.
+            <div>
+              <b>Note:</b> only you can access this file.
+            </div>
+
+            <button
+              onClick={() => {
+                handleSetVisibilty();
+              }}
+              style={{ width: "100%", marginTop: "120px" }}
+            >
+              Done
+            </button>
           </div>
         ) : (
           <div>
@@ -302,7 +323,7 @@ const VisibilityPermissions = ({
             <div
               className="visibility-footer-grid"
               style={
-                windowDimension.winWidth < 800
+                windowDimension.winWidth < 600
                   ? { gridTemplateColumns: "repeat(1, auto)" }
                   : { gridTemplateColumns: "repeat(2, auto)" }
               }
@@ -314,7 +335,7 @@ const VisibilityPermissions = ({
                   style={{
                     height: "50px",
                     color: "dimgrey",
-                    marginTop: "10px",
+                    marginTop: "0px",
                   }}
                   type="text"
                   autoFocus={true}
@@ -323,14 +344,25 @@ const VisibilityPermissions = ({
                   onChange={(e) => setInput(e.target.value)}
                 />
               </form>
+
               <select
-                style={{
-                  textAlign: "center",
-                  fontSize: "14px",
-                  minWidth: "150px",
-                  minHeight: "50px",
-                  marginTop: "10px",
-                }}
+                style={
+                  windowDimension.winWidth < 600
+                    ? {
+                        textAlign: "center",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                        minHeight: "50px",
+                        marginTop: "20px",
+                      }
+                    : {
+                        textAlign: "center",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                        minHeight: "50px",
+                        marginTop: "0px",
+                      }
+                }
               >
                 <option
                   value="Can view & download"
@@ -349,7 +381,8 @@ const VisibilityPermissions = ({
                   Can view only
                 </option>
               </select>
-              <button style={{ marginTop: "10px" }}>Copy URL</button>
+
+              <button style={{ marginTop: "20px" }}>Copy URL</button>
               <button
                 onClick={() =>
                   setMessage({
@@ -357,7 +390,7 @@ const VisibilityPermissions = ({
                     body: null,
                   })
                 }
-                style={{ marginTop: "10px" }}
+                style={{ marginTop: "20px" }}
               >
                 Done
               </button>

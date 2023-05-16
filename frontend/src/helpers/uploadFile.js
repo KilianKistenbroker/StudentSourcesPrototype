@@ -6,6 +6,9 @@ const uploadFile = async (key, file, setLoadingBar, pathname) => {
   const formData = new FormData();
   formData.append("file", file, adjustedKey);
 
+  console.log("key:");
+  console.log(adjustedKey);
+
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",

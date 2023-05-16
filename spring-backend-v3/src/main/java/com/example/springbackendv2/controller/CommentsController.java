@@ -1,37 +1,37 @@
 package com.example.springbackendv2.controller;
 
-import com.example.springbackendv2.dto.ResourceCommentRecord;
-import com.example.springbackendv2.model.ResourceComment;
-import com.example.springbackendv2.service.impl.ResourceCommentServiceImpl;
+import com.example.springbackendv2.dto.ResourceCommentsRecord;
+import com.example.springbackendv2.model.Comments;
+import com.example.springbackendv2.service.impl.CommentsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class ResourceCommentController {
+public class CommentsController {
 
     @Autowired
-    ResourceCommentServiceImpl resourceCommentService;
+    CommentsServiceImpl resourceCommentService;
 
     @GetMapping("/resourcecomment/resource/{resource_id}")
-    List<ResourceCommentRecord> getAllCommentDtoByResourceId(@PathVariable("resource_id") int resourceId){
+    List<ResourceCommentsRecord> getAllCommentDtoByResourceId(@PathVariable("resource_id") int resourceId){
         return resourceCommentService.getAllCommentDtoByResourceId(resourceId);
     }
 
     @GetMapping("/resourcecomment/user/{user_id}")
-    List<ResourceComment> getAllCommentsByUserId(@PathVariable("user_id") Long userId){
+    List<Comments> getAllCommentsByUserId(@PathVariable("user_id") Long userId){
         return resourceCommentService.getAllCommentByUserId(userId);
     }
 
     @PostMapping("/resourcecomment")
-    ResourceComment createResourceComment(@RequestBody ResourceComment resourceComment){
-        return resourceCommentService.saveOrUpdateComment(resourceComment);
+    Comments createResourceComment(@RequestBody Comments comment){
+        return resourceCommentService.saveOrUpdateComment(comment);
     }
 
     @PutMapping("/resourcecomment")
-    ResourceComment updateResourceComment(@RequestBody ResourceComment resourceComment){
-        return resourceCommentService.saveOrUpdateComment(resourceComment);
+    Comments updateResourceComment(@RequestBody Comments comment){
+        return resourceCommentService.saveOrUpdateComment(comment);
     }
 
     @PutMapping("/resourcecomment/{comment_id}")

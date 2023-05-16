@@ -5,7 +5,7 @@ import org.hibernate.annotations.RowId;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "UserFriends")
+@Table(name = "Friends")
 public class Friends {
 
     //    NOTE: generic user data... should be updated later
