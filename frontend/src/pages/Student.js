@@ -16,6 +16,7 @@ import TinyFooter from "../components/TinyFooter";
 import downloadZip from "../helpers/downloadZip";
 import downloadFile from "../helpers/downloadFile";
 import uploadJson from "../helpers/uploadJson";
+import axios from "../api/axios";
 
 const Student = ({
   data,
@@ -111,7 +112,6 @@ const Student = ({
 
   useEffect(() => {
     if (!currentFile) {
-      console.log("freeing memory");
       setDataUrl(null);
       setVideoSrc(null);
     }
@@ -122,6 +122,25 @@ const Student = ({
     else setMessage({ title: message.title, body: null });
     setSearchResults([]);
     window.scrollTo(0, 0);
+
+    // ---------- request data from backend here ------------ //
+    let key = "";
+    if (currentFile) {
+      key = currentFile.id;
+    } else {
+      key = currentDirectory.id;
+    }
+    try {
+      axios.get(`getComments/${key}`).then((res) => {
+        setComments(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+      setComments("");
+      setSplashMsg({ message: "Failed to load comments." });
+    }
+
+    // set comments data whenever current directory or current file changes
   }, [currentDirectory, currentFile]);
 
   function getParentPath(pathString) {
@@ -142,6 +161,20 @@ const Student = ({
       handleMoveFile("Home/~Trash");
     }
   }, [tempFile]);
+
+  const handleDeleteAllComments = async () => {
+    let tempRef = null;
+    if (currentFile) {
+      tempRef = currentFile;
+    } else {
+      tempRef = currentDirectory;
+    }
+    try {
+      const res = await axios.delete(`/deleteAllComments/${tempRef.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const updateParentSize = (node, parsingArr, size) => {
     parsingArr.shift();
@@ -412,21 +445,40 @@ const Student = ({
     return `${day} ${month} ${year}`;
   }
 
-  const addComment = () => {
+  const addComment = async () => {
     //TODO: Instead of manipulating local data, use api's
-    if (comment.trim(" ").length === 0) return;
-    else {
-      const commentsCopy = comments.slice();
-      commentsCopy.push({
-        // id: commentsCopy.slice(-1).id + 1,
-        commenterImage: "http://placekitten.com/50/50", // replace with avatar from db
-        username: data.user,
-        commentText: comment,
-        date: formatDate(new Date()),
-      });
-      setComments(commentsCopy);
-      setComment("");
+    const commentsCopy = comments.slice();
+    const tempCommentInsert = {
+      user: data.user,
+      message: comment,
+      date_posted: formatDate(new Date()),
+    };
+    commentsCopy.push(tempCommentInsert);
+    setComments(commentsCopy);
+
+    try {
+      let adjustedCommentData = {};
+
+      if (currentFile) {
+        adjustedCommentData = {
+          comment: comment,
+          fk_file_id: currentFile.id,
+          fk_user_id: data.id,
+        };
+      } else {
+        adjustedCommentData = {
+          comment: comment,
+          fk_file_id: currentDirectory.id,
+          fk_user_id: data.id,
+        };
+      }
+
+      const res = await axios.post("/saveComment", adjustedCommentData);
+    } catch (error) {
+      console.log(error);
     }
+
+    setComment("");
   };
 
   // if (loading) {
@@ -594,12 +646,56 @@ const Student = ({
                       className="cursor-enabled"
                       onTouchEnd={(e) => {
                         e.preventDefault();
+
+                        // check if permission allows
+                        if (
+                          owner.user !== data.user &&
+                          currentFile &&
+                          currentFile.permissions === "Can view only"
+                        ) {
+                          setMessage({
+                            title: "Uh-oh!",
+                            body: "Permissions are restricted to view only.",
+                          });
+                          return;
+                        } else if (
+                          owner.user !== data.user &&
+                          currentDirectory.permissions === "Can view only"
+                        ) {
+                          setMessage({
+                            title: "Uh-oh!",
+                            body: "Permissions are restricted to view only.",
+                          });
+                          return;
+                        }
+
                         currentFile
                           ? downloadFile(currentFile)
                           : downloadZip(currentDirectory);
                         setMiniPanel("");
                       }}
                       onClick={() => {
+                        if (
+                          owner.user !== data.user &&
+                          currentFile &&
+                          currentFile.permissions === "Can view only"
+                        ) {
+                          setMessage({
+                            title: "Uh-oh!",
+                            body: "Permissions are restricted to view only.",
+                          });
+                          return;
+                        } else if (
+                          owner.user !== data.user &&
+                          currentDirectory.permissions === "Can view only"
+                        ) {
+                          setMessage({
+                            title: "Uh-oh!",
+                            body: "Permissions are restricted to view only.",
+                          });
+                          return;
+                        }
+
                         currentFile
                           ? downloadFile(currentFile)
                           : downloadZip(currentDirectory);
@@ -663,7 +759,11 @@ const Student = ({
 
           <div
             className="left-panel-tree"
-            style={owner.user !== data.user ? { height: "100%" } : {}}
+            style={
+              // owner.user !== data.user ?
+              { height: "100%" }
+              // : {}
+            }
           >
             <DirectoryTree
               setSplashMsg={setSplashMsg}
@@ -688,19 +788,19 @@ const Student = ({
             {/* spacing */}
             <div
               style={
-                owner.user === data.user
-                  ? { height: "20px", width: "20px" }
-                  : { height: "150px", width: "20px" }
+                // owner.user === data.user
+                // ? { height: "20px", width: "20px" } :
+                { height: "150px", width: "20px" }
               }
             >
               {" "}
             </div>
           </div>
 
-          {owner.user === data.user && (
+          {/* {owner.user === data.user && (
             <div className="header-tab" style={{ direction: "ltr" }}>
               Ask Chatbot
-              {/* more options button */}
+              
               {miniPanel === "chatbotpanel" ? (
                 <span style={{ float: "right" }}>
                   <button
@@ -822,12 +922,6 @@ const Student = ({
               <span
                 style={{ float: "right" }}
                 onClick={() => handleSetFocus("chatbotpanel")}
-                // onClick={() =>
-                //   setMessage({
-                //     title: "More Options for Chatbot",
-                //     body: "This feature shall provide more options for the user to copy a conversation to clipboard, read an entire file (as opposed to a single page of a document), and clear conversation.",
-                //   })
-                // }
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -842,9 +936,8 @@ const Student = ({
           )}
           {owner.user === data.user && (
             <div className="left-panel-chatbot">
-              {/* add CHATBOT components here */}
             </div>
-          )}
+          )} */}
         </div>
         {owner.user === data.user ? (
           <div
@@ -852,8 +945,7 @@ const Student = ({
               windowDimension.winWidth > 1200 && showingLeftPanel
                 ? "left-panel-textbox max-panel-width"
                 : showingLeftPanel
-                ? // : windowDimension.winWidth > 800
-                  "left-panel-textbox medium-panel-width"
+                ? "left-panel-textbox medium-panel-width"
                 : "left-panel-textbox min-left-panel"
             }
           >
@@ -939,10 +1031,10 @@ const Student = ({
                     id="notespanel"
                     className="header-more-options"
                     onBlur={() => setMiniPanel("")}
-                    style={{ height: "110px" }}
+                    style={{ height: "50px" }}
                   >
                     <ul>
-                      <div
+                      {/* <div
                         className="cursor-enabled"
                         onTouchEnd={() => {
                           setMessage({
@@ -960,8 +1052,8 @@ const Student = ({
                         }}
                       >
                         Download
-                      </div>
-                      <div
+                      </div> */}
+                      {/* <div
                         className="cursor-enabled"
                         onTouchEnd={() => {
                           setMessage({
@@ -979,7 +1071,7 @@ const Student = ({
                         }}
                       >
                         Copy
-                      </div>
+                      </div> */}
 
                       <div
                         className="cursor-enabled"
@@ -1047,10 +1139,10 @@ const Student = ({
                   id="commentspanel"
                   className="header-more-options"
                   onBlur={() => setMiniPanel("")}
-                  style={{ height: "80px" }}
+                  style={{ height: "50px" }}
                 >
                   <ul>
-                    <div
+                    {/* <div
                       className="cursor-enabled"
                       onTouchEnd={() => {
                         setMessage({
@@ -1068,15 +1160,17 @@ const Student = ({
                       }}
                     >
                       Disable
-                    </div>
+                    </div> */}
                     <div
                       className="cursor-enabled"
                       onTouchEnd={() => {
                         setComments([]);
+                        handleDeleteAllComments();
                         setMiniPanel("");
                       }}
                       onClick={() => {
                         setComments([]);
+                        handleDeleteAllComments();
                         setMiniPanel("");
                       }}
                     >

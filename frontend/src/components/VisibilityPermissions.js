@@ -27,13 +27,11 @@ const VisibilityPermissions = ({
 
   useEffect(() => {
     // testing changes
-    if (visibility === "Public" || visibility === "Shared-Private") {
+    if (visibility === "Public") {
       setPermissions("Can view & download");
     } else {
       setPermissions("Only you have access");
     }
-    console.log(visibility);
-    console.log(permissions);
   }, [visibility]);
 
   const handleSetVisibilty = async () => {
@@ -180,7 +178,7 @@ const VisibilityPermissions = ({
         </div>
 
         <div className="visibility-selection">
-          <label style={{ color: "dimgray" }}>
+          <label style={{ color: "dimgray", width: "100px" }}>
             {/* custom checkbox */}
             <div
               onClick={() => setVisibility("Public")}
@@ -193,7 +191,7 @@ const VisibilityPermissions = ({
             <div>Public</div>
           </label>
 
-          <label style={{ color: "dimgray" }}>
+          <label style={{ color: "dimgray", width: "100px" }}>
             {/* custom checkbox */}
             <div
               onClick={() => setVisibility("Private")}
@@ -206,8 +204,7 @@ const VisibilityPermissions = ({
             <div>Private</div>
           </label>
 
-          <label style={{ color: "dimgray" }}>
-            {/* custom checkbox */}
+          {/* <label style={{ color: "dimgray" }}>
             <div
               onClick={() => setVisibility("Shared-Private")}
               className={
@@ -217,7 +214,7 @@ const VisibilityPermissions = ({
               }
             ></div>
             <div>Shared-Private</div>
-          </label>
+          </label> */}
         </div>
       </div>
 
@@ -288,18 +285,18 @@ const VisibilityPermissions = ({
                   Can view only
                 </option>
               </select>
-              <button style={{ marginTop: "20px" }}>Copy URL</button>
-              <button
-                onClick={() => {
-                  handleSetVisibilty();
-                }}
-                style={{ marginTop: "20px" }}
-              >
-                Done
-              </button>
+              {/* <button style={{ marginTop: "20px" }}>Copy URL</button> */}
             </div>
+            <button
+              onClick={() => {
+                handleSetVisibilty();
+              }}
+              style={{ marginTop: "20px", width: "100%" }}
+            >
+              Done
+            </button>
           </div>
-        ) : visibility === "Private" ? (
+        ) : (
           <div>
             <div>
               <b>Note:</b> only you can access this file.
@@ -313,97 +310,6 @@ const VisibilityPermissions = ({
             >
               Done
             </button>
-          </div>
-        ) : (
-          <div>
-            <div style={{ whiteSpace: "nowrap" }}>
-              <b>Note:</b> only certain users can access this file.
-            </div>
-
-            <div
-              className="visibility-footer-grid"
-              style={
-                windowDimension.winWidth < 600
-                  ? { gridTemplateColumns: "repeat(1, auto)" }
-                  : { gridTemplateColumns: "repeat(2, auto)" }
-              }
-            >
-              <label>Usernames</label>
-              <div></div>
-              <form>
-                <input
-                  style={{
-                    height: "50px",
-                    color: "dimgrey",
-                    marginTop: "0px",
-                  }}
-                  type="text"
-                  autoFocus={true}
-                  placeholder={"@Username"}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                />
-              </form>
-
-              <select
-                style={
-                  windowDimension.winWidth < 600
-                    ? {
-                        textAlign: "center",
-                        fontSize: "14px",
-                        minWidth: "150px",
-                        minHeight: "50px",
-                        marginTop: "20px",
-                      }
-                    : {
-                        textAlign: "center",
-                        fontSize: "14px",
-                        minWidth: "150px",
-                        minHeight: "50px",
-                        marginTop: "0px",
-                      }
-                }
-              >
-                <option
-                  value="Can view & download"
-                  onClick={(e) => {
-                    setPermissions(e.target.value);
-                  }}
-                >
-                  Can view & download
-                </option>
-                <option
-                  value="Can view only"
-                  onClick={(e) => {
-                    setPermissions(e.target.value);
-                  }}
-                >
-                  Can view only
-                </option>
-              </select>
-
-              <button style={{ marginTop: "20px" }}>Copy URL</button>
-              <button
-                onClick={() =>
-                  setMessage({
-                    title: null,
-                    body: null,
-                  })
-                }
-                style={{ marginTop: "20px" }}
-              >
-                Done
-              </button>
-              <div
-                style={{
-                  color: "dimgray",
-                  fontSize: "14px",
-                  marginTop: "10px",
-                }}
-              >
-                <b>Hint:</b> seperate handles with spaces
-              </div>
-            </div>
           </div>
         )}
       </div>

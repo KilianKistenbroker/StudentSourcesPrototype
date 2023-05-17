@@ -1,9 +1,8 @@
 const commentsData = [
   {
-    // id: 1,
-    commenterImage: "http://placekitten.com/50/50",
-    username: "parthfloyd",
-    commentText:
+    id: 1,
+    user: "parthfloyd",
+    comment:
       "Hello this is a test comment. Add comments in the text field below",
     date: "March 5th, 2014",
   },

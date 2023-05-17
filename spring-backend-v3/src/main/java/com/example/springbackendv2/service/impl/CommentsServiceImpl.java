@@ -1,6 +1,5 @@
 package com.example.springbackendv2.service.impl;
 
-import com.example.springbackendv2.dto.ResourceCommentsRecord;
 import com.example.springbackendv2.model.Comments;
 import com.example.springbackendv2.repository.CommentsRepository;
 import com.example.springbackendv2.service.CommentsService;
@@ -21,17 +20,17 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public List<ResourceCommentsRecord> getAllCommentDtoByResourceId(int resourceId) {
-        return repository.findAllResourceCommentDTOByResourceID(resourceId);
+    public List<Comments> getAllCommentDtoByResourceId(Long resourceID) {
+        return repository.findAllByFileId(resourceID);
     }
 
     @Override
-    public List<Comments> getAllCommentByResourceId(int resourceId) {
+    public List<Comments> getAllCommentByResourceId(Long resourceId) {
         return repository.findAllByResourceId(resourceId);
     }
 
     @Override
-    public void deleteByResourceId(int resourceId) {
+    public void deleteByResourceId(Long resourceId) {
         repository.deleteByResourceId(resourceId);
     }
 

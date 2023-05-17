@@ -97,7 +97,6 @@ public class UsersController {
 
 //        PASSWORD DOES NOT MATCH
         else if (!Objects.equals(res.getPassword(), password)) {
-//            System.out.println("this is being printed");
             res.setId(-2L);
             return res;
         } else {

@@ -12,10 +12,14 @@ public class FileMetadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long fk_owner_id;
-    private Long fk_comments_id;
-    private Long fk_chatbot_id;
+//    private Long fk_comments_id;
+//    private Long fk_chatbot_id;
     private String filename;
     private String visibility;
+
+    private String type;
+
+    private String permissions;
 
     public Long getId() {
         return id;
@@ -33,22 +37,6 @@ public class FileMetadata {
         this.fk_owner_id = fk_owner_id;
     }
 
-    public Long getFk_comments_id() {
-        return fk_comments_id;
-    }
-
-    public void setFk_comments_id(Long fk_comments_id) {
-        this.fk_comments_id = fk_comments_id;
-    }
-
-    public Long getFk_chatbot_id() {
-        return fk_chatbot_id;
-    }
-
-    public void setFk_chatbot_id(Long fk_chatbot_id) {
-        this.fk_chatbot_id = fk_chatbot_id;
-    }
-
     public String getFilename() {
         return filename;
     }
@@ -63,5 +51,21 @@ public class FileMetadata {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 }

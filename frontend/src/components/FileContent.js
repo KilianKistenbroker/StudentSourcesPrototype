@@ -109,7 +109,6 @@ const FileContent = ({
       // get pdf file
 
       getFileData().then((res) => {
-        console.log(res);
         setDataUrl(res);
 
         setScale({

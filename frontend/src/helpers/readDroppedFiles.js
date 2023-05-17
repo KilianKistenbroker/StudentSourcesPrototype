@@ -67,10 +67,11 @@ const readEntries = async (
             return;
           }
 
-          const key = await axios.post(`/postFile/${data.id}/${entry.name}`);
-
-          console.log("received key:");
-          console.log(key);
+          const key = await axios.post(
+            `/postFile/${data.id}/${entry.name}/${
+              nameAndType[nameAndType.length - 1]
+            }`
+          );
 
           const res = await uploadFile(
             key.data,
@@ -123,7 +124,7 @@ const readEntries = async (
     });
   } else if (entry.isDirectory) {
     try {
-      const key = await axios.post(`/postFile/${data.id}/${entry.name}`);
+      const key = await axios.post(`/postFile/${data.id}/${entry.name}/Folder`);
 
       const newFolder = {
         id: key.data, // <-- REPLACE WITH DB GENERATED ID
@@ -138,8 +139,6 @@ const readEntries = async (
         notes: "",
         items: [],
       };
-
-      console.log(newFolder);
 
       parent.items.push(newFolder);
 
@@ -230,8 +229,6 @@ const readDroppedFiles = async (
   setSplashMsg,
   setLoadingBar
 ) => {
-  console.log("uploading to:");
-  console.log(node.pathname);
   const relPath = JSON.parse(JSON.stringify(node.pathname));
 
   if (items.dataTransfer) {

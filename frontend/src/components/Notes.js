@@ -15,7 +15,6 @@ const Notes = ({ data, currentDirectory, explorerData, setSplashMsg }) => {
   }, [isFocused, notes]);
 
   useEffect(() => {
-    console.log(currentDirectory.notes);
     setNotes(currentDirectory.notes);
   }, [currentDirectory]);
 
@@ -33,7 +32,6 @@ const Notes = ({ data, currentDirectory, explorerData, setSplashMsg }) => {
       console.log("Failed to save home directory");
     }
     setSplashMsg({ message: "Saved notes", isShowing: true });
-    console.log(explorerData);
   };
 
   return (

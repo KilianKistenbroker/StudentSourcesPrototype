@@ -927,7 +927,7 @@ top:-9999px
   height: 50px;
   background-color: rgba(0,0,0,0);
   border-radius: 2px;
-  transition: .1s;
+  /* transition: .1s; */
 
 }
 
@@ -2012,7 +2012,7 @@ justify-content: left;
     position: absolute;
    padding: 14px;
     background-color: #fafafa;
-    width: 200px;
+    width: 150px;
     min-width: 100px;
     border-bottom: 1px solid lightgrey;
     font-size: 16px;
@@ -2021,11 +2021,19 @@ justify-content: left;
 }
 
 .left-inbox {
-    width: 200px;
+    width: 150px;
+}
+
+.create-group-chat {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    color: dimgray;
+    font-size: 16px;
+    float: right;
 }
 
 .left-inbox-contacts{
-    overflow-y: scroll;
+    overflow: scroll;
     
     
     margin-top: 50px;
@@ -2038,10 +2046,14 @@ width: 100%;
 border-left: 1px solid lightgrey;
 margin-bottom: 50px;
 min-width: 200px;
+
+
+/* quick fix for alignment issues inside inbox search results*/
+/* margin-right: 55px; */
 }
 
 .inbox-contact {
-    padding: 20px;
+    padding: 10px;
     font-size: 15px;
     border-bottom: 1px solid #ededed;
     display: grid;
@@ -2068,7 +2080,7 @@ min-width: 200px;
     margin-left: 10px;
     padding: 10px;
     /* could not figure out how to keep textbox relative to right container */
-    margin-left: 200px;
+    margin-left: 150px;
     background-color: #f6f6f6;
     border-left: 1px solid #e0e0e0;
     border-top: 1px solid #e0e0e0;
@@ -2092,7 +2104,7 @@ min-width: 200px;
     left: 0;
     margin-top: 44px;
     /* padding: 10px; */
-    margin-left: 200px;
+    margin-left: 150px;
     
 }
 
@@ -2118,11 +2130,12 @@ border-bottom: 1px solid lightgray;
     overflow-y: scroll;
 }
 .visibility-selection{
-    margin: 20px;
+    margin: 25px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     align-items: center;
-    justify-content: center;
+    justify-items: center;
+    white-space: nowrap;
 }
 
 .visibility-checkbox {

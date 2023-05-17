@@ -58,9 +58,8 @@ const useTreeTraversal = () => {
 
       try {
         axios
-          .post(`/postFile/${data.id}/${adjustedForPathname}`)
+          .post(`/postFile/${data.id}/${adjustedForPathname}/${type}`)
           .then((res) => {
-            console.log(res.data);
             for (let i = 0; i < currentDirectory.items.length; i++) {
               if (currentDirectory.items[i].name === name) {
                 currentDirectory.items[i].id = res.data;

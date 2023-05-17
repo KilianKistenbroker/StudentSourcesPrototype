@@ -17,7 +17,7 @@ const CommentBox = ({ comment, setComment, addComment }) => {
       <button
         className="comment-send-button"
         type="button"
-        onClick={addComment}
+        // onClick={addComment}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

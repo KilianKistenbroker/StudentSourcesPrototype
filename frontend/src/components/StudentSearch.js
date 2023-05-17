@@ -40,8 +40,6 @@ const StudentSearch = ({
     exploreData.size -= trashItems.size;
     trashItems.size = 0;
 
-    console.log(trashItems);
-
     for (let i = trashItems.items.length - 1; i >= 0; i--) {
       parseAndDelete(trashItems.items[i]);
       trashItems.items.pop();
@@ -254,23 +252,26 @@ const StudentSearch = ({
           </div>
         ) : currentFile ? (
           <div className="selection">
-            <div
-              className={
-                selected === "saved" ? "selected" : "selection-content"
-              }
-              onClick={() => downloadFile(currentFile)}
-            >
-              {/* download*/}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-              </svg>
-            </div>
+            {owner.user === data.user ||
+              (currentFile.permissions === "Can view & download" && (
+                <div
+                  className={
+                    selected === "saved" ? "selected" : "selection-content"
+                  }
+                  onClick={() => downloadFile(currentFile)}
+                >
+                  {/* download*/}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="header-icons cursor-enabled"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                  </svg>
+                </div>
+              ))}
 
             <div
               className={
@@ -383,42 +384,6 @@ const StudentSearch = ({
                 </svg>
               )}
             </div>
-
-            <div
-              className={
-                selected === "friends" ? "selected" : "selection-content"
-              }
-              onClick={() => {
-                // handleSort();
-                setMessage({
-                  title: "Save",
-                  body: "This is a temporary save button.",
-                });
-                // TESTING JSON UPLOAD
-                uploadJson(`${data.id}`, exploreData);
-              }}
-            >
-              {/* Select */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                className="header-icons cursor-enabled"
-                style={{ marginTop: "5px" }}
-                viewBox="0 0 16 16"
-              >
-                <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z" />
-                <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-              </svg>
-              {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="header-icons cursor-enabled"
-                style={{ marginTop: "5px" }}
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-              </svg> */}
-            </div>
           </div>
         ) : (
           <div
@@ -452,7 +417,7 @@ const StudentSearch = ({
 
             <div
               className="header-icons cursor-enabled"
-              style={{ paddingTop: "5px", width: "30px" }}
+              style={{ paddingTop: "5px", width: "30px", marginRight: "15px" }}
               onClick={() => handleExit()}
             >
               <svg

@@ -1,8 +1,10 @@
-package com.example.springbackendv2.model;
+package com.example.springbackendv2.dto;
 
 import java.util.ArrayList;
 
-public class UserJson {
+// PURPOSE: for returning a json of a users directory tree
+
+public class UserJsonDto {
     Long id;
     String name;
     String pathname;
@@ -10,7 +12,7 @@ public class UserJson {
     String visibility;
     String permissions;
     String dataUrl;
-    ArrayList<UserJson> items;
+    ArrayList<UserJsonDto> items;
 
     public String getDataUrl() {
         return dataUrl;
@@ -68,11 +70,11 @@ public class UserJson {
         this.permissions = permissions;
     }
 
-    public ArrayList<UserJson> getItems() {
+    public ArrayList<UserJsonDto> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<UserJson> items) {
+    public void setItems(ArrayList<UserJsonDto> items) {
         this.items = items;
     }
 }

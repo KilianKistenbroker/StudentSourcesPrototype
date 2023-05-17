@@ -5,12 +5,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-// NEW TABLE
-
 @Entity
-@Table(name = "Comments")
-public class Comments {
-
+@Table(name = "DirectMessages")
+public class DirectMessages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +15,9 @@ public class Comments {
     @CreationTimestamp
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Temporal(TemporalType.DATE)
-    private Date comment_date;
+    private Date message_date;
 
-    private String comment;
-
-    private Long fk_file_id;
-
-    private Long fk_user_id;
+    private String message;
 
     public Long getId() {
         return id;
@@ -34,28 +27,28 @@ public class Comments {
         this.id = id;
     }
 
-    public Date getComment_date() {
-        return comment_date;
+    public Date getMessage_date() {
+        return message_date;
     }
 
-    public void setComment_date(Date comment_date) {
-        this.comment_date = comment_date;
+    public void setMessage_date(Date message_date) {
+        this.message_date = message_date;
     }
 
-    public String getComment() {
-        return comment;
+    public String getMessage() {
+        return message;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public Long getFk_file_id() {
-        return fk_file_id;
+    public Long getFk_group_id() {
+        return fk_group_id;
     }
 
-    public void setFk_file_id(Long fk_file_id) {
-        this.fk_file_id = fk_file_id;
+    public void setFk_group_id(Long fk_group_id) {
+        this.fk_group_id = fk_group_id;
     }
 
     public Long getFk_user_id() {
@@ -65,4 +58,8 @@ public class Comments {
     public void setFk_user_id(Long fk_user_id) {
         this.fk_user_id = fk_user_id;
     }
+
+    private Long fk_group_id;
+
+    private Long fk_user_id;
 }

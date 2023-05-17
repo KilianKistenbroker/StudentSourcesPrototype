@@ -2,11 +2,11 @@ cloud:
   aws:
     credentials:
 #      ss-files
-      access-key1:
-      secret-key1:
+      access-key1: AKIAT4BBIDX6FWKIGXXO
+      secret-key1: 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
 #        pb-1
-      access-key2:
-      secret-key2:
+      access-key2: AKIAT4BBIDX6K6WYZTUE
+      secret-key2: 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
     region:
       static: us-west-1
     stack:
@@ -15,10 +15,10 @@ cloud:
 application:
   bucket1:
 #    ss-files
-    name1:
+    name1: student-sources-files
   bucket2:
 #    pb-1
-    name2:
+    name2: prototypebucket-1
 
 server:
   tomcat:

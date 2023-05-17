@@ -9,6 +9,9 @@ import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
 import Window from "../components/Window";
 import retrieveOutsideJson from "../helpers/retrieveOutsideJson";
+import FolderResults from "../components/FoldersResults";
+import handleUserSearch from "../helpers/handleUserSearch";
+import handleFolderSearch from "../helpers/handleFolderSearch";
 
 const Sources = ({ data, windowDimension, message, setMessage }) => {
   const navigate = useNavigate();
@@ -24,7 +27,9 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
 
   // these are loaded after submitting a search query
   const [loadUsers, setLoadUsers] = useState([]);
+
   const [loadFolders, setLoadFolders] = useState([]);
+  const [savedFolder, setSavedFolder] = useState([]);
 
   // these are arrays of u-id's for quick referencing
   const [friendsList, setFriendsList] = useState([]);
@@ -57,10 +62,38 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
     // fetch users folder from efs
     setOwner(user);
     retrieveOutsideJson(user.id).then((res) => {
-      console.log(res);
       setExplorerData(res);
       setCurrentDirectory(res);
     });
+  };
+
+  const convertChildToRootPathname = (node, pathname) => {
+    const updatedPath = pathname.slice();
+    node.pathname = updatedPath;
+
+    for (let i = 0; i < node.items.length; i++) {
+      convertChildToRootPathname(
+        node.items[i],
+        pathname + "/" + node.items[i].name
+      );
+    }
+  };
+
+  const getSpecificFolder = async (loadData) => {
+    try {
+      const res = await axios.get(`/user/${loadData.fk_owner_id}`);
+      setOwner(res.data);
+      const adjustedKey = loadData.fk_owner_id + ".json";
+      const res1 = await axios.get(
+        `downloadChildJson/${adjustedKey}/${loadData.id}`
+      );
+      convertChildToRootPathname(res1.data, res1.data.name);
+
+      setExplorerData(res1.data);
+      setCurrentDirectory(res1.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getFriends = async (e) => {
@@ -87,25 +120,6 @@ and also call request to update lists */
     if (selected === "saved") getSaved();
     else if (selected === "friends") getFriends();
     setSelected(select);
-  };
-
-  const handleUserSearch = async (e) => {
-    e.preventDefault();
-    getFriends();
-
-    let str2 = search.toLowerCase();
-    str2 = str2.replace(/ +/g, "");
-
-    if (str2.length === 0) {
-      const res = await axios.get("/users");
-      setLoadUsers(res.data);
-
-      // fetch query results from backend
-    } else {
-      const res = await axios.get(`/search/${search}`);
-      if (res.data.length === 0) setLoadUsers([]);
-      else setLoadUsers(res.data);
-    }
   };
 
   const handleFilterSearch = (filter, item) => {
@@ -195,8 +209,6 @@ and also call request to update lists */
       // adding to folder list here
     }
 
-    console.log("added save: " + savedUserList);
-
     // refresh saved list
     if (selected !== "saved") getSaved();
   }
@@ -221,8 +233,6 @@ and also call request to update lists */
         setSentList(tempList);
 
         getFriends();
-      } else {
-        console.log("could not send");
       }
     } else if (status === "accept") {
       //   remove the pending req
@@ -291,7 +301,16 @@ and also call request to update lists */
           <div></div>
 
           <div style={{ width: "800px" }}>
-            <form id="search_form" onSubmit={handleUserSearch}>
+            <form
+              id="search_form"
+              onSubmit={(e) => {
+                if (selected === "users") {
+                  handleUserSearch(e, setLoadUsers, search, getFriends);
+                } else {
+                  handleFolderSearch(e, setLoadFolders, search);
+                }
+              }}
+            >
               <button
                 type="submit"
                 id="search_button"
@@ -343,26 +362,6 @@ and also call request to update lists */
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   autoComplete="off"
-                  // ------------- TO BE IMPLEMENTED ~ Searing for Folders ----------- //
-
-                  onFocus={
-                    selected === "folders"
-                      ? () =>
-                          setMessage({
-                            title: "Searching for Folders",
-                            body: "This feature shall provide users the ability to search for publicly available folders across the SS database.",
-                          })
-                      : () => {}
-                  }
-                  onBlur={
-                    selected === "folders"
-                      ? () =>
-                          setMessage({
-                            title: null,
-                            body: null,
-                          })
-                      : () => {}
-                  }
                 />
               )}
             </form>
@@ -544,6 +543,17 @@ and also call request to update lists */
               removeSaved={removeSaved}
               pendingList={pendingList}
               getUsersPage={getUsersPage}
+            />
+          )}
+
+          {selected === "folders" && (
+            <FolderResults
+              data={data}
+              loadFolders={loadFolders}
+              savedFolders={savedFolder}
+              insertSaved={insertSaved}
+              removeSaved={removeSaved}
+              getSpecificFolder={getSpecificFolder}
             />
           )}
         </div>

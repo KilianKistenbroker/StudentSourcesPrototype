@@ -1,12 +1,12 @@
 package com.example.springbackendv2.controller;
 
-import com.example.springbackendv2.model.FileMetadata;
-import com.example.springbackendv2.model.UserJson;
+import com.example.springbackendv2.dto.UserJsonDto;
 import com.example.springbackendv2.service.StorageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -22,6 +22,15 @@ import java.util.Map;
 
 @RestController
 public class JsonController {
+
+
+
+// THIS IS A WORKAROUND FOR AN ISSUE I AM HAVING WITH COPYING A CHILD NODE
+    JsonNode GLOBALJSON;
+
+
+
+
     @Autowired
     private StorageService service;
     @PostMapping(value = "/uploadJson/{key}")
@@ -63,9 +72,43 @@ public class JsonController {
         // Parse the JSON
         JsonNode jsonNode = mapper.readTree(jsonString);
 
-        UserJson userJson = traverse(jsonNode);
+        UserJsonDto userJsonDto = traverse(jsonNode);
 
-        String userJsonString = mapper.writeValueAsString(userJson);
+        String userJsonString = mapper.writeValueAsString(userJsonDto);
+
+        // Convert the JSON string to a byte array
+        byte[] userJsonData = userJsonString.getBytes(StandardCharsets.UTF_8);
+
+        // Create a ByteArrayResource
+        ByteArrayResource resource = new ByteArrayResource(userJsonData);
+
+        return ResponseEntity
+                .ok()
+                .contentLength(userJsonData.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + key + "\"")
+                .body(resource);
+    }
+
+    @GetMapping(value = "/downloadChildJson/{key}/{targetId}")
+    public ResponseEntity<ByteArrayResource> downloadChildJson(@PathVariable("key") String key,
+                                                               @PathVariable("targetId") Long targetId) throws JsonProcessingException {
+
+        byte[] data = service.downloadJson(key);
+
+        // Convert the byte array to a string
+        String jsonString = new String(data, StandardCharsets.UTF_8);
+
+        // Create an ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Parse the JSON
+        JsonNode jsonNode = mapper.readTree(jsonString);
+
+        JsonNode userJsonDto = copyChildNode(jsonNode, targetId);
+        UserJsonDto filterChild = traverse(GLOBALJSON);
+
+        String userJsonString = mapper.writeValueAsString(filterChild);
 
         // Convert the JSON string to a byte array
         byte[] userJsonData = userJsonString.getBytes(StandardCharsets.UTF_8);
@@ -82,8 +125,62 @@ public class JsonController {
     }
 
 
-    private UserJson traverse(JsonNode node) {
-        UserJson userJson = new UserJson();
+    private JsonNode copyChildNode(JsonNode node, Long targetId) {
+
+        if (node.isObject()) {
+            ObjectNode objectNode = (ObjectNode) node;
+            Iterator<Map.Entry<String, JsonNode>> iter = objectNode.fields();
+
+            while (iter.hasNext()) {
+                Map.Entry<String, JsonNode> entry = iter.next();
+                String fieldName = entry.getKey();
+                JsonNode fieldValue = entry.getValue();
+
+                if ("id".equals(fieldName) && fieldValue.asLong() == targetId) {
+                    // Return a copy of the entire object if the id matches the targetId
+                    return traverseTree(node.deepCopy());
+                } else if ("items".equals(fieldName) && fieldValue.isArray()) {
+                    ArrayNode copiedItems = objectNode.putArray("items");
+                    ArrayNode arrayNode = (ArrayNode) fieldValue;
+
+                    for (JsonNode arrayElement : arrayNode) {
+                        if (arrayElement != null) { // Added null check
+                            JsonNode copiedItem = copyChildNode(arrayElement, targetId);
+                            if (copiedItem != null && copiedItem.get("visibility") != null) {
+                                copiedItems.add(copiedItem);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private JsonNode traverseTree(JsonNode node) {
+        ObjectNode copiedNode = JsonNodeFactory.instance.objectNode();
+
+        if (node != null && node.isObject()) {
+            ObjectNode objectNode = (ObjectNode) node;
+            Iterator<Map.Entry<String, JsonNode>> iter = objectNode.fields();
+
+            while (iter.hasNext()) {
+                Map.Entry<String, JsonNode> entry = iter.next();
+                String fieldName = entry.getKey();
+                JsonNode fieldValue = entry.getValue();
+
+                copiedNode.set(fieldName, fieldValue.deepCopy());
+            }
+        }
+
+//        WORKAROUND IMPLEMENTATION
+        GLOBALJSON = copiedNode;
+        return copiedNode;
+    }
+
+    private UserJsonDto traverse(JsonNode node) {
+        UserJsonDto userJsonDto = new UserJsonDto();
 
         if (node.isObject()) {
             ObjectNode objectNode = (ObjectNode) node;
@@ -95,39 +192,39 @@ public class JsonController {
                 JsonNode fieldValue = entry.getValue();
 
                 if ("id".equals(fieldName)) {
-                    userJson.setId(fieldValue.asLong());
+                    userJsonDto.setId(fieldValue.asLong());
                 } else if ("name".equals(fieldName)) {
-                    userJson.setName(fieldValue.asText());
+                    userJsonDto.setName(fieldValue.asText());
                 } else if ("pathname".equals(fieldName)) {
-                    userJson.setPathname(fieldValue.asText());
+                    userJsonDto.setPathname(fieldValue.asText());
                 } else if ("type".equals(fieldName)) {
-                    userJson.setType(fieldValue.asText());
+                    userJsonDto.setType(fieldValue.asText());
                 } else if ("visibility".equals(fieldName)) {
                     String visibility = fieldValue.asText();
                     if ("Public".equals(visibility)) {
-                        userJson.setVisibility(visibility);
+                        userJsonDto.setVisibility(visibility);
                     }
                 } else if ("permissions".equals(fieldName)) {
-                    userJson.setPermissions(fieldValue.asText());
+                    userJsonDto.setPermissions(fieldValue.asText());
                 } else if ("dataUrl".equals(fieldName)) {
-                    userJson.setDataUrl(fieldValue.asText());
+                    userJsonDto.setDataUrl(fieldValue.asText());
                 } else if ("items".equals(fieldName)) {
                     if (fieldValue.isArray()) {
-                        ArrayList<UserJson> items = new ArrayList<>();
+                        ArrayList<UserJsonDto> items = new ArrayList<>();
                         ArrayNode arrayNode = (ArrayNode) fieldValue;
 
                         for (JsonNode arrayElement : arrayNode) {
-                            UserJson item = traverse(arrayElement);
+                            UserJsonDto item = traverse(arrayElement);
                             if (item.getVisibility() != null) {
                                 items.add(item);
                             }
                         }
-                        userJson.setItems(items);
+                        userJsonDto.setItems(items);
                     }
                 }
             }
         }
 
-        return userJson;
+        return userJsonDto;
     }
 }

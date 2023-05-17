@@ -1,19 +1,12 @@
 import axios from "../api/axios";
 
 const parseAndDelete = async (node) => {
-  console.log("deleting: ");
-  console.log(node.name);
-
   try {
-    await axios.delete(`/file/${node.id}`).then((res) => {
-      console.log(res.data);
-    });
+    await axios.delete(`/file/${node.id}`);
 
     if (node.type !== "Folder") {
       const key = node.id + "." + node.type;
-      await axios.delete(`/deleteFile/${key}`).then((res) => {
-        console.log(res);
-      });
+      await axios.delete(`/deleteFile/${key}`);
     }
   } catch (error) {
     console.log(error);

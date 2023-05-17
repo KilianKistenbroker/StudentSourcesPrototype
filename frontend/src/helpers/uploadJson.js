@@ -3,9 +3,7 @@ import axios from "../api/axios";
 const uploadJson = async (key, jsonData) => {
   const adjustedKey = key + ".json";
 
-  console.log(jsonData);
   const stringifiedData = JSON.stringify(jsonData);
-  console.log(stringifiedData);
 
   const blob = new Blob([stringifiedData], { type: "application/json" });
   const formData = new FormData();

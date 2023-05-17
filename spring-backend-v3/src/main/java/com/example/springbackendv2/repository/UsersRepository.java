@@ -32,4 +32,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Query(value = "SELECT * FROM users WHERE id IN (SELECT fk_item_id FROM saved_users WHERE fk_user_id LIKE :user_id)", nativeQuery = true)
     List<Users> getSavedUsers(@Param("user_id") Long user_id);
+
+    @Query(value = "SELECT * FROM users WHERE id IN (SELECT fk_member_id FROM chat_members WHERE fk_group_id LIKE :group_id)", nativeQuery = true)
+    List<Users> getAllUsersByGroupId(@Param("group_id") Long group_id);
 }

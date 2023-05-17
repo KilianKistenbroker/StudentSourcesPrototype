@@ -1,77 +1,174 @@
 import { useState } from "react";
+import handleUserSearch from "../helpers/handleUserSearch";
+import axios from "../api/axios";
+import { useEffect } from "react";
 
 const Inbox = ({ data }) => {
   // options will either be 'create dm' or the most recent conversation
   const [selection, setSelection] = useState("conversations");
   const [textMessage, setTextMessage] = useState("");
 
-  // ------------------- TEMPORARY ------------------- //
-  const commentsData = [
-    {
-      // id: 1,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment. Add comments in the text field below",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 2,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 3,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 4,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 1,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment. Add comments in the text field below",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 2,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 3,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-    {
-      // id: 4,
-      commenterImage: "http://placekitten.com/50/50",
-      username: "parthfloyd",
-      commentText:
-        "Hello this is a test comment what happens if this one gets too long.",
-      date: "March 5th, 2014",
-    },
-  ];
+  const [groups, setGroups] = useState([]);
+  const [currentGroupChat, setCurrentGroupChat] = useState(0);
+
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+  const [searchSelection, setSearchSelection] = useState("All");
+  const [loadUsers, setLoadUsers] = useState(null);
+
+  const [chatPoolId, setChatPoolId] = useState([]);
+  const [chatPoolUser, setChatPoolUser] = useState([]);
+  const [messageData, setMessageData] = useState([]);
+
+  useEffect(() => {
+    // get groupchats here from backend
+    getGroups();
+  }, []);
+
+  useEffect(() => {
+    getMessages();
+    setTextMessage("");
+  }, [groups, currentGroupChat]);
+
+  const getMessages = async () => {
+    if (groups.length === 0) return;
+    const group_id = groups[currentGroupChat].id;
+    try {
+      if (groups.length > 0) {
+        const res = await axios.get(`/getMessages/${group_id}`);
+        setMessageData(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getGroups = async () => {
+    try {
+      const res = await axios.get(`/getGroups/${data.id}`);
+      setGroups(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLeaveGroup = async () => {
+    const group_id = groups[currentGroupChat].id;
+    let tempGroups = groups.slice();
+    let newGroupPool = [];
+
+    for (let i = 0; i < tempGroups.length; i++) {
+      if (tempGroups[i].id !== group_id) {
+        newGroupPool.push(tempGroups[i]);
+      }
+    }
+    setCurrentGroupChat(0);
+    setGroups(newGroupPool);
+
+    try {
+      const res = await axios.delete(`/leaveGroupChat/${group_id}/${data.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    const group_id = groups[currentGroupChat].id;
+    let tempGroups = groups.slice();
+    let newGroupPool = [];
+
+    for (let i = 0; i < tempGroups.length; i++) {
+      if (tempGroups[i].id !== group_id) {
+        newGroupPool.push(tempGroups[i]);
+      }
+    }
+
+    setCurrentGroupChat(0);
+    setGroups(newGroupPool);
+    try {
+      const res = await axios.delete(`/deleteGroup/${group_id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSetChatPool = (state, loadData) => {
+    let chatPoolCopyId = chatPoolId.slice();
+    let chatPoolCopyUser = chatPoolUser.slice();
+
+    if (state === "add") {
+      chatPoolCopyId.push(loadData.id);
+      chatPoolCopyUser.push(loadData.user);
+      setChatPoolId(chatPoolCopyId);
+      setChatPoolUser(chatPoolCopyUser);
+    } else {
+      let tempIds = [];
+      let tempUsers = [];
+
+      for (let i = 0; i < chatPoolCopyId.length; i++) {
+        if (chatPoolCopyId[i] !== loadData.id) {
+          tempIds.push(chatPoolCopyId[i]);
+        }
+      }
+      setChatPoolId(tempIds);
+
+      for (let i = 0; i < chatPoolCopyUser.length; i++) {
+        if (chatPoolCopyUser[i] !== loadData.user) {
+          tempUsers.push(chatPoolCopyId[i]);
+        }
+      }
+      setChatPoolUser(tempUsers);
+    }
+  };
+
+  const handleCreateChat = async (e) => {
+    e.preventDefault();
+    try {
+      // const res = await axios.post(
+      //   "/createGroupChat",
+      //   {
+      //     fk_owner_id: data.id,
+      //   },
+      //   chatPool
+      // );
+
+      // adding owner to pool
+      let adjustedPoolId = chatPoolId.slice();
+      let adjustedPoolUser = chatPoolUser.slice();
+
+      adjustedPoolId.push(data.id);
+      adjustedPoolUser.push(data.user);
+
+      const groupName = adjustedPoolUser.join(", ").slice(0, 20);
+      const res = await axios.post(
+        "/createGroupChat",
+        {
+          fk_owner_id: data.id,
+        },
+        {
+          params: {
+            user_ids: adjustedPoolId.join(","),
+          },
+        }
+      );
+
+      setChatPoolId([]);
+      setChatPoolUser([]);
+
+      // temp set groups
+      let copyGroups = groups.slice();
+      copyGroups.push({
+        id: res.data.id,
+        groupName: groupName,
+        totalMembers: adjustedPoolId.length,
+      });
+
+      setGroups(copyGroups);
+    } catch (error) {
+      console.log(error);
+      setChatPoolId([]);
+    }
+  };
 
   // ------------------ taken from student.js --------------- //
   function formatDate(date) {
@@ -99,42 +196,71 @@ const Inbox = ({ data }) => {
     return `${day} ${month} ${year}`;
   }
 
-  const [conversation, setConversation] = useState(commentsData);
+  const addMessage = async () => {
+    //TODO: Instead of manipulating local data, use api's
+    const group_id = groups[currentGroupChat].id;
+    const messageCopy = messageData.slice();
+    const tempCommentInsert = {
+      user: data.user,
+      message: textMessage,
+      date_posted: formatDate(new Date()),
+    };
+    messageCopy.push(tempCommentInsert);
+    setMessageData(messageCopy);
+
+    try {
+      let adjustedMessageData = {};
+
+      adjustedMessageData = {
+        message: textMessage,
+        fk_group_id: group_id,
+        fk_user_id: data.id,
+      };
+
+      const res = await axios.post("/createDirectMessage", adjustedMessageData);
+    } catch (error) {
+      console.log(error);
+    }
+    setTextMessage("");
+  };
 
   const addToConversation = () => {
     //TODO: Instead of manipulating local data, use api's
     if (textMessage.trim(" ").length === 0) return;
     else {
-      const tempCopy = conversation.slice();
+      const tempCopy = messageData.slice();
       tempCopy.push({
         commenterImage: "http://placekitten.com/50/50", // replace with avatar from db
         username: data.user,
         commentText: textMessage,
         date: formatDate(new Date()),
       });
-      setConversation(tempCopy);
+      setMessageData(tempCopy);
       setTextMessage("");
     }
   };
 
-  const commentItems = conversation.map((comment, index) => (
+  const messageItems = messageData.map((textMessage, index) => (
     <li
       key={index}
       style={
-        comment.username === data.user ? { backgroundColor: "#ededed" } : {}
+        textMessage.user === data.user ? { backgroundColor: "#ededed" } : {}
       }
     >
-      <div className="commenterImage">
-        <img src={comment.commenterImage} />
-      </div>
-      <div className="commentText">
+      {/* <img src={comment.commenterImage} /> */}
+      <div className="box-icon"></div>
+
+      <div
+        className="commentText"
+        style={{ paddingLeft: "10px", paddingRight: "10px" }}
+      >
         <p className="">
           {" "}
-          <a className="commenterUsername link">{comment.username}</a>
+          <a className="commenterUsername link">{textMessage.user}</a>
           <br />
-          {comment.commentText}
+          {textMessage.message}
         </p>{" "}
-        <span className="date sub-text">{comment.date}</span>
+        <span className="date sub-text">{textMessage.date_posted}</span>
       </div>
     </li>
   ));
@@ -145,7 +271,9 @@ const Inbox = ({ data }) => {
         <div className="inbox-create-dm">
           Create DM
           <svg
-            onClick={() => setSelection("create-dm")}
+            onClick={() => {
+              setSelection("create-dm");
+            }}
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 16 16"
@@ -160,27 +288,53 @@ const Inbox = ({ data }) => {
         {/* map through friends list for now, but will prob have a seperate dm table to store conversations */}
 
         <div className="left-inbox-contacts">
-          <div
-            className="inbox-contact cursor-enabled"
-            onClick={() => setSelection("conversations")}
-          >
-            <div className="commenterImage">
-              <img src={"http://placekitten.com/50/50"} />
-            </div>
-            {/* temp username */}
-            <div className="inbox-username">{conversation[0].username}</div>
-          </div>
+          {groups.length > 0 &&
+            groups.map((loadGroups, index) => (
+              <div
+                className="inbox-contact cursor-enabled"
+                onClick={() => {
+                  setCurrentGroupChat(index);
+                  setSelection("conversations");
+                }}
+                key={index}
+                style={
+                  currentGroupChat === index && selection !== "create-dm"
+                    ? { backgroundColor: "#ececec" }
+                    : {}
+                }
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="user-nav-icon"
+                  fill="currentColor"
+                  style={{ height: "35px", width: "35px", marginRight: "10px" }}
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                </svg>
+                <div className="inbox-username">
+                  <div>{loadGroups.groupName}</div>
+                  <div style={{ fontSize: "14px", color: "#aaa" }}>
+                    members: {loadGroups.totalMembers}
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       <div className="right-inbox">
+        {/* This a hotfix hacky wacky trick to fix css alignment issues */}
+        <div style={{ width: "450px" }}>{}</div>
+
         {/* conversation body */}
-        {selection === "create-dm" ? (
+        {selection === "create-dm" || groups.length === 0 ? (
           <div>
             <div className="inbox-search">
               <form
                 id="search_form"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  handleUserSearch(e, setLoadUsers, search, () => {});
                 }}
               >
                 <button type="submit" id="search_button">
@@ -199,8 +353,8 @@ const Inbox = ({ data }) => {
                   name="searchbar"
                   placeholder={"Search Users"}
                   id="search_bar"
-                  // value={search}
-                  // onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   autoComplete="off"
                 />
               </form>
@@ -214,14 +368,120 @@ const Inbox = ({ data }) => {
                 color: "#3d3d3d",
               }}
             >
-              <b>Hint: </b>Find a user to start a conversation with.
+              {!loadUsers && (
+                <div>
+                  <b>Hint: </b>Find a user to start a conversation with.
+                </div>
+              )}
+              {/* display results */}
+              {loadUsers &&
+                loadUsers
+                  .filter(function (loadData) {
+                    return loadData.user !== data.user;
+                  })
+                  .map((loadData, index) => (
+                    <div className="box box-hover" key={index}>
+                      <div className="user-grid">
+                        <div className="box-icon">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                          </svg>
+                        </div>
+
+                        <div className="box-username">
+                          @{loadData.user} <br />
+                          {loadData.firstName} {loadData.lastName}
+                        </div>
+                      </div>
+
+                      <div></div>
+
+                      <div className="box-friend">
+                        {chatPoolId.includes(loadData.id) ? (
+                          <div
+                            className="box-friend-content cursor-enabled sent"
+                            onClick={() =>
+                              handleSetChatPool("remove", loadData)
+                            }
+                          >
+                            Added
+                          </div>
+                        ) : (
+                          <div
+                            className="box-friend-content cursor-enabled"
+                            onClick={() => handleSetChatPool("add", loadData)}
+                          >
+                            Add to chat
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+            </div>
+
+            <div className="inbox-textarea">
+              <button
+                className="create-group-chat"
+                type="button"
+                onClick={handleCreateChat}
+                disabled={chatPoolId.length === 0}
+                style={{ transition: "none" }}
+              >
+                Create group chat
+              </button>
             </div>
           </div>
         ) : (
           <div>
-            <div className="right-panel-coments" style={{ height: "423px" }}>
+            <div className="inbox-search">
+              <form
+                id="search_form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // handleUserSearch(e, setLoadUsers, search, () => {});
+                }}
+              >
+                {groups[currentGroupChat].fk_owner_id === data.id ? (
+                  <button
+                    className="create-group-chat"
+                    type="button"
+                    style={{
+                      padding: "5px",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                      transition: "none",
+                    }}
+                    onClick={handleDeleteGroup}
+                  >
+                    Delete group chat
+                  </button>
+                ) : (
+                  <button
+                    className="create-group-chat"
+                    type="button"
+                    style={{
+                      padding: "5px",
+                      paddingLeft: "10px",
+                      paddingRight: "10px",
+                      transition: "none",
+                    }}
+                    onClick={handleLeaveGroup}
+                  >
+                    Leave group chat
+                  </button>
+                )}
+              </form>
+            </div>
+            <div
+              className="right-panel-coments"
+              style={{ height: "423px", overflowX: "scroll" }}
+            >
               <div className="commentsContainer" id="comment">
-                <ul className="commentList">{commentItems}</ul>
+                <ul className="commentList">{messageItems}</ul>
               </div>
             </div>
 
@@ -230,7 +490,7 @@ const Inbox = ({ data }) => {
                 className="form-inline"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  addToConversation();
+                  addMessage();
                 }}
               >
                 <input
@@ -238,13 +498,13 @@ const Inbox = ({ data }) => {
                   type="text"
                   value={textMessage}
                   // temp username
-                  placeholder={`Message @${conversation[0].username}`}
+                  placeholder={`Message @${groups[currentGroupChat].groupName}`}
                   onChange={(e) => setTextMessage(e.target.value)}
                 />
                 <button
                   className="comment-send-button"
                   type="button"
-                  onClick={addToConversation}
+                  // onClick={addMessage}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
