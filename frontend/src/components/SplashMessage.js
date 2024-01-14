@@ -9,7 +9,7 @@ const SplashMessage = ({ splashMsg, setSplashMsg }) => {
             message: splashMsg.message,
             isShowing: false,
           });
-        }, 500)
+        }, 1000)
       }
       onClick={() =>
         setTimeout(() => {
@@ -17,7 +17,7 @@ const SplashMessage = ({ splashMsg, setSplashMsg }) => {
             message: splashMsg.message,
             isShowing: false,
           });
-        }, 500)
+        }, 1000)
       }
     >
       {splashMsg.message}

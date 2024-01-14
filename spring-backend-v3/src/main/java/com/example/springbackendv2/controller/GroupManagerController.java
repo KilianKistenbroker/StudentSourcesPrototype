@@ -9,12 +9,14 @@ import com.example.springbackendv2.repository.ChatMemberRepository;
 import com.example.springbackendv2.repository.DirectMessagesRepository;
 import com.example.springbackendv2.repository.GroupManagerRepository;
 import com.example.springbackendv2.repository.UsersRepository;
+import com.example.springbackendv2.service.TokensService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
+@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class GroupManagerController {
 
     @Autowired
@@ -29,8 +31,27 @@ public class GroupManagerController {
     @Autowired
     ChatMemberRepository chatMemberRepository;
 
+    @Autowired
+    TokensService tokensService;
+
     @PostMapping("/createGroupChat")
-    GroupManager createGroupChat(@RequestBody GroupManager groupManager, @RequestParam ArrayList<Long> user_ids){
+    GroupManager createGroupChat(@RequestBody GroupManager groupManager,
+                                 @RequestParam ArrayList<Long> user_ids,
+                                 @RequestParam String token){
+        boolean result = tokensService.checkAndUpdateToken(token, groupManager.getFk_owner_id());
+        if (!result) {
+            System.out.println("Token not found.");
+            GroupManager res = new GroupManager();
+            res.setId(-1L);
+            return res;
+
+//            limit amount of group chats a user can own
+        } else if (groupManagerRepository.findByOwnerId(groupManager.getFk_owner_id()).size() > 1) {
+            System.out.println("exceeded limit of group chats.");
+            GroupManager res = new GroupManager();
+            res.setId(-2L);
+            return res;
+        }
 
         GroupManager groupRef = groupManagerRepository.save(groupManager);
 
@@ -59,20 +80,24 @@ public class GroupManagerController {
         return groupRef;
     }
 
-    @DeleteMapping("/deleteGroup/{id}")
-    String deleteGroup(@PathVariable Long id){
+    @DeleteMapping("/deleteGroup/{id}/{userId}/{token}")
+    String deleteGroup(@PathVariable Long id,
+                       @PathVariable Long userId,
+                       @PathVariable String token){
 
-//        remove members of group
-        chatMemberRepository.removeMembersByGroupId(id);
-
-//        delete the chat thread
-        directMessagesRepository.deleteMessagesByGroupId(id);
+        if (!tokensService.checkAndUpdateToken(token, userId)) {
+            System.out.println("invalid token");
+            return null;
+        }
 
         if(!groupManagerRepository.existsById(id)){
             throw new UserNotFoundException(id);
         }
 
-        groupManagerRepository.deleteById(id);
+//        groupManagerRepository.deleteById(id);
+        chatMemberRepository.removeMembersByGroupId(id);
+        directMessagesRepository.deleteMessagesByGroupId(id);
+        groupManagerRepository.deleteGroup(id);
         return "Deleted user with id: " + id;
     }
 }

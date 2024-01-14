@@ -35,6 +35,7 @@ const CurrentDirectory = ({
   setTempFile,
   handleMoveFile,
   setSplashMsg,
+  setLoadingBar,
 }) => {
   const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -95,7 +96,7 @@ const CurrentDirectory = ({
     }
   };
 
-  const handleRename = (e, loadData) => {
+  const handleRename = async (e, loadData) => {
     if (e.keyCode === 13 && e.target.value && validInput) {
       const adjustedInput = input.trim();
       loadData.name = adjustedInput;
@@ -104,7 +105,7 @@ const CurrentDirectory = ({
       handleSetInputFalse();
 
       // update in db
-      const res = axios.put(`/file/${loadData.id}`, {
+      const res = await axios.put(`/file/${loadData.id}`, {
         id: null,
         fk_owner_id: null,
         fk_comments_id: null,
@@ -114,7 +115,7 @@ const CurrentDirectory = ({
       });
 
       // update in bucket
-      const res1 = uploadJson(data.id, explorerData);
+      const res1 = uploadJson(data, explorerData, loadData.id);
       if (res1 === -1) {
         console.log("failed to update home directory");
         setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
@@ -184,7 +185,7 @@ const CurrentDirectory = ({
       }
     }
 
-    const res = uploadJson(data.id, explorerData);
+    const res = uploadJson(data, explorerData, loadData.id);
     if (res === -1) {
       console.log("failed to update home directory");
       setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
@@ -229,7 +230,8 @@ const CurrentDirectory = ({
               setMessage,
               setSplashMsg,
               data,
-              owner
+              owner,
+              setLoadingBar
             )
           }
           onDragOver={(e) =>
@@ -587,7 +589,8 @@ const CurrentDirectory = ({
               setMessage,
               setSplashMsg,
               data,
-              owner
+              owner,
+              setLoadingBar
             )
           }
           onDragOver={(e) =>

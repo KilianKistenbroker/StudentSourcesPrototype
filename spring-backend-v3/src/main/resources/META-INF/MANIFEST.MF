@@ -1,36 +1,36 @@
 Manifest-Version: 1.0
 Main-Class: com.example.springbackendv2.SpringBackendV2Application
-Class-Path: spring-tx-5.3.26.jar tomcat-embed-el-9.0.73.jar ion-java-1.0
- .2.jar jakarta.xml.bind-api-2.3.3.jar aspectjweaver-1.9.7.jar commons-i
- o-2.6.jar spring-web-5.3.26.jar httpclient-4.5.14.jar spring-jdbc-5.3.2
- 6.jar byte-buddy-1.12.23.jar spring-aop-5.3.26.jar spring-beans-5.3.26.
- jar commons-fileupload-1.4.jar jackson-dataformat-cbor-2.13.5.jar hiber
- nate-commons-annotations-5.1.2.Final.jar aws-java-sdk-s3-1.11.792.jar s
- pring-expression-5.3.26.jar HikariCP-4.0.3.jar logback-classic-1.2.11.j
- ar jmespath-java-1.11.792.jar spring-boot-starter-2.7.10.jar antlr-2.7.
- 7.jar tomcat-embed-core-9.0.73.jar spring-boot-starter-logging-2.7.10.j
- ar spring-data-jpa-2.7.10.jar joda-time-2.8.1.jar txw2-2.3.8.jar aws-ja
- va-sdk-ec2-1.11.792.jar spring-security-crypto-5.7.7.jar spring-cloud-a
- ws-autoconfigure-2.2.5.RELEASE.jar jakarta.persistence-api-2.2.3.jar ja
- karta.annotation-api-1.3.5.jar httpcore-4.4.16.jar hibernate-core-5.6.1
- 5.Final.jar tomcat-embed-websocket-9.0.73.jar aws-java-sdk-cloudformati
- on-1.11.792.jar jackson-datatype-jsr310-2.13.5.jar spring-cloud-aws-cor
- e-2.2.5.RELEASE.jar spring-webmvc-5.3.26.jar classmate-1.5.1.jar spring
- -aspects-5.3.26.jar jul-to-slf4j-1.7.36.jar spring-orm-5.3.26.jar jacks
- on-annotations-2.13.5.jar spring-boot-starter-aop-2.7.10.jar spring-clo
- ud-aws-context-2.2.5.RELEASE.jar spring-boot-starter-data-jpa-2.7.10.ja
- r jackson-datatype-jdk8-2.13.5.jar spring-boot-starter-json-2.7.10.jar 
- logback-core-1.2.11.jar jaxb-runtime-2.3.8.jar mysql-connector-j-8.0.32
- .jar spring-core-5.3.26.jar javax.activation-api-1.2.0.jar commons-code
- c-1.15.jar istack-commons-runtime-3.0.12.jar jakarta.activation-1.2.2.j
- ar jandex-2.4.2.Final.jar jakarta.activation-api-1.2.2.jar spring-jcl-5
- .3.26.jar spring-security-core-5.7.7.jar snakeyaml-1.30.jar jackson-dat
- abind-2.13.5.jar jakarta.transaction-api-1.3.3.jar aws-java-sdk-core-1.
- 11.792.jar slf4j-api-1.7.36.jar spring-context-5.3.26.jar spring-boot-2
- .7.10.jar spring-boot-autoconfigure-2.7.10.jar jackson-core-2.13.5.jar 
- spring-boot-starter-tomcat-2.7.10.jar aws-java-sdk-kms-1.11.792.jar log
- 4j-api-2.17.2.jar spring-data-commons-2.7.10.jar spring-cloud-starter-a
- ws-2.2.5.RELEASE.jar jboss-logging-3.4.3.Final.jar spring-boot-starter-
- web-2.7.10.jar log4j-to-slf4j-2.17.2.jar jackson-module-parameter-names
- -2.13.5.jar spring-boot-starter-jdbc-2.7.10.jar
+Class-Path: log4j-to-slf4j-2.17.2.jar spring-tx-5.3.26.jar spring-securi
+ ty-core-5.7.7.jar spring-security-crypto-5.7.7.jar jboss-logging-3.4.3.
+ Final.jar spring-cloud-aws-core-2.2.5.RELEASE.jar spring-cloud-aws-auto
+ configure-2.2.5.RELEASE.jar httpclient-4.5.14.jar spring-beans-5.3.26.j
+ ar spring-boot-starter-jdbc-2.7.10.jar slf4j-api-1.7.36.jar HikariCP-4.
+ 0.3.jar spring-jcl-5.3.26.jar spring-web-5.3.26.jar spring-boot-starter
+ -data-jpa-2.7.10.jar spring-boot-starter-aop-2.7.10.jar spring-context-
+ 5.3.26.jar tomcat-embed-core-9.0.73.jar snakeyaml-1.30.jar jakarta.pers
+ istence-api-2.2.3.jar spring-boot-starter-web-2.7.10.jar jaxb-runtime-2
+ .3.8.jar commons-codec-1.15.jar javax.activation-api-1.2.0.jar spring-a
+ op-5.3.26.jar jakarta.transaction-api-1.3.3.jar jackson-core-2.13.5.jar
+  aws-java-sdk-core-1.11.792.jar spring-jdbc-5.3.26.jar jackson-datatype
+ -jsr310-2.13.5.jar txw2-2.3.8.jar aspectjweaver-1.9.7.jar istack-common
+ s-runtime-3.0.12.jar spring-orm-5.3.26.jar spring-data-jpa-2.7.10.jar j
+ akarta.activation-api-1.2.2.jar jackson-module-parameter-names-2.13.5.j
+ ar spring-data-commons-2.7.10.jar spring-core-5.3.26.jar joda-time-2.8.
+ 1.jar spring-cloud-aws-context-2.2.5.RELEASE.jar logback-core-1.2.11.ja
+ r jackson-databind-2.13.5.jar spring-boot-autoconfigure-2.7.10.jar spri
+ ng-expression-5.3.26.jar mysql-connector-j-8.0.32.jar jackson-datatype-
+ jdk8-2.13.5.jar byte-buddy-1.12.23.jar jackson-dataformat-cbor-2.13.5.j
+ ar httpcore-4.4.16.jar jandex-2.4.2.Final.jar spring-boot-starter-loggi
+ ng-2.7.10.jar jakarta.activation-1.2.2.jar aws-java-sdk-s3-1.11.792.jar
+  jackson-annotations-2.13.5.jar log4j-api-2.17.2.jar aws-java-sdk-cloud
+ formation-1.11.792.jar hibernate-core-5.6.15.Final.jar spring-boot-star
+ ter-tomcat-2.7.10.jar tomcat-embed-el-9.0.73.jar spring-aspects-5.3.26.
+ jar tomcat-embed-websocket-9.0.73.jar jul-to-slf4j-1.7.36.jar spring-bo
+ ot-2.7.10.jar commons-io-2.6.jar commons-fileupload-1.4.jar spring-boot
+ -starter-2.7.10.jar jakarta.xml.bind-api-2.3.3.jar jakarta.annotation-a
+ pi-1.3.5.jar aws-java-sdk-kms-1.11.792.jar aws-java-sdk-ec2-1.11.792.ja
+ r spring-boot-starter-json-2.7.10.jar classmate-1.5.1.jar spring-cloud-
+ starter-aws-2.2.5.RELEASE.jar logback-classic-1.2.11.jar hibernate-comm
+ ons-annotations-5.1.2.Final.jar ion-java-1.0.2.jar antlr-2.7.7.jar jmes
+ path-java-1.11.792.jar spring-webmvc-5.3.26.jar
 

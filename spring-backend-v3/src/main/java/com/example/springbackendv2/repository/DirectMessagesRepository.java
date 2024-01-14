@@ -12,7 +12,12 @@ import java.util.List;
 
 public interface DirectMessagesRepository extends JpaRepository<DirectMessages, Long> {
     @Query(value = "SELECT * FROM direct_messages WHERE fk_group_id LIKE :group_id ORDER BY message_date", nativeQuery = true)
-    List<DirectMessages> getAllMessagesByGroupId(@Param("group_id") int group_id);
+    List<DirectMessages> getAllMessagesByGroupId(@Param("group_id") Long group_id);
+
+
+
+    @Query(value = "SELECT * FROM direct_messages WHERE fk_user_id LIKE :userId AND fk_group_id LIKE :groupId", nativeQuery = true)
+    List<DirectMessages> findByUserIdAndGroupId(@Param("userId") Long userId, @Param("groupId") Long groupId);
 
     @Transactional
     @Modifying

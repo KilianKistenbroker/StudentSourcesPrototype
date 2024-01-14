@@ -74,9 +74,7 @@ const TinyFooter = ({
           </b>
         </div>
       ) : (
-        <div className="tiny-loading-bar" style={{ color: "#aaa" }}>
-          Synced
-        </div>
+        <div className="tiny-loading-bar" style={{ color: "#aaa" }}></div>
       )}
 
       {owner.user === data.user && !showTrash ? (

@@ -3,7 +3,6 @@ import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import parseAndDelete from "../helpers/deleteFiles";
 
 const Account = ({ data, splashMsg, setSplashMsg, explorerData }) => {
   const navigate = useNavigate();
@@ -153,13 +152,9 @@ const Account = ({ data, splashMsg, setSplashMsg, explorerData }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.delete(`/user/${data.id}`); // delete user from db
-      parseAndDelete(explorerData); // delete user files from bucket and db
+      const tempData = JSON.parse(JSON.stringify(data));
+      const res = await axios.delete(`/user/${tempData.id}/${tempData.token}`); // delete user from db
 
-      const adjustedKey = data.id + ".json";
-      const res1 = await axios.delete(`/deleteJson/${adjustedKey}`); // delete user home directory json from bucket
-
-      // data.isLoggedIn = false;
       data.id = -1;
       localStorage.clear();
       navigate("/login");

@@ -1,4 +1,7 @@
 const Comments = ({ data, commentsData }) => {
+  if (!commentsData) {
+    return;
+  }
   const commentItems = commentsData.map((comment, index) => (
     <li
       key={index}

@@ -28,6 +28,7 @@ const Inbox = ({ data }) => {
   useEffect(() => {
     getMessages();
     setTextMessage("");
+    console.log(groups);
   }, [groups, currentGroupChat]);
 
   const getMessages = async () => {
@@ -86,7 +87,9 @@ const Inbox = ({ data }) => {
     setCurrentGroupChat(0);
     setGroups(newGroupPool);
     try {
-      const res = await axios.delete(`/deleteGroup/${group_id}`);
+      const res = await axios.delete(
+        `/deleteGroup/${group_id}/${data.id}/${data.token}`
+      );
     } catch (error) {
       console.log(error);
     }
@@ -124,14 +127,6 @@ const Inbox = ({ data }) => {
   const handleCreateChat = async (e) => {
     e.preventDefault();
     try {
-      // const res = await axios.post(
-      //   "/createGroupChat",
-      //   {
-      //     fk_owner_id: data.id,
-      //   },
-      //   chatPool
-      // );
-
       // adding owner to pool
       let adjustedPoolId = chatPoolId.slice();
       let adjustedPoolUser = chatPoolUser.slice();
@@ -141,16 +136,24 @@ const Inbox = ({ data }) => {
 
       const groupName = adjustedPoolUser.join(", ").slice(0, 20);
       const res = await axios.post(
-        "/createGroupChat",
+        `/createGroupChat`,
         {
           fk_owner_id: data.id,
         },
         {
           params: {
             user_ids: adjustedPoolId.join(","),
+            token: data.token,
           },
         }
       );
+
+      if (res.data.id < 0) {
+        console.log("exceed chat group limit");
+        setChatPoolId([]);
+        setChatPoolUser([]);
+        return;
+      }
 
       setChatPoolId([]);
       setChatPoolUser([]);
@@ -158,6 +161,7 @@ const Inbox = ({ data }) => {
       // temp set groups
       let copyGroups = groups.slice();
       copyGroups.push({
+        fk_owner_id: data.id,
         id: res.data.id,
         groupName: groupName,
         totalMembers: adjustedPoolId.length,
@@ -217,7 +221,18 @@ const Inbox = ({ data }) => {
         fk_user_id: data.id,
       };
 
-      const res = await axios.post("/createDirectMessage", adjustedMessageData);
+      const res = await axios.post(
+        `/createDirectMessage`,
+        adjustedMessageData,
+        {
+          params: {
+            token: data.token,
+          },
+        }
+      );
+      if (res.data < 0) {
+        console.log("Exceeded maximum chat messages for this group");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -307,7 +322,7 @@ const Inbox = ({ data }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   id="user-nav-icon"
                   fill="currentColor"
-                  style={{ height: "35px", width: "35px", marginRight: "10px" }}
+                  style={{ height: "25px", width: "25px", marginRight: "10px" }}
                   viewBox="0 0 16 16"
                 >
                   <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
@@ -361,11 +376,13 @@ const Inbox = ({ data }) => {
             </div>
             <div
               style={{
-                marginTop: "45px",
+                marginTop: "50px",
                 padding: "15px",
                 fontSize: "15px",
                 width: "100%",
                 color: "#3d3d3d",
+                height: "400px",
+                overflow: "scroll",
               }}
             >
               {!loadUsers && (
@@ -478,7 +495,7 @@ const Inbox = ({ data }) => {
             </div>
             <div
               className="right-panel-coments"
-              style={{ height: "423px", overflowX: "scroll" }}
+              style={{ height: "375px", marginTop: "50px" }}
             >
               <div className="commentsContainer" id="comment">
                 <ul className="commentList">{messageItems}</ul>
@@ -504,7 +521,7 @@ const Inbox = ({ data }) => {
                 <button
                   className="comment-send-button"
                   type="button"
-                  // onClick={addMessage}
+                  onClick={addMessage}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

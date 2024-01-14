@@ -14,6 +14,7 @@ public class Users {
     private String lastName;
     private String email;
     private String password;
+    private Long occupiedSpace;
 
 
     public Long getId() {
@@ -62,6 +63,38 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    // Default constructor
+    public Users() {
+        this.occupiedSpace = 0L;
+    }
+
+    public Long getOccupiedSpace() {
+        return occupiedSpace;
+    }
+
+    public void setOccupiedSpace(Long occupiedSpace) {
+        this.occupiedSpace = occupiedSpace;
+    }
+
+    public boolean checkAndAddOccupiedSpace(Long size) {
+        if (this.occupiedSpace + size > 1_073_741_824) {
+            return false;
+        } else {
+            this.occupiedSpace += size;
+            return true;
+        }
+    }
+
+    public boolean checkAndRemoveOccupiedSpace(Long size) {
+        if ( this.occupiedSpace - size < 0) {
+            this.occupiedSpace = 0L;
+        }  else {
+            this.occupiedSpace -= size;
+        }
+        return true;
     }
 }
 

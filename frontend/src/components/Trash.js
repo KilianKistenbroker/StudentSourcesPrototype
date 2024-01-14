@@ -14,7 +14,6 @@ import handleDragOver from "../helpers/handleDrag";
 import handleDrop from "../helpers/handleDrop";
 import { useState } from "react";
 import uploadJson from "../helpers/uploadJson";
-import axios from "../api/axios";
 import parseAndDelete from "../helpers/deleteFiles";
 
 const Trash = ({
@@ -41,7 +40,7 @@ const Trash = ({
   const deleteThisItem = async (loadData) => {
     // updated size of home directory
 
-    parseAndDelete(loadData);
+    parseAndDelete(loadData, data, explorerData);
 
     explorerData.size -= loadData.size;
 
@@ -73,7 +72,7 @@ const Trash = ({
       }
     }
 
-    const ret = uploadJson(`${data.id}`, explorerData);
+    const ret = uploadJson(data, explorerData);
   };
 
   return (

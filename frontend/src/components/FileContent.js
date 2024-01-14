@@ -40,13 +40,15 @@ const FileContent = ({
       return;
     } else if (currentFile.type === "txt") {
       getFileData().then((res) => {
+        console.log("res: ");
+        console.log(res);
         setDataUrl(res);
         setLoading(false);
       });
     } else if (["mp4", "mov"].includes(currentFile.type)) {
       try {
         const adjustedKey = currentFile.id + "." + currentFile.type;
-        setVideoSrc(`http://localhost:8080/streamVideo/${adjustedKey}`);
+        setVideoSrc(`http://54.219.131.2:8080/streamVideo/${adjustedKey}`);
         setLoading(false);
       } catch (err) {
         console.log(
@@ -162,21 +164,21 @@ const FileContent = ({
       }
     } catch (error) {
       console.log(error);
-      const res = await insertTxtFile("");
+      const res = await insertTxtFile(`${currentFile.dataUrl}`);
       if (res === -1) {
         console.log("Failed to upload new file");
       }
-      return "";
+      return currentFile.dataUrl;
     }
   };
 
-  const insertTxtFile = async (data) => {
+  const insertTxtFile = async (dataUrl) => {
     try {
       // insert txt file into s3 bucket
       console.log("Inserting new file");
 
       const updatedContent =
-        "application/octet-stream;base64," + window.btoa(data);
+        "application/octet-stream;base64," + window.btoa(dataUrl);
       const fileURLParts = updatedContent.split(",");
       const byteString = window.atob(fileURLParts[1]);
 
@@ -194,7 +196,8 @@ const FileContent = ({
         currentFile.id,
         file,
         setLoadingBar,
-        currentFile.pathname
+        currentFile.pathname,
+        data
       );
 
       setLoadingBar({
@@ -246,12 +249,15 @@ const FileContent = ({
         style={{
           height: `${scale.height}px`,
           position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          padding: "10px",
         }}
       >
         {["jpeg", "jpg", "gif", "png"].includes(currentFile.type) ? (
           <img
             src={dataUrl}
-            style={{ width: "100%", borderRadius: "2px" }}
+            style={{ width: "auto", borderRadius: "2px" }}
           ></img>
         ) : "txt" === currentFile.type ? (
           <textarea
@@ -320,28 +326,31 @@ const FileContent = ({
               </div>
             </div>
 
-            <Document
-              file={dataUrl}
-              onLoadSuccess={({ numPages }) => {
-                console.log(`PDF loaded with ${numPages} pages.`);
-                setNumPages(numPages);
-                setPdfController({
-                  currentPage: 1,
-                  pageLimit: numPages,
-                });
-              }}
-            >
-              <div className="pdfPlaceholder"></div>
-              <Page
-                loading={""}
-                renderMode="svg"
-                pageNumber={pdfController.currentPage}
-                scale={scale.render}
-              />
-            </Document>
+            {dataUrl && (
+              <Document
+                file={dataUrl}
+                onLoadSuccess={({ numPages }) => {
+                  console.log(`PDF loaded with ${numPages} pages.`);
+                  setNumPages(numPages);
+                  setPdfController({
+                    currentPage: 1,
+                    pageLimit: numPages,
+                  });
+                }}
+              >
+                <div className="pdfPlaceholder"></div>
+                <Page
+                  loading={""}
+                  renderMode="svg"
+                  pageNumber={pdfController.currentPage}
+                  scale={scale.render}
+                />
+              </Document>
+            )}
           </div>
         ) : "mp4" === currentFile.type || "mov" === currentFile.type ? (
           <video
+            controlsList="nodownload"
             src={videoSrc}
             type={`video/${currentFile.type}`}
             style={{ width: "100%", padding: "10px" }}

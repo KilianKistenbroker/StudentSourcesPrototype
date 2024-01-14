@@ -52,7 +52,7 @@ const Footer = ({ windowDimension }) => {
           </div>
         </div>
         <div className="footer-content">
-          <h2>SFSU Learning</h2> <br />
+          <h2>Learning</h2> <br />
           <Link
             className="sentence_spacing footer-link cursor-enabled"
             target="_blank"

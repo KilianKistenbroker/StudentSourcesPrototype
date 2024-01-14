@@ -33,8 +33,8 @@ public class StorageConfig {
         CommonsMultipartResolver resolver
                 = new CommonsMultipartResolver();
         resolver.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
-        resolver.setMaxUploadSize(1073741824L); //50MB
-        resolver.setMaxUploadSizePerFile(1073741824L); //50MB
+        resolver.setMaxUploadSize(1073741824L); //1GB
+        resolver.setMaxUploadSizePerFile(1073741824L); //1GB
 
         return resolver;
     }

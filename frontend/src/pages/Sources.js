@@ -5,7 +5,6 @@ import FriendsAll from "../components/FriendsAll";
 import FriendsPending from "../components/FriendsPending";
 import SavedAll from "../components/SavedAll";
 import Users from "../components/Users";
-import dummyFolder from "../data/dummyFolder";
 import Student from "./Student";
 import Window from "../components/Window";
 import retrieveOutsideJson from "../helpers/retrieveOutsideJson";

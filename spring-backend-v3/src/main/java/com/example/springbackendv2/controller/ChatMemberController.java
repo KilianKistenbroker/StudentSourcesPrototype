@@ -8,15 +8,13 @@ import com.example.springbackendv2.repository.ChatMemberRepository;
 import com.example.springbackendv2.repository.GroupManagerRepository;
 import com.example.springbackendv2.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class ChatMemberController {
     @Autowired
     ChatMemberRepository chatMemberRepository;
@@ -45,10 +43,7 @@ public class ChatMemberController {
 
 
             for (Users users : usersList) {
-                //            user = usersRepository.findById(usersList.get(j).getId())
-//                    .orElseThrow(()-> new UserNotFoundException(list.get(finalI).getFk_member_id()));
                 groupName.append(", ").append(users.getUser());
-
             }
 
             String adjustedGroupName = groupName.substring(2);

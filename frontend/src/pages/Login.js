@@ -84,30 +84,41 @@ const Login = ({
       } else if (res.data.id === -2) {
         setErrMsg("Invalid password.");
       } else if (res.data.id > 0) {
-        data.user = res.data.user;
+        data.user = user;
         data.firstName = res.data.firstName;
         data.lastName = res.data.lastName;
         data.email = res.data.email;
-        data.password = res.data.password;
+        data.password = password;
         data.id = res.data.id;
+        data.token = res.data.password;
 
-        retreiveJSON(`${data.id}`).then((ret) => {
+        console.log("font end data: " + data);
+        console.log("back end data: " + res.data);
+
+        retreiveJSON(data).then((ret) => {
           if (ret === -1) {
             console.log("could not get user home directory");
             console.log("creating new home directory");
 
             // changing ret to dummy data
-            ret = explorer;
+            // ret = explorer;
 
             // TEMP PLACEMENT: creating new home directory
-            const ret2 = uploadJson(`${data.id}`, explorer);
-            if (ret2 === -1) {
-              setErrMsg("Could not create new account.");
-              return;
-            }
+            // const ret2 = uploadJson(`${data.id}`, explorer);
+            // if (ret2 === -1) {
+            //   setErrMsg("Could not create new account.");
+            //   return;
+            // }
 
             setUser("");
             setPassword("");
+
+            setSplashMsg({
+              message: "Unable to retrieve files",
+              isShowing: true,
+            });
+
+            return;
           }
 
           setExplorerData(ret);

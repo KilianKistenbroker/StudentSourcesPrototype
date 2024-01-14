@@ -42,7 +42,7 @@ const VisibilityPermissions = ({
       tempFile.content.visibility = visibility;
       tempFile.content.permissions = permissions;
 
-      const res = axios.put(`/file/${tempFile.content.id}`, {
+      const res = await axios.put(`/file/${tempFile.content.id}`, {
         id: null,
         fk_owner_id: null,
         fk_comments_id: null,
@@ -51,7 +51,7 @@ const VisibilityPermissions = ({
         visibility: visibility,
       });
 
-      const res1 = uploadJson(data.id, explorerData);
+      const res1 = uploadJson(data, explorerData);
       if (res1 === -1) {
         console.log("Failed to save home directory.");
       }

@@ -1,7 +1,10 @@
 package com.example.springbackendv2.controller;
 
 import com.example.springbackendv2.dto.UserJsonDto;
+import com.example.springbackendv2.model.FileMetadata;
+import com.example.springbackendv2.repository.FileMetadataRepository;
 import com.example.springbackendv2.service.StorageService;
+import com.example.springbackendv2.service.TokensService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class JsonController {
 
 
@@ -29,26 +33,68 @@ public class JsonController {
     JsonNode GLOBALJSON;
 
 
-
-
     @Autowired
     private StorageService service;
-    @PostMapping(value = "/uploadJson/{key}")
+    @Autowired
+    private FileMetadataRepository fileMetadataRepository;
+    @Autowired
+    private TokensService tokensService;
+
+    @PostMapping(value = "/uploadJson/{userId}/{token}")
     public ResponseEntity<String> uploadJson(@RequestParam(value = "file") MultipartFile file,
-                                             @PathVariable("key") String key) {
+                                             @PathVariable("userId") Long userId,
+                                             @PathVariable("token") String token) {
 
-        return new ResponseEntity<>(service.uploadJson(file, key), HttpStatus.OK);
+        boolean result = tokensService.checkAndUpdateToken(token, userId);
+        if (!result) {
+            return new ResponseEntity<>("Canceled json upload", HttpStatus.NOT_FOUND);
+        } else {
+            String key = userId + ".json";
+            return new ResponseEntity<>(service.uploadJson(file, key), HttpStatus.OK);
+        }
     }
 
-    @DeleteMapping("/deleteJson/{key}")
-    public ResponseEntity<String> deleteJson(@PathVariable String key) {
-        return new ResponseEntity<>(service.deleteJson(key), HttpStatus.OK);
+    @PostMapping(value = "/uploadSecureJson/{key}/{fileKey}/{userId}/{token}")
+    public ResponseEntity<String> uploadSecureJson(@RequestParam(value = "file") MultipartFile file,
+                                                   @PathVariable("key") String key,
+                                                   @PathVariable("fileKey") Long fileKey,
+                                                   @PathVariable("userId") Long userId,
+                                                   @PathVariable("token") String token) {
+
+        boolean result = tokensService.checkAndUpdateToken(token, userId);
+        if (!result) {
+            return new ResponseEntity<>("Canceled json upload", HttpStatus.NOT_FOUND);
+        }
+
+        FileMetadata fileMetadata = fileMetadataRepository.findByIdAndUserId(fileKey, userId);
+        if(fileMetadata == null) {
+            System.out.println("Cancelling json upload");
+            return new ResponseEntity<>("metadata not found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(service.uploadJson(file, key), HttpStatus.OK);
+        }
     }
 
-    @GetMapping(value = "/downloadJson/{key}")
-    public ResponseEntity<ByteArrayResource> downloadJson(@PathVariable("key") String key) throws JsonProcessingException {
+//    @DeleteMapping("/deleteJson/{key}")
+//    public ResponseEntity<String> deleteJson(@PathVariable String key) {
+//        return new ResponseEntity<>(service.deleteJson(key), HttpStatus.OK);
+//    }
+
+    @GetMapping(value = "/downloadJson/{key}/{userId}/{token}")
+    public ResponseEntity<ByteArrayResource> downloadJson(@PathVariable("key") String key,
+                                                          @PathVariable("userId") Long userId,
+                                                          @PathVariable("token") String token) {
+
+        System.out.println("downloading user-directory: " + key);
+        if (!tokensService.checkAndUpdateToken(token, userId)) {
+            System.out.println("token not found");
+            return null;
+        }
+
         byte[] data=  service.downloadJson(key);
         ByteArrayResource resource = new ByteArrayResource(data);
+
+        System.out.println("user-directory retrieved: " + key);
 
         return ResponseEntity
                 .ok()

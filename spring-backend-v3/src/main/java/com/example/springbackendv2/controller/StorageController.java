@@ -1,29 +1,19 @@
 package com.example.springbackendv2.controller;
 
-
 import com.example.springbackendv2.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class StorageController {
 
     @Autowired
     private StorageService service;
-
-    @PostMapping(value = "/uploadFile/{key}")
-    public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file,
-                                             @PathVariable("key") String key) {
-
-        return new ResponseEntity<>(service.uploadFile(file, key), HttpStatus.OK);
-    }
 
     @GetMapping("/downloadFile/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
@@ -38,16 +28,9 @@ public class StorageController {
                 .body(resource);
     }
 
-
     @RequestMapping(value = "/streamVideo/{fileName}")
     public ResponseEntity<Object> streamVideo(@PathVariable String fileName, HttpServletRequest request, HttpServletResponse response) {
-
         return service.streamFile(fileName, request, response);
-    }
-
-    @DeleteMapping("/deleteFile/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        return new ResponseEntity<>(service.deleteFile(fileName), HttpStatus.OK);
     }
 }
 

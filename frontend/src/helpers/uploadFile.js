@@ -1,10 +1,9 @@
 import axios from "../api/axios";
 
-const uploadFile = async (key, file, setLoadingBar, pathname) => {
+const uploadFile = async (key, file, setLoadingBar, pathname, data) => {
   const type = file.name.split(".").pop();
-  const adjustedKey = key + "." + type;
   const formData = new FormData();
-  formData.append("file", file, adjustedKey);
+  formData.append("file", file);
 
   const config = {
     headers: {
@@ -22,13 +21,22 @@ const uploadFile = async (key, file, setLoadingBar, pathname) => {
   };
 
   try {
-    const res = await axios.post(
-      `/uploadFile/${adjustedKey}`,
-      formData,
-      config
-    );
-
-    return 0;
+    console.log("filename: " + file.name);
+    if (key > 0) {
+      const res = await axios.post(
+        `/updateFile/${data.id}/${key}/${type}/${data.token}`,
+        formData,
+        config
+      );
+      return res.data;
+    } else {
+      const res = await axios.post(
+        `/postFile/${data.id}/${file.name}/${type}/${data.token}`,
+        formData,
+        config
+      );
+      return res.data;
+    }
   } catch (error) {
     return -1;
   }

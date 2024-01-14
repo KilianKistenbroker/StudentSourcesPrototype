@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class CommentsController {
 
     @Autowired
@@ -56,8 +57,16 @@ public class CommentsController {
     }
 
     @PostMapping("/saveComment")
-    Comments saveComment(@RequestBody Comments comment){
-        return commentsService.saveOrUpdateComment(comment);
+    Long saveComment(@RequestBody Comments comment){
+
+//        limit comment creation to 10 per user
+        if (commentsService.getAllCommentByUserId(comment.getFk_user_id()).size() >= 10) {
+            System.out.println("limited comment creation for UID: " + comment.getFk_user_id());
+            return -1L;
+        }
+
+        commentsService.saveOrUpdateComment(comment);
+        return 0L;
     }
 
     @PutMapping("/saveCommentText/{comment_id}")

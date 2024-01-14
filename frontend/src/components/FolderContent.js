@@ -128,6 +128,7 @@ const FolderContent = ({
           tempFile={tempFile}
           handleMoveFile={handleMoveFile}
           setSplashMsg={setSplashMsg}
+          setLoadingBar={setLoadingBar}
         />
       </div>
       {owner.user === data.user && (

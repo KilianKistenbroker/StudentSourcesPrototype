@@ -1899,15 +1899,18 @@ transform: translate(0, 75px);
     background-color: white;
     display: grid;
     grid-template-columns: repeat(2, auto);
+    /* grid-template-columns: repeat(1, auto); */
     gap: 50px;
 }
 
 .learn-more-description {
+    justify-self: center;
     max-width: 500px;
     padding-top: 50px;
 }
 
 .learn-more-title {
+    text-align: center;
     font-weight: bolder;
     margin-bottom: 20px;
     /* text-align: center; */
@@ -1924,11 +1927,12 @@ transform: translate(0, 75px);
     max-width: 400px;
     max-height: 355px;
     overflow: hidden;
+    justify-self: center;
 }
 
 .learn-more-img {
     /* temp img placement */
-    text-align: center; 
+    /* text-align: center;  */
     width: 100%;
     height: auto;
     margin: auto;
@@ -2033,7 +2037,7 @@ justify-content: left;
 }
 
 .left-inbox-contacts{
-    overflow: scroll;
+    overflow-y: scroll;
     
     
     margin-top: 50px;

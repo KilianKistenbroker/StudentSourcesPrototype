@@ -41,7 +41,7 @@ const StudentSearch = ({
     trashItems.size = 0;
 
     for (let i = trashItems.items.length - 1; i >= 0; i--) {
-      parseAndDelete(trashItems.items[i]);
+      parseAndDelete(trashItems.items[i], data, exploreData);
       trashItems.items.pop();
     }
 
@@ -53,18 +53,7 @@ const StudentSearch = ({
       }
     }
 
-    const ret = uploadJson(`${data.id}`, exploreData);
-    // if (ret === -1) {
-    //   setSplashMsg({
-    //     message: "Upload failed!",
-    //     isShowing: true,
-    //   });
-    // } else {
-    //   setSplashMsg({
-    //     message: "Upload successful!",
-    //     isShowing: true,
-    //   });
-    // }
+    const ret = uploadJson(data, exploreData);
   };
 
   const handleExit = () => {
@@ -85,39 +74,6 @@ const StudentSearch = ({
 
     return temp;
   };
-
-  // const handleSort = () => {
-  //   currentDirectory.items.sort((a, b) => {
-  //     let fa = a.name.toLowerCase(),
-  //       fb = b.name.toLowerCase();
-
-  //     return fa.localeCompare(fb, undefined, { numeric: true });
-  //   });
-
-  //   let folders = [];
-  //   let files = [];
-  //   for (let i = 0; i < currentDirectory.items.length; i++) {
-  //     if (currentDirectory.items[i].type === "Folder")
-  //       folders.push(currentDirectory.items[i]);
-  //     else files.push(currentDirectory.items[i]);
-  //   }
-  //   const updateitems = folders.concat(files);
-  //   currentDirectory.items = updateitems;
-
-  //   // remove unneccessary data here before parsing with stringify
-  //   const tempObject = {
-  //     name: currentDirectory.name,
-  //     pathname: currentDirectory.pathname,
-  //     type: currentDirectory.type,
-  //     size: 0,
-  //     isPinned: false,
-  //     visibility: currentDirectory.visibility,
-  //     dataUrl: "",
-  //     items: currentDirectory.items,
-  //   };
-
-  //   setCurrentDirectory(tempObject);
-  // };
 
   // this will populate searchResults
   const searchHelper = async (e) => {
@@ -253,25 +209,27 @@ const StudentSearch = ({
         ) : currentFile ? (
           <div className="selection">
             {owner.user === data.user ||
-              (currentFile.permissions === "Can view & download" && (
-                <div
-                  className={
-                    selected === "saved" ? "selected" : "selection-content"
-                  }
-                  onClick={() => downloadFile(currentFile)}
+            currentFile.persmissions === "Can view & download" ? (
+              <div
+                className={
+                  selected === "saved" ? "selected" : "selection-content"
+                }
+                onClick={() => downloadFile(currentFile)}
+              >
+                {/* download*/}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-icons cursor-enabled"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
                 >
-                  {/* download*/}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="header-icons cursor-enabled"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                  </svg>
-                </div>
-              ))}
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                </svg>
+              </div>
+            ) : (
+              <div></div>
+            )}
 
             <div
               className={

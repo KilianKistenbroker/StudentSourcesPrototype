@@ -21,6 +21,8 @@ public class FileMetadata {
 
     private String permissions;
 
+    private Long size;
+
     public Long getId() {
         return id;
     }
@@ -67,5 +69,13 @@ public class FileMetadata {
 
     public void setPermissions(String permissions) {
         this.permissions = permissions;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 }

@@ -3,7 +3,7 @@ import uploadJson from "../helpers/uploadJson";
 import axios from "../api/axios";
 
 const useTreeTraversal = () => {
-  function insertNode(
+  async function insertNode(
     explorerData,
     currentDirectory,
     name,
@@ -57,16 +57,16 @@ const useTreeTraversal = () => {
       currentDirectory.items = updateitems;
 
       try {
-        axios
-          .post(`/postFile/${data.id}/${adjustedForPathname}/${type}`)
-          .then((res) => {
-            for (let i = 0; i < currentDirectory.items.length; i++) {
-              if (currentDirectory.items[i].name === name) {
-                currentDirectory.items[i].id = res.data;
-              }
-            }
-            const ret = uploadJson(`${data.id}`, explorerData);
-          });
+        const res = await axios.post(
+          `/insertFile/${data.id}/${adjustedForPathname}/${type}/${data.token}`
+        );
+
+        for (let i = 0; i < currentDirectory.items.length; i++) {
+          if (currentDirectory.items[i].name === name) {
+            currentDirectory.items[i].id = res.data;
+          }
+        }
+        const ret = uploadJson(data, explorerData, res.data);
       } catch (error) {
         // remove the the inserted node from current directory
         console.log(error);

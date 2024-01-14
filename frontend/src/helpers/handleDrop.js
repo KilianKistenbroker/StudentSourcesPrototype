@@ -1,5 +1,4 @@
 import readDroppedFiles from "./readDroppedFiles";
-import uploadJson from "./uploadJson";
 
 const updateParentSize = (node, parsingArr, size) => {
   parsingArr.shift();

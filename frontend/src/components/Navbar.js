@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/Light-Version.png";
+import axios from "../api/axios";
 
 export default function Navbar({
   data,
@@ -46,7 +47,7 @@ export default function Navbar({
     }
   }
 
-  const testLogout = (e) => {
+  const testLogout = async (e) => {
     e.preventDefault();
     setDisplay("");
     setMessage({
@@ -54,6 +55,12 @@ export default function Navbar({
       body: null,
     });
     // data.isLoggedIn = false;
+    try {
+      const res = await axios.delete(`/userToken/${data.token}/${data.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+
     data.id = -1;
     localStorage.clear();
     window.scrollTo(0, 0);

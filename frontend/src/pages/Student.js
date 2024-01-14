@@ -8,7 +8,6 @@ import FileContent from "../components/FileContent";
 import explorer from "../data/folderData";
 import Comments from "../components/Comments";
 import CommentBox from "../components/CommentBox";
-import commentsData from "../data/commentsData";
 import Notes from "../components/Notes";
 import Info from "../components/Info";
 import Trash from "../components/Trash";
@@ -44,6 +43,7 @@ const Student = ({
   const [currentFile, setCurrentFile] = useState(null);
   const [loading, setLoading] = useState(null);
   const [miniPanel, setMiniPanel] = useState("");
+  const [notes, setNotes] = useState("");
 
   const [dataUrl, setDataUrl] = useState(null);
   const [videoSrc, setVideoSrc] = useState(null);
@@ -59,7 +59,7 @@ const Student = ({
 
   // const [notesData, setNotesData] = useState("");
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(commentsData);
+  const [comments, setComments] = useState([]);
   const [files, setFiles] = useState(null);
   // const [loadingPDF, setLoadingPDF] = useState(null);
   const [scale, setScale] = useState({
@@ -124,6 +124,12 @@ const Student = ({
     window.scrollTo(0, 0);
 
     // ---------- request data from backend here ------------ //
+    getComments();
+
+    // set comments data whenever current directory or current file changes
+  }, [currentDirectory, currentFile]);
+
+  async function getComments() {
     let key = "";
     if (currentFile) {
       key = currentFile.id;
@@ -131,17 +137,14 @@ const Student = ({
       key = currentDirectory.id;
     }
     try {
-      axios.get(`getComments/${key}`).then((res) => {
-        setComments(res.data);
-      });
+      const res = await axios.get(`getComments/${key}`);
+      setComments(res.data);
     } catch (error) {
       console.log(error);
       setComments("");
       setSplashMsg({ message: "Failed to load comments." });
     }
-
-    // set comments data whenever current directory or current file changes
-  }, [currentDirectory, currentFile]);
+  }
 
   function getParentPath(pathString) {
     const pathArray = pathString.split("/");
@@ -311,7 +314,7 @@ const Student = ({
       );
     }
 
-    const ret = uploadJson(`${data.id}`, explorerData);
+    const ret = uploadJson(data, explorerData);
     // if (ret === -1) {
     //   setSplashMsg({
     //     message: "Upload failed!",
@@ -445,8 +448,8 @@ const Student = ({
     return `${day} ${month} ${year}`;
   }
 
-  const addComment = async () => {
-    //TODO: Instead of manipulating local data, use api's
+  const addComment = async (e) => {
+    e.preventDefault();
     const commentsCopy = comments.slice();
     const tempCommentInsert = {
       user: data.user,
@@ -474,6 +477,12 @@ const Student = ({
       }
 
       const res = await axios.post("/saveComment", adjustedCommentData);
+      if (res.data === -1) {
+        setMessage({
+          title: "Uh-oh!",
+          body: "Exceeded commenting limit.",
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -939,32 +948,16 @@ const Student = ({
             </div>
           )} */}
         </div>
-        {owner.user === data.user ? (
-          <div
-            className={
-              windowDimension.winWidth > 1200 && showingLeftPanel
-                ? "left-panel-textbox max-panel-width"
-                : showingLeftPanel
-                ? "left-panel-textbox medium-panel-width"
-                : "left-panel-textbox min-left-panel"
-            }
-          >
-            {/* add INPUT FIELD for CHATBOT here */}
-            {/* chatbot input field */}
-          </div>
-        ) : (
-          <div
-            className={
-              windowDimension.winWidth > 1200
-                ? "left-panel-textbox max-panel-width"
-                : windowDimension.winWidth > 800
-                ? "left-panel-textbox medium-panel-width"
-                : "left-panel-textbox min-left-panel"
-            }
-          >
-            {/* left empty for visiting users */}
-          </div>
-        )}
+
+        <div
+          className={
+            windowDimension.winWidth > 1200 && showingLeftPanel
+              ? "left-panel-textbox max-panel-width"
+              : showingLeftPanel
+              ? "left-panel-textbox medium-panel-width"
+              : "left-panel-textbox min-left-panel"
+          }
+        ></div>
 
         <div
           className={
@@ -1077,12 +1070,12 @@ const Student = ({
                         className="cursor-enabled"
                         onTouchEnd={() => {
                           currentDirectory.notes = "";
-                          // setNotesData("");
+                          setNotes("");
                           setMiniPanel("");
                         }}
                         onClick={() => {
                           currentDirectory.notes = "";
-                          // setNotesData("");
+                          setNotes("");
                           setMiniPanel("");
                         }}
                       >
@@ -1120,12 +1113,12 @@ const Student = ({
               {/* add NOTES components here */}
 
               <Notes
-                // notesData={notesData}
-                // setNotesData={setNotesData}
                 data={data}
                 currentDirectory={currentDirectory}
                 explorerData={explorerData}
                 setSplashMsg={setSplashMsg}
+                notes={notes}
+                setNotes={setNotes}
               />
             </div>
           )}
@@ -1209,7 +1202,7 @@ const Student = ({
             style={owner.user !== data.user ? { height: "77.5%" } : {}}
           >
             {/* add COMMENTS components here */}
-            <Comments commentsData={comments} data={data} />
+            <Comments data={data} commentsData={comments} />
           </div>
         </div>
 

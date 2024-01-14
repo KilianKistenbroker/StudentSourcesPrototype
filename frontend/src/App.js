@@ -39,6 +39,7 @@ function App() {
     email: "",
     password: "",
     id: -1, // <- replace with generated access token from backend
+    token: "",
   });
 
   useEffect(() => {
@@ -69,7 +70,7 @@ function App() {
 
     try {
       const res = await axios.get(
-        `/authenticate/${tempData.password}/${tempData.id}`
+        `/authenticate/${tempData.password}/${tempData.id}/${tempData.token}`
       );
       if (res.data === false) {
         console.log("unauthorized entry");
@@ -79,17 +80,18 @@ function App() {
         retreiveJSON(`${tempData.id}`).then((ret) => {
           if (ret === -1) {
             console.log("could not get user home directory");
+            localStorage.clear();
+            window.location.reload();
             setLoading(false);
             return;
           }
           setExplorerData(ret);
           setCurrentDirectory(ret);
           const res = initTrash(ret, setTrash);
-          if (res === -1) {
-            setLoading(false);
-          } else {
-            setLoading(true);
-          }
+          setLoading(true);
+
+          console.log("explorer from backend:");
+          console.log(ret);
         });
       }
     } catch (err) {

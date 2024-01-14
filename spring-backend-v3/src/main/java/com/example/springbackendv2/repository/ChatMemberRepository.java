@@ -1,7 +1,6 @@
 package com.example.springbackendv2.repository;
 
 import com.example.springbackendv2.model.ChatMembers;
-import com.example.springbackendv2.model.DirectMessages;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

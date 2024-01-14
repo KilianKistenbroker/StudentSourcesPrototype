@@ -6,6 +6,7 @@ import axios from "../api/axios";
 import Footer from "../components/Footer";
 import uploadJson from "../helpers/uploadJson";
 import initTrash from "../helpers/initializeTrash";
+import explorer from "../data/folderData";
 
 const user_regex_l = /\S{4,24}/;
 
@@ -14,8 +15,6 @@ const password_regex_sl = /[a-zA-Z]/;
 const password_regex_sn = /[0-9]/;
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-
-const user_endpoint = "/user";
 
 const Signup = ({
   data,
@@ -133,7 +132,7 @@ const Signup = ({
     }
 
     try {
-      const response = await axios.post(user_endpoint, {
+      const res = await axios.post("/user", {
         email: convertEmail,
         firstName,
         lastName,
@@ -141,58 +140,86 @@ const Signup = ({
         user,
       });
 
-      if (response.data === -1) {
+      console.log("from signup: ");
+      console.log(res);
+
+      if (res.data.id === -1) {
         // username is taken
         setErrMsg("Username is already taken.");
-      } else if (response.data === -2) {
+      } else if (res.data.id === -2) {
         // email is already taken
         setErrMsg("Email is already in use.");
-      } else if (response.data > 0) {
+      } else if (res.data.id === -3) {
+        // email is already taken
+        setErrMsg(
+          "Exceeded maximum amount of users in database. Database will reset by EOD."
+        );
+      } else if (res.data.id > 0) {
         // clear input fields here and redirect to home page
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setUser("");
-        setPassword("");
 
         data.user = user;
         data.firstName = firstName;
         data.lastName = lastName;
         data.email = convertEmail;
         data.password = password;
-        data.id = response.data;
+        data.id = res.data.id;
+        data.token = res.data.password;
+
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setUser("");
+        setPassword("");
 
         // send request to create root folder in db
-        const res = await axios.post(`/postFile/${data.id}/Home`);
+        console.log("data.id: " + data.id);
+        const res3 = await axios.post(`/createHome/${data.id}`);
+        console.log("from create home: ");
+        console.log(res3);
 
-        const tempExplorer = {
-          id: res.data,
-          name: "Home",
-          pathname: "Home",
-          type: "Folder",
-          size: 0,
-          isPinned: false,
-          visibility: "Public",
-          permissions: "Can view only",
-          dataUrl: "",
-          notes: "",
-          items: [
-            {
-              id: -1, // i don't think an id needs to be created here
-              name: "~Trash",
-              pathname: "Home/~Trash",
-              type: "Folder",
-              size: 0,
-              isPinned: false,
-              visibility: "Private",
-              permissions: "Only you have access",
-              dataUrl: "",
-              notes: "",
-              items: [],
-            },
-          ],
-        };
-        const ret = uploadJson(`${data.id}`, tempExplorer);
+        const tempExplorer = explorer;
+
+        // insert helpful readme files to database
+        const file1 = await axios.post(
+          `/insertFile/${data.id}/${tempExplorer.items[1].name}/${tempExplorer.items[1].type}/${data.token}`
+        );
+        const file2 = await axios.post(
+          `/insertFile/${data.id}/${tempExplorer.items[2].name}/${tempExplorer.items[2].type}/${data.token}`
+        );
+
+        tempExplorer.id = res3.data;
+        tempExplorer.items[1].id = file1.data;
+        tempExplorer.items[2].id = file2.data;
+
+        // {
+        //   id: res3.data,
+        //   name: "Home",
+        //   pathname: "Home",
+        //   type: "Folder",
+        //   size: 0,
+        //   isPinned: false,
+        //   visibility: "Public",
+        //   permissions: "Can view only",
+        //   dataUrl: "",
+        //   notes: "",
+        //   items: [
+        //     {
+        //       id: -1, // i don't think an id needs to be created here
+        //       name: "~Trash",
+        //       pathname: "Home/~Trash",
+        //       type: "Folder",
+        //       size: 0,
+        //       isPinned: false,
+        //       visibility: "Private",
+        //       permissions: "Only you have access",
+        //       dataUrl: "",
+        //       notes: "",
+        //       items: [],
+        //     },
+        //   ],
+        // };
+
+        const ret = uploadJson(data, tempExplorer);
         if (ret === -1) {
           setErrMsg("Could not create new account.");
           return;
@@ -461,7 +488,7 @@ const Signup = ({
                       className="link"
                       target="_blank"
                       id=""
-                      to={"terms"}
+                      to={"/terms"}
                       onClick={() => window.scrollTo(0, 0)}
                     >
                       {" "}
@@ -888,7 +915,7 @@ const Signup = ({
                       className="link"
                       target="_blank"
                       id=""
-                      to={"terms"}
+                      to={"/terms"}
                       onClick={() => window.scrollTo(0, 0)}
                     >
                       {" "}

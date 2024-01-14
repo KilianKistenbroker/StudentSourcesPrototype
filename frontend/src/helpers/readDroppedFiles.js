@@ -40,21 +40,9 @@ const readEntries = async (
 
     return new Promise(async (resolve) => {
       entry.file(async (file) => {
-        // let dataUrl = "";
-
-        // /* IMPORTANT: must replace this will file streaming. */
-        // if (
-        //   ["pdf", "txt", "url", "jpeg", "jpg", "gif", "png"].includes(
-        //     nameAndType[nameAndType.length - 1]
-        //   )
-        // ) {
-        //   // UPLOAD FILE TO S3 BUCKET HERE AND GET UNIQUE KEY FROM BACKEND
-        //   dataUrl = await readFileContent(file);
-        // }
         try {
           if (explorerData.size + file.size > 1e9) {
             console.log("exceeded storage limit");
-            // set failed in main message
             setLoadingBar({
               filename: null,
               progress: null,
@@ -64,24 +52,25 @@ const readEntries = async (
               title: "Uh-oh!",
               body: "Looks like some files exceed the available storage space on this account. Try deleting files from trash bin to free up space.",
             });
+            resolve();
             return;
           }
 
-          const key = await axios.post(
-            `/postFile/${data.id}/${entry.name}/${
-              nameAndType[nameAndType.length - 1]
-            }`
-          );
-
           const res = await uploadFile(
-            key.data,
+            -1,
             file,
             setLoadingBar,
-            parent.pathname
+            parent.pathname,
+            data
           );
 
+          if (res < 0) {
+            resolve();
+            return;
+          }
+
           const newItem = {
-            id: key.data, // <-- REPLACE WITH DB GENERATED ID
+            id: res,
             name: nameAndType[0] + "." + nameAndType[nameAndType.length - 1],
             pathname: currentPath,
             type: nameAndType[nameAndType.length - 1],
@@ -101,8 +90,8 @@ const readEntries = async (
           // update all the parents of newly inserted node
           let parsingArr = parent.pathname.split("/");
           const res1 = updateParentSize(explorerData, parsingArr, newItem.size);
+          const ret = uploadJson(data, explorerData, res);
 
-          const ret = uploadJson(`${data.id}`, explorerData);
           if (ret === -1) {
             setSplashMsg({
               message: "Upload failed!",
@@ -124,10 +113,17 @@ const readEntries = async (
     });
   } else if (entry.isDirectory) {
     try {
-      const key = await axios.post(`/postFile/${data.id}/${entry.name}/Folder`);
+      // ------------ MOVE TO BACKEND (Cap folders to 10 per user) ------------ //
 
+      const res = await axios.post(
+        `/postFolder/${data.id}/${entry.name}/${data.token}`
+      );
+
+      if (res.data === -1) return;
+
+      // TODO: HIDE THIS OBJECT IN BACKEND
       const newFolder = {
-        id: key.data, // <-- REPLACE WITH DB GENERATED ID
+        id: res.data, // <-- REPLACE WITH DB GENERATED ID
         name: entry.name,
         pathname: currentPath,
         type: "Folder",
@@ -139,6 +135,10 @@ const readEntries = async (
         notes: "",
         items: [],
       };
+
+      // ------------ MOVE TO BACKEND (end) ------------ //
+
+      // if key is successful, then proceed, otherwise return
 
       parent.items.push(newFolder);
 
