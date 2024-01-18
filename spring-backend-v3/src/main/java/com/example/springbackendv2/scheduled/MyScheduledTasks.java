@@ -1,12 +1,10 @@
 package com.example.springbackendv2.scheduled;
 
 import com.example.springbackendv2.repository.*;
-import com.example.springbackendv2.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableScheduling
@@ -33,7 +31,7 @@ public class MyScheduledTasks {
     @Autowired
     TokensRepository tokensRepository;
 
-    @Scheduled(cron = "0 0 0 * * ?") // Runs at 12:00 AM every day
+    @Scheduled(cron = "0 0 0 * * ?", zone = "America/Los_Angeles") // Runs at 12:00 AM every day
     public void myScheduledMethod() {
         // Your code to be executed at the specified time
         usersRepository.deleteAll();

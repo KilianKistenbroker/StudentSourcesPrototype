@@ -58,7 +58,7 @@ export default function Navbar({
     try {
       const res = await axios.delete(`/userToken/${data.token}/${data.id}`);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
 
     data.id = -1;

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class DirectMessagesController {
 
     @Autowired
@@ -31,8 +30,6 @@ public class DirectMessagesController {
     List<MessengerDto> getAllMessagesByGroupId(@PathVariable("group_id") Long group_id){
 
         List<DirectMessages> list = directMessagesRepository.getAllMessagesByGroupId(group_id);
-//        for (DirectMessages dm : list) {
-//        }
 
         List<MessengerDto> adjustedList = new ArrayList<>();
         new Users();

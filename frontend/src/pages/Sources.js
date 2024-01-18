@@ -91,7 +91,7 @@ const Sources = ({ data, windowDimension, message, setMessage }) => {
       setExplorerData(res1.data);
       setCurrentDirectory(res1.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

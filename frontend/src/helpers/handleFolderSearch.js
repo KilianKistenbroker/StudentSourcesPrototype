@@ -18,7 +18,7 @@ const handleFolderSearch = async (e, setLoadFolders, search) => {
       else setLoadFolders(res.data);
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

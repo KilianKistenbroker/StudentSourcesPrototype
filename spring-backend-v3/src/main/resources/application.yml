@@ -4,7 +4,7 @@ cloud:
 #      ss-files
       access-key1:
       secret-key1:
-#        pb-1
+#        ss-dir
       access-key2:
       secret-key2:
     region:
@@ -17,7 +17,7 @@ application:
 #    ss-files
     name1:
   bucket2:
-#    pb-1
+#    ss-dir
     name2:
 
 server:

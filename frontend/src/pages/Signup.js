@@ -140,8 +140,8 @@ const Signup = ({
         user,
       });
 
-      console.log("from signup: ");
-      console.log(res);
+      // console.log("from signup: ");
+      // console.log(res);
 
       if (res.data.id === -1) {
         // username is taken
@@ -152,7 +152,7 @@ const Signup = ({
       } else if (res.data.id === -3) {
         // email is already taken
         setErrMsg(
-          "Exceeded maximum amount of users in database. Database will reset by EOD."
+          "Exceeded maximum amount of users in database. Database will reset by 11:59 PM (23:59) UTC time."
         );
       } else if (res.data.id > 0) {
         // clear input fields here and redirect to home page
@@ -172,10 +172,10 @@ const Signup = ({
         setPassword("");
 
         // send request to create root folder in db
-        console.log("data.id: " + data.id);
+        // console.log("data.id: " + data.id);
         const res3 = await axios.post(`/createHome/${data.id}`);
-        console.log("from create home: ");
-        console.log(res3);
+        // console.log("from create home: ");
+        // console.log(res3);
 
         const tempExplorer = explorer;
 

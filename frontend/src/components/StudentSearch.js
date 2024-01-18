@@ -214,7 +214,7 @@ const StudentSearch = ({
                 className={
                   selected === "saved" ? "selected" : "selection-content"
                 }
-                onClick={() => downloadFile(currentFile)}
+                onClick={() => downloadFile(currentFile, data)}
               >
                 {/* download*/}
                 <svg

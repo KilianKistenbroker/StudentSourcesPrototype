@@ -8,7 +8,7 @@ const retrieveJson = async (data) => {
     );
     return res.data;
   } catch (error) {
-    console.error("Error downloading JSON data:", error);
+    // console.error("Error downloading JSON data:", error);
     return -1;
   }
 };

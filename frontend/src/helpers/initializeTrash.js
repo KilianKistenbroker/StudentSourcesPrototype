@@ -14,7 +14,7 @@ const initTrash = (folderData, setTrash) => {
         dataUrl: "",
         items: [],
       };
-      console.log("failed to initilize trash");
+      // console.log("failed to initilize trash");
     } else if (folderData.items[i].name === "~Trash") {
       setTrash(folderData.items[i]);
       return 0;
@@ -34,7 +34,7 @@ const initTrash = (folderData, setTrash) => {
     dataUrl: "",
     items: [],
   });
-  console.log("failed to initilize trash");
+  // console.log("failed to initilize trash");
   return 0;
 };
 

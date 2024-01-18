@@ -92,13 +92,13 @@ const Login = ({
         data.id = res.data.id;
         data.token = res.data.password;
 
-        console.log("font end data: " + data);
-        console.log("back end data: " + res.data);
+        // console.log("font end data: " + data);
+        // console.log("back end data: " + res.data);
 
         retreiveJSON(data).then((ret) => {
           if (ret === -1) {
-            console.log("could not get user home directory");
-            console.log("creating new home directory");
+            // console.log("could not get user home directory");
+            // console.log("creating new home directory");
 
             // changing ret to dummy data
             // ret = explorer;

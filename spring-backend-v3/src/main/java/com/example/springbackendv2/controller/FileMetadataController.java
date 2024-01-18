@@ -4,7 +4,6 @@ import com.example.springbackendv2.exception.UserNotFoundException;
 import com.example.springbackendv2.model.FileMetadata;
 import com.example.springbackendv2.repository.CommentsRepository;
 import com.example.springbackendv2.repository.FileMetadataRepository;
-import com.example.springbackendv2.repository.UsersRepository;
 import com.example.springbackendv2.service.StorageService;
 import com.example.springbackendv2.service.TokensService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class FileMetadataController {
 
     @Autowired
@@ -32,8 +30,6 @@ public class FileMetadataController {
 
     @Autowired
     CommentsRepository commentsRepository;
-    @Autowired
-    UsersRepository usersRepository;
 
     //   --------------------- BASIC POST, GET, DELETE MAPPING BY UNIQUE ID --------------------
 

@@ -53,10 +53,10 @@ const VisibilityPermissions = ({
 
       const res1 = uploadJson(data, explorerData);
       if (res1 === -1) {
-        console.log("Failed to save home directory.");
+        // console.log("Failed to save home directory.");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       // undo changes
       tempFile.content.visibility = oldVisibility;

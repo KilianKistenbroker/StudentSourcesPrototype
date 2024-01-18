@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 import axios from "../api/axios";
 
-const downloadFile = async (currentFile) => {
+const downloadFile = async (currentFile, data) => {
   if (currentFile.type === "url") {
     const fileURL = currentFile.dataUrl;
     const fileURLParts = fileURL.split(",");
@@ -18,7 +18,7 @@ const downloadFile = async (currentFile) => {
 
     saveAs(blob, fileName);
   } else {
-    const adjustedKey = currentFile.id + "." + currentFile.type;
+    // const adjustedKey = currentFile.id + "." + currentFile.type;
     const checkType = currentFile.name.split(".");
 
     // adjusting file name with proper extention
@@ -28,13 +28,16 @@ const downloadFile = async (currentFile) => {
     }
 
     try {
-      const res = await axios.get(`/downloadFile/${adjustedKey}`, {
-        responseType: "blob",
-      });
+      const res = await axios.get(
+        `/downloadFile/${currentFile.id}/${data.id}/${data.token}`,
+        {
+          responseType: "blob",
+        }
+      );
       const blob = new Blob([res.data]);
       saveAs(blob, fileName);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 };

@@ -46,7 +46,7 @@ const handleDrop = async (
     setLoading(false);
   } else {
     // uploading here
-    console.log("uploading this file");
+    // console.log("uploading this file");
 
     readDroppedFiles(
       e,

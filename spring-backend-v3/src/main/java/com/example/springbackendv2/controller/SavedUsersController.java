@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class SavedUsersController {
     @Autowired
     private SavedUsersRepository savedUsersRepository;

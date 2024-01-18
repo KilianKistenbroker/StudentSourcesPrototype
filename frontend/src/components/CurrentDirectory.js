@@ -90,9 +90,9 @@ const CurrentDirectory = ({
 
   const handleDownload = (loadData) => {
     if (loadData.type === "Folder") {
-      downloadZip(loadData);
+      downloadZip(loadData, data);
     } else {
-      downloadFile(loadData);
+      downloadFile(loadData, data);
     }
   };
 
@@ -117,7 +117,7 @@ const CurrentDirectory = ({
       // update in bucket
       const res1 = uploadJson(data, explorerData, loadData.id);
       if (res1 === -1) {
-        console.log("failed to update home directory");
+        // console.log("failed to update home directory");
         setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
       }
     }
@@ -187,7 +187,7 @@ const CurrentDirectory = ({
 
     const res = uploadJson(data, explorerData, loadData.id);
     if (res === -1) {
-      console.log("failed to update home directory");
+      // console.log("failed to update home directory");
       setMessage({ title: "Uh-oh!", body: "Failed to save changes." });
     }
   };
@@ -526,9 +526,9 @@ const CurrentDirectory = ({
               }}
               onClick={() => {
                 if (loadData.type === "Folder") {
-                  downloadZip(loadData, "visiter");
+                  downloadZip(loadData, "visiter", data);
                 } else {
-                  downloadFile(loadData);
+                  downloadFile(loadData, data);
                 }
               }}
             >

@@ -37,8 +37,7 @@ function App() {
     firstName: "",
     lastName: "",
     email: "",
-    password: "",
-    id: -1, // <- replace with generated access token from backend
+    id: -1,
     token: "",
   });
 
@@ -70,14 +69,14 @@ function App() {
 
     try {
       const res = await axios.get(
-        `/authenticate/${tempData.password}/${tempData.id}/${tempData.token}`
+        `/authenticate/${tempData.id}/${tempData.token}`
       );
       if (res.data === false) {
         console.log("unauthorized entry");
         localStorage.clear();
         window.location.reload();
       } else {
-        retreiveJSON(`${tempData.id}`).then((ret) => {
+        retreiveJSON(tempData).then((ret) => {
           if (ret === -1) {
             console.log("could not get user home directory");
             localStorage.clear();

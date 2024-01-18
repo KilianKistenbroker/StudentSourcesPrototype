@@ -21,7 +21,7 @@ const uploadFile = async (key, file, setLoadingBar, pathname, data) => {
   };
 
   try {
-    console.log("filename: " + file.name);
+    // console.log("filename: " + file.name);
     if (key > 0) {
       const res = await axios.post(
         `/updateFile/${data.id}/${key}/${type}/${data.token}`,

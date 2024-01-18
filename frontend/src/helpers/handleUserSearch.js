@@ -20,7 +20,7 @@ const handleUserSearch = async (e, setLoadUsers, search, getFriends) => {
       else setLoadUsers(res.data);
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

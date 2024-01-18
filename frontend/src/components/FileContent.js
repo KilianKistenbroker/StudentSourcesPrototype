@@ -40,24 +40,26 @@ const FileContent = ({
       return;
     } else if (currentFile.type === "txt") {
       getFileData().then((res) => {
-        console.log("res: ");
-        console.log(res);
+        // console.log("res: ");
+        // console.log(res);
         setDataUrl(res);
         setLoading(false);
       });
     } else if (["mp4", "mov"].includes(currentFile.type)) {
       try {
-        const adjustedKey = currentFile.id + "." + currentFile.type;
-        setVideoSrc(`http://54.219.131.2:8080/streamVideo/${adjustedKey}`);
+        // const adjustedKey = currentFile.id + "." + currentFile.type;
+        setVideoSrc(
+          `http://54.219.131.2:8080/streamVideo/${currentFile.id}/${data.id}/${data.token}`
+        );
         setLoading(false);
       } catch (err) {
-        console.log(
-          "ERROR: could not decode: " +
-            currentFile.name +
-            "." +
-            currentFile.type
-        );
-        console.log(err);
+        // console.log(
+        //   "ERROR: could not decode: " +
+        //     currentFile.name +
+        //     "." +
+        //     currentFile.type
+        // );
+        // console.log(err);
       }
     } else if (currentFile.type === "mp3") {
       try {
@@ -66,13 +68,13 @@ const FileContent = ({
           setLoading(false);
         });
       } catch (err) {
-        console.log(
-          "ERROR: could not decode: " +
-            currentFile.name +
-            "." +
-            currentFile.type
-        );
-        console.log(err);
+        // console.log(
+        //   "ERROR: could not decode: " +
+        //     currentFile.name +
+        //     "." +
+        //     currentFile.type
+        // );
+        // console.log(err);
       }
     } else if (currentFile.type === "url") {
       try {
@@ -99,13 +101,13 @@ const FileContent = ({
         }
         setLoading(false);
       } catch (err) {
-        console.log(
-          "ERROR: could not decode: " +
-            currentFile.name +
-            "." +
-            currentFile.type
-        );
-        console.log(err);
+        // console.log(
+        //   "ERROR: could not decode: " +
+        //     currentFile.name +
+        //     "." +
+        //     currentFile.type
+        // );
+        // console.log(err);
       }
     } else if (currentFile.type === "pdf") {
       // get pdf file
@@ -144,10 +146,14 @@ const FileContent = ({
 
   const getFileData = async () => {
     try {
-      const key = currentFile.id + "." + currentFile.type;
-      const res = await axios.get(`downloadFile/${key}`, {
-        responseType: "arraybuffer",
-      });
+      // const key = currentFile.id + "." + currentFile.type;
+      // console.log("trying to get file");
+      const res = await axios.get(
+        `downloadFile/${currentFile.id}/${data.id}/${data.token}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
 
       const blob = new Blob([res.data]);
 
@@ -163,10 +169,10 @@ const FileContent = ({
         return url;
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       const res = await insertTxtFile(`${currentFile.dataUrl}`);
       if (res === -1) {
-        console.log("Failed to upload new file");
+        // console.log("Failed to upload new file");
       }
       return currentFile.dataUrl;
     }
@@ -175,7 +181,7 @@ const FileContent = ({
   const insertTxtFile = async (dataUrl) => {
     try {
       // insert txt file into s3 bucket
-      console.log("Inserting new file");
+      // console.log("Inserting new file");
 
       const updatedContent =
         "application/octet-stream;base64," + window.btoa(dataUrl);
@@ -207,8 +213,8 @@ const FileContent = ({
       });
       return res;
     } catch (error) {
-      console.log("Could not insert in bucket");
-      console.log(error);
+      // console.log("Could not insert in bucket");
+      // console.log(error);
     }
   };
 
@@ -330,7 +336,7 @@ const FileContent = ({
               <Document
                 file={dataUrl}
                 onLoadSuccess={({ numPages }) => {
-                  console.log(`PDF loaded with ${numPages} pages.`);
+                  // console.log(`PDF loaded with ${numPages} pages.`);
                   setNumPages(numPages);
                   setPdfController({
                     currentPage: 1,

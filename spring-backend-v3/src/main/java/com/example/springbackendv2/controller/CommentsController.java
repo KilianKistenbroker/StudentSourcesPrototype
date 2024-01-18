@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class CommentsController {
 
     @Autowired
@@ -49,11 +48,6 @@ public class CommentsController {
     @GetMapping("/commentsByUser/{user_id}")
     List<Comments> getAllCommentsByUserId(@PathVariable("user_id") Long userId){
         return commentsService.getAllCommentByUserId(userId);
-    }
-
-    @PostMapping("/createComment")
-    Comments createComment(@RequestBody Comments comment){
-        return commentsService.saveOrUpdateComment(comment);
     }
 
     @PostMapping("/saveComment")

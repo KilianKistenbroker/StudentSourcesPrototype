@@ -3,7 +3,7 @@ import handleUserSearch from "../helpers/handleUserSearch";
 import axios from "../api/axios";
 import { useEffect } from "react";
 
-const Inbox = ({ data }) => {
+const Inbox = ({ data, setMessage }) => {
   // options will either be 'create dm' or the most recent conversation
   const [selection, setSelection] = useState("conversations");
   const [textMessage, setTextMessage] = useState("");
@@ -28,7 +28,7 @@ const Inbox = ({ data }) => {
   useEffect(() => {
     getMessages();
     setTextMessage("");
-    console.log(groups);
+    // console.log(groups);
   }, [groups, currentGroupChat]);
 
   const getMessages = async () => {
@@ -40,7 +40,7 @@ const Inbox = ({ data }) => {
         setMessageData(res.data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -49,7 +49,7 @@ const Inbox = ({ data }) => {
       const res = await axios.get(`/getGroups/${data.id}`);
       setGroups(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -69,7 +69,7 @@ const Inbox = ({ data }) => {
     try {
       const res = await axios.delete(`/leaveGroupChat/${group_id}/${data.id}`);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -91,7 +91,7 @@ const Inbox = ({ data }) => {
         `/deleteGroup/${group_id}/${data.id}/${data.token}`
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -149,7 +149,11 @@ const Inbox = ({ data }) => {
       );
 
       if (res.data.id < 0) {
-        console.log("exceed chat group limit");
+        // console.log("exceed chat group limit");
+        setMessage({
+          title: "Uh-oh!",
+          body: "Exceeded chat group limit.",
+        });
         setChatPoolId([]);
         setChatPoolUser([]);
         return;
@@ -169,7 +173,7 @@ const Inbox = ({ data }) => {
 
       setGroups(copyGroups);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setChatPoolId([]);
     }
   };
@@ -231,10 +235,14 @@ const Inbox = ({ data }) => {
         }
       );
       if (res.data < 0) {
-        console.log("Exceeded maximum chat messages for this group");
+        // console.log("Exceeded maximum chat messages for this group");
+        setMessage({
+          title: "Uh-oh!",
+          body: "Files are currently being uploaded inside this folder.",
+        });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     setTextMessage("");
   };

@@ -140,7 +140,7 @@ const Student = ({
       const res = await axios.get(`getComments/${key}`);
       setComments(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setComments("");
       setSplashMsg({ message: "Failed to load comments." });
     }
@@ -175,7 +175,7 @@ const Student = ({
     try {
       const res = await axios.delete(`/deleteAllComments/${tempRef.id}`);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -484,7 +484,7 @@ const Student = ({
         });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
 
     setComment("");
@@ -679,8 +679,8 @@ const Student = ({
                         }
 
                         currentFile
-                          ? downloadFile(currentFile)
-                          : downloadZip(currentDirectory);
+                          ? downloadFile(currentFile, data)
+                          : downloadZip(currentDirectory, data);
                         setMiniPanel("");
                       }}
                       onClick={() => {
@@ -706,8 +706,8 @@ const Student = ({
                         }
 
                         currentFile
-                          ? downloadFile(currentFile)
-                          : downloadZip(currentDirectory);
+                          ? downloadFile(currentFile, data)
+                          : downloadZip(currentDirectory, data);
                         setMiniPanel("");
                       }}
                     >

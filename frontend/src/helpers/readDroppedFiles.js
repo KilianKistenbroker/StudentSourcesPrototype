@@ -42,7 +42,7 @@ const readEntries = async (
       entry.file(async (file) => {
         try {
           if (explorerData.size + file.size > 1e9) {
-            console.log("exceeded storage limit");
+            // console.log("exceeded storage limit");
             setLoadingBar({
               filename: null,
               progress: null,
@@ -50,7 +50,7 @@ const readEntries = async (
             setLoading(false);
             setMessage({
               title: "Uh-oh!",
-              body: "Looks like some files exceed the available storage space on this account. Try deleting files from trash bin to free up space.",
+              body: "Exceeded available storage space on this account. Try deleting files from trash bin to free up space.",
             });
             resolve();
             return;
@@ -106,7 +106,7 @@ const readEntries = async (
 
           resolve();
         } catch (error) {
-          console.log(error);
+          // console.log(error);
           return;
         }
       });
@@ -177,7 +177,7 @@ const readEntries = async (
       };
       return readAllEntries();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return;
     }
   }

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
@@ -38,7 +37,7 @@ public class UsersController {
     Users newUser(@RequestBody Users newUser){
 
         //        if user amount exceeds 20, then do not create new user.
-        if (usersRepository.findAll().size() >= 20) {
+        if (usersRepository.findAll().size() >= 100) {
             newUser.setId(-3L);
             return newUser;
         }
@@ -160,19 +159,12 @@ public class UsersController {
         }
     }
 
-    @GetMapping(value = "/authenticate/{password}/{user_id}/{token}")
-    public Boolean authenticateUser(@PathVariable("password") String password,
-                                    @PathVariable("user_id") Long user_id,
+    @GetMapping(value = "/authenticate/{user_id}/{token}")
+    public Boolean authenticateUser(@PathVariable("user_id") Long user_id,
                                     @PathVariable("token") String tokenValue) {
 
 //        If token does not exist or is expired.
-        boolean result = tokensService.checkAndUpdateToken(tokenValue, user_id);
-        if (!result) {
-            return false;
-        }
-
-        Users res = usersRepository.authenticateUser(password, user_id);
-        return res != null;
+        return tokensService.checkAndUpdateToken(tokenValue, user_id);
     }
 
     @GetMapping("/search/{query}")

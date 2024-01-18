@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("http://student-sources.s3-website-us-west-1.amazonaws.com")
 public class JsonController {
 
 
@@ -34,7 +33,7 @@ public class JsonController {
 
 
     @Autowired
-    private StorageService service;
+    private StorageService storageService;
     @Autowired
     private FileMetadataRepository fileMetadataRepository;
     @Autowired
@@ -50,7 +49,7 @@ public class JsonController {
             return new ResponseEntity<>("Canceled json upload", HttpStatus.NOT_FOUND);
         } else {
             String key = userId + ".json";
-            return new ResponseEntity<>(service.uploadJson(file, key), HttpStatus.OK);
+            return new ResponseEntity<>(storageService.uploadJson(file, key), HttpStatus.OK);
         }
     }
 
@@ -71,14 +70,9 @@ public class JsonController {
             System.out.println("Cancelling json upload");
             return new ResponseEntity<>("metadata not found", HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(service.uploadJson(file, key), HttpStatus.OK);
+            return new ResponseEntity<>(storageService.uploadJson(file, key), HttpStatus.OK);
         }
     }
-
-//    @DeleteMapping("/deleteJson/{key}")
-//    public ResponseEntity<String> deleteJson(@PathVariable String key) {
-//        return new ResponseEntity<>(service.deleteJson(key), HttpStatus.OK);
-//    }
 
     @GetMapping(value = "/downloadJson/{key}/{userId}/{token}")
     public ResponseEntity<ByteArrayResource> downloadJson(@PathVariable("key") String key,
@@ -91,23 +85,23 @@ public class JsonController {
             return null;
         }
 
-        byte[] data=  service.downloadJson(key);
+        byte[] data=  storageService.downloadJson(key);
         ByteArrayResource resource = new ByteArrayResource(data);
 
-        System.out.println("user-directory retrieved: " + key);
+        System.out.println("user-directory retrieved: " + data.length);
 
         return ResponseEntity
                 .ok()
                 .contentLength(data.length)
                 .header("Content-type", "application/octet-stream")
-                .header("Content-disposition, ", "attachment; filename=\"" + key + "\"")
+                .header("Content-disposition", "attachment; filename=\"" + key + "\"")
                 .body(resource);
     }
 
     @GetMapping(value = "/downloadOutsideJson/{key}")
     public ResponseEntity<ByteArrayResource> downloadOutsideJson(@PathVariable("key") String key) throws JsonProcessingException {
 
-        byte[] data = service.downloadJson(key);
+        byte[] data = storageService.downloadJson(key);
 
         // Convert the byte array to a string
         String jsonString = new String(data, StandardCharsets.UTF_8);
@@ -140,7 +134,7 @@ public class JsonController {
     public ResponseEntity<ByteArrayResource> downloadChildJson(@PathVariable("key") String key,
                                                                @PathVariable("targetId") Long targetId) throws JsonProcessingException {
 
-        byte[] data = service.downloadJson(key);
+        byte[] data = storageService.downloadJson(key);
 
         // Convert the byte array to a string
         String jsonString = new String(data, StandardCharsets.UTF_8);

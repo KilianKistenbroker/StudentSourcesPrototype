@@ -27,7 +27,7 @@ const Notes = ({
   const handleUploadNotes = () => {
     const oldNotes = currentDirectory.notes;
     if (oldNotes === notes) {
-      console.log("prevent unintential upload req in Notes component");
+      // console.log("prevent unintential upload req in Notes component");
       return;
     }
 
@@ -35,7 +35,7 @@ const Notes = ({
 
     const res = uploadJson(data, explorerData);
     if (res === -1) {
-      console.log("Failed to save home directory");
+      // console.log("Failed to save home directory");
     }
     setSplashMsg({ message: "Saved notes", isShowing: true });
   };

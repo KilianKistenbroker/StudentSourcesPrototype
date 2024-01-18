@@ -12,7 +12,8 @@ const AboutUs = ({ windowDimension }) => {
         <h1 className="legal-h1">Helpful Information</h1> <br />
         <p className="legal-body">
           1. You do not need to enter any real information to register. <br />
-          2. All uploaded data is automatically deleted at the end of the day.
+          2. All uploaded data is automatically deleted daily at 11:59 PM
+          (23:59) UTC time.
         </p>
       </div>
 

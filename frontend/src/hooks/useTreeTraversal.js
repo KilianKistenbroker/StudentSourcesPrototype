@@ -69,7 +69,7 @@ const useTreeTraversal = () => {
         const ret = uploadJson(data, explorerData, res.data);
       } catch (error) {
         // remove the the inserted node from current directory
-        console.log(error);
+        // console.log(error);
 
         let tempItemsArr = [];
         for (let i = 0; i < currentDirectory.items.length; i++) {

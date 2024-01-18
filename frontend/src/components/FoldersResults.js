@@ -9,8 +9,6 @@ import { ReactComponent as MP4 } from "../logos/icons/mp4.svg";
 import { ReactComponent as PDF } from "../logos/icons/pdf.svg";
 import { ReactComponent as UNKNOWN } from "../logos/icons/unknown-mail.svg";
 import { ReactComponent as URL } from "../logos/icons/url.svg";
-import downloadFile from "../helpers/downloadFile";
-import downloadZip from "../helpers/downloadZip";
 
 const FolderResults = ({
   data,

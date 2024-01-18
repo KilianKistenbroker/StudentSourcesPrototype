@@ -8,7 +8,7 @@ const uploadJson = async (data, jsonData, fileKey) => {
   formData.append("file", blob, adjustedKey);
   try {
     if (fileKey) {
-      console.log("secure json upload");
+      // console.log("secure json upload");
       await axios.post(
         `/uploadSecureJson/${adjustedKey}/${fileKey}/${data.id}/${data.token}`,
         formData,
@@ -19,7 +19,7 @@ const uploadJson = async (data, jsonData, fileKey) => {
         }
       );
     } else {
-      console.log("soft json upload");
+      // console.log("soft json upload");
       await axios.post(`/uploadJson/${data.id}/${data.token}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -27,7 +27,7 @@ const uploadJson = async (data, jsonData, fileKey) => {
       });
     }
 
-    console.log(jsonData);
+    // console.log(jsonData);
 
     return 0;
   } catch (error) {

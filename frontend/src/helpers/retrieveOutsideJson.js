@@ -6,8 +6,8 @@ const retrieveOutsideJson = async (key) => {
     const res = await axios.get(`/downloadOutsideJson/${adjustedKey}`);
     return res.data;
   } catch (error) {
-    console.error("Error downloading JSON data:");
-    console.log(error);
+    // console.error("Error downloading JSON data:");
+    // console.log(error);
     return -1;
   }
 };

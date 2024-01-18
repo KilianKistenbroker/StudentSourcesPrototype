@@ -8,7 +8,7 @@ const parseAndDelete = async (node, data, exploreData) => {
   formData.append("file", blob, adjustedKey);
 
   try {
-    console.log("delete node id: " + node.id);
+    // console.log("delete node id: " + node.id);
     await axios.post(
       `/deleteFile/${node.id}/${data.id}/${data.token}`,
       formData,
@@ -19,15 +19,8 @@ const parseAndDelete = async (node, data, exploreData) => {
       }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
-
-  // for (let i = 0; i < node.items.length; i++) {
-  //   // Null exception here
-  //   if (node.items[i]) {
-  //     parseAndDelete(node.items[i], data);
-  //   }
-  // }
 };
 
 export default parseAndDelete;
