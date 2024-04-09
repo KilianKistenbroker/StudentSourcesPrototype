@@ -177,7 +177,7 @@ const Signup = ({
         // console.log("from create home: ");
         // console.log(res3);
 
-        const tempExplorer = explorer;
+        const tempExplorer = JSON.parse(JSON.stringify(explorer));
 
         // insert helpful readme files to database
         const file1 = await axios.post(
